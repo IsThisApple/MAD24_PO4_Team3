@@ -42,7 +42,7 @@ Image gallery of food products
 
 
 Stage 2:
-Confirmation receipt via email (think of what to add on)
-Search & filter functionality (will prompt based on what is keyed in)
-Notifications
+Confirmation receipt via email (think of what to add on),
+Search & filter functionality (will prompt based on what is keyed in),
+Notifications,
 Audio descriptions for visually impaired users
