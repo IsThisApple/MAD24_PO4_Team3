@@ -2,10 +2,10 @@
 MAD Assignment PO4 Team 3
 
 Team Members:
-Jovan
-Nabihah
-Fariha
-Leeuwin
+Jovan,
+Nabihah,
+Fariha,
+Leeuwin,
 Hpone Myint Myat Paing
 
 App Name: NearBuy
@@ -14,34 +14,35 @@ App Category: Shopping
 
 Introduction:
 
-Lazy to go down to the nearby supermarket to buy groceries? Well, look no further or rather, look "nearbuy" to our app, NearBuy.
+Lazy to go down to the nearby supermarket to buy groceries? Well, look no further, or rather, look "nearbuy" to our app, NearBuy.
 With NearBuy, you can get your groceries without leaving your house!
-From this app, you can choose which supermarket you want to buy groceries from, put it in your shopping ecart, and it will be delivered straight to your doorstep.
-You can also favourite your items in order to quickly buy them again.
+With this app, you can choose the outlet closest to you, add your choice of products to your shopping e-cart, and it will all be delivered straight to your doorstep.
+You can also "heart" your favourite items in order for a quicker and more efficient checkout process for future purchases.
 Stay comfortable at home with NearBuy.
 
 Stage 1:
 RecyclerView: Jovan
 Scroll menu of products
-Vendor Listings
+Vendor listings
 
 Firebase: Nabihah
-instant messaging with vendors
+Instant messaging with vendors
 
 Persistent Memory: Hpone
-Shopping Cart & Checkout
-Favourite Listings
-loyalty programme
+Shopping cart & checkout
+Favourite listings
+Loyalty programme
 
 Responsive Layout: Leeuwin
-User Registration & Profile Creation
+User registration & profile creation
 
 Multimedia: Fariha
-Image of Food Products
+Image gallery of food products
 
 
 
 Stage 2:
-Confirmation Receipt via Email (think of what to add on)
-Search & filter functionality (Will prompt based on what is keyed in)
+Confirmation receipt via email (think of what to add on)
+Search & filter functionality (will prompt based on what is keyed in)
 Notifications
+Audio descriptions for visually impaired users
