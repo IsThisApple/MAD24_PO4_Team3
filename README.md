@@ -21,16 +21,23 @@ You can also "heart" your favourite items in order for a quicker and more effici
 Stay comfortable at home with NearBuy.
 
 Stage 1: 
+
 RecyclerView: Jovan
+
 Scroll menu of products
+
 Vendor listings
 
 Firebase: Nabihah
+
 Instant messaging with vendors
 
 Persistent Memory: Hpone
+
 Shopping cart & checkout
+
 Favourite listings
+
 Loyalty programme
 
 Responsive Layout: Leeuwin
@@ -42,7 +49,12 @@ Image gallery of food products
 
 
 Stage 2:
-Confirmation receipt via email (think of what to add on),
-Search & filter functionality (will prompt based on what is keyed in),
-Notifications,
+
+Jovan:
+Confirmation receipt via email (think of what to add on)
+
+Search & filter functionality (will prompt based on what is keyed in)
+
+Notifications
+
 Audio descriptions for visually impaired users
