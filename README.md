@@ -20,7 +20,7 @@ With this app, you can choose the outlet closest to you, add your choice of prod
 You can also "heart" your favourite items in order for a quicker and more efficient checkout process for future purchases.
 Stay comfortable at home with NearBuy.
 
-Stage 1:
+Stage 1: 
 RecyclerView: Jovan
 Scroll menu of products
 Vendor listings
