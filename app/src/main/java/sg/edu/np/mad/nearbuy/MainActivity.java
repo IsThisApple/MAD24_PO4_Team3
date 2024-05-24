@@ -8,6 +8,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
             Random rand = new Random();
             int val = rand.nextInt(1000000);
             String rannum = Integer.toString(val);
-            productsList.add(new Product("item" + rannum, rannum,i,false));
+            productsList.add(new Product("item" + rannum, rannum, i, false));
         }
 
         RecyclerView productsrecyclerview = findViewById(R.id.productsrecyclerview);
         ProductAdapter mAdapter = new ProductAdapter(productsList, this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
