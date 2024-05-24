@@ -28,9 +28,11 @@ Scroll menu of products
 
 Vendor listings
 
+
 Firebase: Nabihah
 
 Instant messaging with vendors
+
 
 Persistent Memory: Hpone
 
@@ -40,8 +42,10 @@ Favourite listings
 
 Loyalty programme
 
+
 Responsive Layout: Leeuwin
 User registration & profile creation
+
 
 Multimedia: Fariha
 Image gallery of food products
