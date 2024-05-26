@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             Random rand = new Random();
             int val = rand.nextInt(1000000);
             String rannum = Integer.toString(val);
-            productsList.add(new Product("item" + rannum, rannum, i, false));
+            productsList.add(new Product("item" + rannum, rannum, i, R.drawable.ic_launcher_background,false));
         }
 
         RecyclerView productsrecyclerview = findViewById(R.id.productsrecyclerview);
