@@ -1,16 +1,25 @@
 # MAD24_PO4_Team3
 MAD Assignment PO4 Team 3
 
+
 Team Members:
-Jovan,
-Nabihah,
-Fariha,
-Leeuwin,
+
+Jovan
+
+Nabihah
+
+Fariha
+
+Leeuwin
+
 Hpone Myint Myat Paing
+
 
 App Name: NearBuy
 
+
 App Category: Shopping
+
 
 Introduction:
 
@@ -19,6 +28,7 @@ With NearBuy, you can get your groceries without leaving your house!
 With this app, you can choose the outlet closest to you, add your choice of products to your shopping e-cart, and it will all be delivered straight to your doorstep.
 You can also "heart" your favourite items in order for a quicker and more efficient checkout process for future purchases.
 What are you waiting for? Stay comfortable at home with NearBuy.
+
 
 Stage 1: 
 
@@ -44,10 +54,12 @@ Loyalty programme
 
 
 Responsive Layout: Leeuwin
+
 User registration & profile creation
 
 
 Multimedia: Fariha
+
 Image gallery of food products
 - **Gallery Size:** 160 items
 - **Images per Item:** 1-3 pictures per item
@@ -69,7 +81,6 @@ Image gallery of food products
   - **Availability:** Share function available in both full-screen and non-full-screen modes
 
 
-
 Stage 2:
 
 Jovan:
@@ -79,4 +90,5 @@ Search & filter functionality (will prompt based on what is keyed in)
 
 Notifications
 
+Fariha:
 Audio descriptions for visually impaired users
