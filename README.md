@@ -49,7 +49,6 @@ User registration & profile creation
 
 Multimedia: Fariha
 Image gallery of food products
-**Features**:
 - **Gallery Size:** 160 items
 - **Images per Item:** 1-3 pictures per item
 - **Navigation:**
