@@ -51,9 +51,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
   - **Zoom Functionality:**
     - **Activation:** Pinch or double-click to zoom in and out
     - **Cursor Location:** Zooms in on the area where the cursor is located (only when the image is in full-screen mode)
-    - **Zoom Limits:** 
-      - From the original image view, only zooming in is possible
-      - Zooming out is possible only when already zoomed in
+    - **Zoom Limits:** From the original image view, only zooming in is possible; zooming out is possible only when already zoomed in
   - **Share Function:**
     - **Location:** Top left corner of the image
     - **Availability:** Share function available in both full-screen and non-full-screen modes
