@@ -1,27 +1,24 @@
 # MAD24_PO4_Team3
+
 MAD Assignment PO4 Team 3
 
+**Team Members:**
 
-Team Members:
+- Jovan
 
-Jovan
+- Nabihah
 
-Nabihah
+- Fariha
 
-Fariha
+- Leeuwin
 
-Leeuwin
+- Hpone Myint Myat Paing
 
-Hpone Myint Myat Paing
+**App Name:** NearBuy
 
+**App Category:** Shopping
 
-App Name: NearBuy
-
-
-App Category: Shopping
-
-
-Introduction:
+**Introduction:**
 
 Lazy to go down to the nearby supermarket to buy groceries? Well, look no further, or rather, look "nearbuy" to our app, NearBuy.
 With NearBuy, you can get your groceries without leaving your house!
@@ -29,38 +26,38 @@ With this app, you can choose the outlet closest to you, add your choice of prod
 You can also "heart" your favourite items in order for a quicker and more efficient checkout process for future purchases.
 What are you waiting for? Stay comfortable at home with NearBuy.
 
+**Stage 1:** 
 
-Stage 1: 
+*RecyclerView:* Jovan
 
-RecyclerView: Jovan
+- Scroll menu of products
 
-Scroll menu of products
-
-Vendor listings
-
-
-Firebase: Nabihah
-
-Instant messaging with vendors
+- Vendor listings
 
 
-Persistent Memory: Hpone
+*Firebase:* Nabihah
 
-Shopping cart & checkout
-
-Favourite listings
-
-Loyalty programme
+- Instant messaging with vendors
 
 
-Responsive Layout: Leeuwin
+*Persistent Memory:* Hpone
 
-User registration & profile creation
+- Shopping cart & checkout
+
+- Favourite listings
+
+- Loyalty programme
 
 
-Multimedia: Fariha
+*Responsive Layout:* Leeuwin
 
-Image gallery of food products
+- User registration & profile creation
+
+
+*Multimedia:* Fariha
+
+- Image gallery of food products
+
 - **Gallery Size:** 160 items
 - **Images per Item:** 1-3 pictures per item
 - **Navigation:**
@@ -81,14 +78,14 @@ Image gallery of food products
   - **Availability:** Share function available in both full-screen and non-full-screen modes
 
 
-Stage 2:
+**Stage 2:**
 
-Jovan:
+*Jovan:*
 Confirmation receipt via email (think of what to add on)
 
 Search & filter functionality (will prompt based on what is keyed in)
 
 Notifications
 
-Fariha:
+*Fariha:*
 Audio descriptions for visually impaired users
