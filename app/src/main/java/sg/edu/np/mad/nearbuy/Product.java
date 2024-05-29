@@ -5,13 +5,13 @@ public class Product {
     public String price;
     public int itemcount;
     public int productimg;
-    public boolean bought;
-    public Product(String name, String price, int itemcount, int productimg, boolean bought) {
+    public boolean added;
+    public Product(String name, String price, int itemcount, int productimg, boolean added) {
         this.name = name;
         this.price = price;
         this.itemcount = itemcount;
         this.productimg = productimg;
-        this.bought = bought;
+        this.added = added;
     }
     public String getName() {
         return name;
@@ -25,7 +25,7 @@ public class Product {
         return itemcount;
     }
     public int getProductimg() { return productimg; }
-    public Boolean getBought() {
-        return bought;
+    public Boolean getAdded() {
+        return added;
     }
 }
