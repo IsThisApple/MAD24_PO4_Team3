@@ -1,31 +1,48 @@
 package sg.edu.np.mad.nearbuy;
 
-public class Product {
-    public String name;
-    public String price;
-    public int itemcount;
-    public int productimg;
-    public boolean bought;
-    public Product(String name, String price, int itemcount, int productimg, boolean bought) {
+
+import java.io.Serializable;
+import java.util.List;
+
+
+public class Product implements Serializable {
+    private String name;
+    private String price;
+    private int id;
+    private List<Integer> images;
+    private boolean isFavorite;
+
+
+    public Product(String name, String price, int id, List<Integer> images, boolean isFavorite) {
         this.name = name;
         this.price = price;
-        this.itemcount = itemcount;
-        this.productimg = productimg;
-        this.bought = bought;
+        this.id = id;
+        this.images = images;
+        this.isFavorite = isFavorite;
     }
+
+
     public String getName() {
         return name;
     }
+
 
     public String getPrice() {
         return price;
     }
 
-    public int getItemcount() {
-        return itemcount;
+
+    public int getId() {
+        return id;
     }
-    public int getProductimg() { return productimg; }
-    public Boolean getBought() {
-        return bought;
+
+
+    public List<Integer> getProductImages() {
+        return images;
+    }
+
+
+    public boolean isFavorite() {
+        return isFavorite;
     }
 }

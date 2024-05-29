@@ -1,44 +1,75 @@
 package sg.edu.np.mad.nearbuy;
 
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.util.List;
-import java.util.Random;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
-    Context context;
-    List<Product> data;
 
-    public ProductAdapter(List<Product> input, Context context){
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+
+
+    private Context context;
+    private List<Product> productList;
+
+
+    public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
-        data = input;
+        this.productList = productList;
     }
+
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ProductViewHolder(LayoutInflater.from(context).inflate(R.layout.custom_activity_main,parent,false));
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_activity_main, parent, false);
+        return new ProductViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product products = data.get(position);
-        holder.productname.setText(products.getName());
-        holder.productprice.setText(products.getPrice());
-        holder.productimg.setImageResource(products.getProductimg());
+        Product product = productList.get(position);
+        holder.productname.setText(product.getName());
+        holder.productprice.setText(product.getPrice());
+        holder.productimg.setImageResource(product.getProductImages().get(0)); // Show the first image
 
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, ProductInfoActivity.class);
+            intent.putExtra("product", product);
+            context.startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return productList.size();
+    }
+
+
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+        TextView productname, productprice;
+        ImageView productimg;
+
+
+        public ProductViewHolder(@NonNull View itemView) {
+            super(itemView);
+            productname = itemView.findViewById(R.id.productname);
+            productprice = itemView.findViewById(R.id.productprice);
+            productimg = itemView.findViewById(R.id.productimg);
+        }
     }
 }
