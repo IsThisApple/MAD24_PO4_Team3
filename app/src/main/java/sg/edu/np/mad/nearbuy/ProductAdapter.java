@@ -28,17 +28,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         return new ProductViewHolder(LayoutInflater.from(context).inflate(R.layout.custom_activity_main,parent,false));
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product products = data.get(position);
-        holder.productname.setText(products.getName());
-        holder.productprice.setText(products.getPrice());
-        holder.productimg.setImageResource(products.getProductimg());
+        Product product = data.get(position);
+        holder.productname.setText(product.getName());
+        holder.productprice.setText(product.getPrice());
+        holder.productimg.setImageResource(product.getProductimg());
 
-        holder.productcard.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        holder.productcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
                 builder.setTitle("View Product");
                 builder.setCancelable(true);
 
@@ -46,24 +47,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent productpage = new Intent(context, ProductPage.class);
-                        productpage.putExtra("name",products.getName());
-                        productpage.putExtra("price",products.getPrice());
-                        productpage.putExtra("count",products.getItemcount());
-                        productpage.putExtra("img",products.getProductimg());
-                        productpage.putExtra("added",products.getAdded());
+                        productpage.putExtra("name", product.getName());
+                        productpage.putExtra("price", product.getPrice());
+                        productpage.putExtra("count", product.getItemcount());
+                        productpage.putExtra("img", product.getProductimg());
+                        productpage.putExtra("added", product.getAdded());
                         context.startActivity(productpage);
                     }
                 });
+
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
+
                 builder.show();
             }
         });
-
     }
 
     @Override
