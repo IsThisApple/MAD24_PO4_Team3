@@ -61,6 +61,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 *Jovan:*
 Confirmation receipt via email (think of what to add on)
 
+*Sean:*
 Search & filter functionality (will prompt based on what is keyed in)
 
 Notifications
