@@ -39,7 +39,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 
 *Multimedia:* Fariha
 - Image gallery of food products
-  - **Gallery Size:** 160 items
+  - **Gallery Size:** 48 items
   - **Images per Item:** 1-3 pictures per item
   - **Navigation:**
     - **Arrows:** Left and right arrows to toggle between images of each item
