@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/textsender_vendor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="340dp"
+        android:text="Sender"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textmessage_vendor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="300dp"
+        android:text="Message Text"
+        android:textSize="16sp"
+        android:layout_below="@id/textsender_vendor"
+        android:layout_alignParentLeft="true"/>
+</RelativeLayout>

@@ -16,6 +16,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -27,6 +48,26 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        // Button click listener to navigate to MessageActivity
+        Button messageButton = findViewById(R.id.messageButton);
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Button click listener to navigate to VendorMessageActivity
+        Button vendorMessageButton = findViewById(R.id.vendorMessageButton);
+        vendorMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, VendorMessageActivity.class);
+                startActivity(intent);
+            }
         });
 
         List<Product> productsList = new ArrayList<Product>();
@@ -102,5 +143,9 @@ public class MainActivity extends AppCompatActivity {
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
-    }
+
+
+
+        }
+
 }
