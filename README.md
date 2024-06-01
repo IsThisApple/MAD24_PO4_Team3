@@ -23,8 +23,8 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 1:** 
 
 *RecyclerView:* Jovan
-- Scroll menu of products
-- Vendor listings
+- Scroll Menu of Products
+- Individual Product Views
 
 *Firebase:* Nabihah
 - Instant messaging with vendors
