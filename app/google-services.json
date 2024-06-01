@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314449206179",
+    "project_id": "instant-messaging-83680",
+    "storage_bucket": "instant-messaging-83680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314449206179:android:70652723a8a7a583d79816",
+        "android_client_info": {
+          "package_name": "sg.edu.np.mad.nearbuy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjJpHJN0shkCOF0b0RZtizSli3JVBFJ_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
