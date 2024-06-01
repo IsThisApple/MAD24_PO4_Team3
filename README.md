@@ -43,17 +43,8 @@ What are you waiting for? Stay comfortable at home with NearBuy.
   - **Navigation:**
     - **Arrows:** Left and right arrows to toggle between images of each item
   - **Full-Screen View:**
-    - **Activation:** Click on an image to enlarge it to full-screen
-    - **Background:** Background dims when image is in full-screen mode
-    - **Navigation in Full-Screen:** Arrows for toggling images remain present in full-screen mode
-    - **Exit Full-Screen:** Small cross (X) in the top right corner to return to the original image listing
-  - **Zoom Functionality:**
-    - **Activation:** Pinch or double-click to zoom in and out
-    - **Cursor Location:** Zooms in on the area where the cursor is located (only when the image is in full-screen mode)
-    - **Zoom Limits:** From the original image view, only zooming in is possible; zooming out is possible only when already zoomed in
-  - **Share Function:**
-    - **Location:** Top left corner of the image
-    - **Availability:** Share function available in both full-screen and non-full-screen modes
+    - **Activation:** Click on an image to enlarge it
+    - **Exit Full-Screen:** Click on the enlarged image to return to the original image listing
 
 **Stage 2:**
 
