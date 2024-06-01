@@ -11,7 +11,7 @@
         android:id="@+id/header_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#838485"
+        android:background="@color/paleyellow"
         android:text="NearBuy"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -21,6 +21,15 @@
     </TextView>
 
     <ImageView
+        android:id="@+id/arrow_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/header_title"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="134dp"
+        android:src="@drawable/arrow_left" />
+
+    <ImageView
         android:id="@+id/tvproductimage"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -28,6 +37,17 @@
         android:layout_below="@id/header_title"
         android:layout_marginTop="10dp"
         app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <ImageView
+        android:id="@+id/arrow_right"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/header_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="134dp"
+        android:layout_marginEnd="-1dp"
+        android:src="@drawable/arrow_right" />
 
     <TextView
         android:id="@+id/tvproductprice"
