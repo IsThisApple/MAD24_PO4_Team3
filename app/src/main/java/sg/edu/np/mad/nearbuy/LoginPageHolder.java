@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivityPage extends AppCompatActivity {
+public class LoginPageHolder extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
@@ -36,7 +36,7 @@ public class LoginActivityPage extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         if (validateInputs(username, password)) {
-            Toast.makeText(LoginActivityPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginPageHolder.this, "Login Successful", Toast.LENGTH_SHORT).show();
         }
     }
 
