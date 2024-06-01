@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
-        android:text="Login"
+        android:text="Sign In"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         android:layout_marginBottom="16dp"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:padding="10dp" />
+        android:padding="20dp" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -34,7 +34,7 @@
         android:layout_marginBottom="24dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:padding="10dp" />
+        android:padding="20dp" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -42,7 +42,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:layout_centerHorizontal="true"
-        android:text="Login" />
+        android:text="Login"
+        android:textSize="16sp"
+        android:padding="20dp" />
+
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Forgot Password?"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="20dp" />
 
 </RelativeLayout>
 
