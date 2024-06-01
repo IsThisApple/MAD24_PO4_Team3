@@ -1,8 +1,11 @@
 package sg.edu.np.mad.nearbuy;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,9 +35,45 @@ public class ProductPage extends AppCompatActivity {
         TextView productname = findViewById(R.id.tvproductname);
         TextView productprice = findViewById(R.id.tvproductprice);
         ImageView productimage = findViewById(R.id.tvproductimage);
+        TextView productquantity = findViewById(R.id.quantity);
+        Button addbutton = findViewById(R.id.add);
+        Button subtractbutton = findViewById(R.id.subtract);
+
 
         productname.setText(product.getName());
         productprice.setText("$" + product.getPrice());
         productimage.setImageResource(product.productimg);
+        productquantity.setText(String.valueOf(product.getQuantity()));
+        addbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (product.getQuantity() == 0){
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this,null,null,1);
+                    dbHandler.addProduct(product);
+                }
+                else{
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this,null,null,1);
+                    dbHandler.addQuantity(product.getName(),1);
+
+                }
+                product.addquantity();
+                productquantity.setText(String.valueOf(product.getQuantity()));
+            }
+        });
+
+        subtractbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (product.getQuantity() == 0){
+                    Toast.makeText(ProductPage.this, "Cannot have less than 0 items.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this,null,null,1);
+                    dbHandler.subtractQuantity(product.name,1);
+                    product.subtractquantity();
+                    productquantity.setText(String.valueOf(product.getQuantity()));
+                }
+            }
+        });
     }
 }

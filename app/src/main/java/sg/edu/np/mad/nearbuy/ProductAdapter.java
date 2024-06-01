@@ -33,7 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = data.get(position);
         holder.productname.setText(product.getName());
-        holder.productprice.setText(product.getPrice());
+        holder.productprice.setText("$" + product.getPrice());
         holder.productimg.setImageResource(product.getProductimg());
 
         holder.productcard.setOnClickListener(new View.OnClickListener() {
