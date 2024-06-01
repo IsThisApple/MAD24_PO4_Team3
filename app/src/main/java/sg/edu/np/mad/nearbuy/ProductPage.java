@@ -25,11 +25,9 @@ public class ProductPage extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("name");
         String price = getIntent().getStringExtra("price");
-        int count = getIntent().getIntExtra("count", 0);
-        int image = getIntent().getIntExtra("count", 0);
-        boolean added = getIntent().getBooleanExtra("added", false);
+        int image = getIntent().getIntExtra("img", 0);
 
-        Product product = new Product(name, price, count, image, added);
+        Product product = new Product(name, price, image);
 
         TextView productname = findViewById(R.id.tvproductname);
         TextView productprice = findViewById(R.id.tvproductprice);
@@ -37,6 +35,6 @@ public class ProductPage extends AppCompatActivity {
 
         productname.setText(product.getName());
         productprice.setText("$" + product.getPrice());
-        productimage.setImageResource(product.getProductimg());
+        productimage.setImageResource(product.productimg);
     }
 }
