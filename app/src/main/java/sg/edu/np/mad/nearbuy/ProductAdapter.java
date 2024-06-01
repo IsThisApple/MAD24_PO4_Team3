@@ -49,9 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                         Intent productpage = new Intent(context, ProductPage.class);
                         productpage.putExtra("name", product.getName());
                         productpage.putExtra("price", product.getPrice());
-                        productpage.putExtra("count", product.getItemcount());
                         productpage.putExtra("img", product.getProductimg());
-                        productpage.putExtra("added", product.getAdded());
                         context.startActivity(productpage);
                     }
                 });
