@@ -1,13 +1,14 @@
 package sg.edu.np.mad.nearbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +18,7 @@ public class LoginPageHolder extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     private TextView tvForgotPassword;
+    private TextView tvRegister;
     private DatabaseHelper db;
 
     @Override
@@ -27,19 +29,37 @@ public class LoginPageHolder extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        tvRegister = findViewById(R.id.tvRegister);
+        db = new DatabaseHelper(this);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                try {
+                    String username = etUsername.getText().toString();
+                    String password = etPassword.getText().toString();
+
+                    Log.d("LoginActivity", "Username: " + username + " Password: " + password);
+
+                    if (db.checkUser(username, password)) {
+                        Toast.makeText(LoginPageHolder.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginPageHolder.this, MainActivity.class));
+                        finish(); // Finish login activity
+                    } else {
+                        Toast.makeText(LoginPageHolder.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("LoginActivity", "Error on login: " + e.getMessage(), e);
+                    Toast.makeText(LoginPageHolder.this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+        tvRegister.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                showResetPasswordDialog();
+            public void onClick (View v){
+            Intent intent = new Intent(LoginPageHolder.this, RegisterPageHolder.class);
+                startActivity(intent);
             }
         });
     }
@@ -70,50 +90,6 @@ public class LoginPageHolder extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-    private void showResetPasswordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Reset Password");
-
-        final EditText inputUsername = new EditText(this);
-        inputUsername.setHint("Enter your username");
-        builder.setView(inputUsername);
-
-        builder.setPositiveButton("Submit", (dialog, which) -> {
-            String username = inputUsername.getText().toString().trim();
-            if (TextUtils.isEmpty(username)) {
-                Toast.makeText(LoginPageHolder.this, "Please enter your username", Toast.LENGTH_SHORT).show();
-            } else {
-                showNewPasswordDialog(username);
-            }
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
-    private void showNewPasswordDialog(String username) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter New Password");
-
-        final EditText inputNewPassword = new EditText(this);
-        inputNewPassword.setHint("Enter new password");
-        builder.setView(inputNewPassword);
-
-        builder.setPositiveButton("Submit", (dialog, which) -> {
-            String newPassword = inputNewPassword.getText().toString().trim();
-            if (TextUtils.isEmpty(newPassword)) {
-                Toast.makeText(LoginPageHolder.this, "Please enter a new password", Toast.LENGTH_SHORT).show();
-            } else {
-                if (db.updateUserPassword(username, newPassword)) {
-                    Toast.makeText(LoginPageHolder.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginPageHolder.this, "Error updating password", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
     }
 }
 
