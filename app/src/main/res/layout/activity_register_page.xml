@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".LoginPageHolder">
+    tools:context=".RegisterPageHolder">
 
     <TextView
-        android:id="@+id/tvLogin"
+        android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
-        android:text="Sign In"
+        android:text="Sign Up"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvLogin"
+        android:layout_below="@id/tvRegister"
         android:layout_marginBottom="16dp"
         android:hint="Username"
         android:inputType="textPersonName"
@@ -37,26 +37,13 @@
         android:padding="20dp" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:layout_centerHorizontal="true"
-        android:text="Login"
+        android:text="Register"
         android:textSize="16sp"
         android:padding="20dp" />
 
-    <TextView
-        android:id="@+id/tvRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Register"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
-
 </RelativeLayout>
-
