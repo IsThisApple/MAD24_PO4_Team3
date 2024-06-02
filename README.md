@@ -36,7 +36,9 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 
 *Responsive Layout:* Leeuwin
 - User registration & profile creation
+- User Database
 - Product Database
+
   
 
 *Multimedia:* Fariha
