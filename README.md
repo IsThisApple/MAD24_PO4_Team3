@@ -23,7 +23,9 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 1:** 
 
 *RecyclerView:* Jovan
-- Scroll Menu of Products
+- Recyclerview for Products
+- Recyclerview for ShoppingCart
+- Product Database
 - Individual Product Views
 
 *Firebase:* Nabihah
@@ -34,6 +36,8 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 
 *Responsive Layout:* Leeuwin
 - User registration & profile creation
+- Product Database
+  
 
 *Multimedia:* Fariha
 - Image gallery of food products
