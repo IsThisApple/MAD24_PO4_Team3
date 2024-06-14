@@ -17,7 +17,6 @@ MAD Assignment PO4 Team 3
 Lazy to go down to the nearby supermarket to buy groceries? Well, look no further, or rather, look "nearbuy" to our app, NearBuy.
 With NearBuy, you can get your groceries without leaving your house!
 With this app, you can choose the outlet closest to you, add your choice of products to your shopping e-cart, and it will all be delivered straight to your doorstep.
-You can also "heart" your favourite items in order for a quicker checkout process for future purchases.
 What are you waiting for? Stay comfortable at home with NearBuy.
 
 **Stage 1:** 
