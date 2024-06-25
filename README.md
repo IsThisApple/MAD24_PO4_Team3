@@ -29,6 +29,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 
 *Firebase:* Nabihah
 - Instant messaging with vendors
+- Instant messaging with Users
 
 *Persistent Memory:* Hpone
 - Shopping cart & checkout
@@ -62,3 +63,9 @@ Notifications
 
 *Fariha:*
 Audio descriptions for visually impaired users
+
+Payment
+
+*Nabihah:*
+Integration with Payment Gateways 
+
