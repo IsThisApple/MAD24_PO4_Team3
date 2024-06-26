@@ -54,7 +54,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 2:**
 
 *Jovan:*
-Confirmation receipt via email (think of what to add on)
+Map and Location tracking
 
 *Sean:*
 Search & filter functionality (will prompt based on what is keyed in)
