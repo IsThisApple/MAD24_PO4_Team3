@@ -17,7 +17,6 @@ public class LoginPageHolder extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
-    private TextView tvForgotPassword;
     private TextView tvRegister;
     private DatabaseHelper db;
 

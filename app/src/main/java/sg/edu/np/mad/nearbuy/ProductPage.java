@@ -1,5 +1,11 @@
 package sg.edu.np.mad.nearbuy;
 
+import static sg.edu.np.mad.nearbuy.R.id.addToCart;
+import static sg.edu.np.mad.nearbuy.R.id.productprice;
+import static sg.edu.np.mad.nearbuy.R.id.quantity;
+import static sg.edu.np.mad.nearbuy.R.id.tvproductname;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +24,7 @@ public class ProductPage extends AppCompatActivity {
 
     private int currentImageIndex = 0;
     private int[] productImages = {};
+    private Button btnaddToCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,7 @@ public class ProductPage extends AppCompatActivity {
         Button subtractbutton = findViewById(R.id.subtract);
         ImageView arrowLeft = findViewById(R.id.arrow_left);
         ImageView arrowRight = findViewById(R.id.arrow_right);
+        Button addToCart = findViewById(R.id.addToCart);
 
         productname.setText(product.getName());
         productprice.setText("$" + product.getPrice());
@@ -72,6 +80,7 @@ public class ProductPage extends AppCompatActivity {
             }
         });
 
+        
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
