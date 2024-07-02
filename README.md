@@ -17,23 +17,29 @@ MAD Assignment PO4 Team 3
 Lazy to go down to the nearby supermarket to buy groceries? Well, look no further, or rather, look "nearbuy" to our app, NearBuy.
 With NearBuy, you can get your groceries without leaving your house!
 With this app, you can choose the outlet closest to you, add your choice of products to your shopping e-cart, and it will all be delivered straight to your doorstep.
-You can also "heart" your favourite items in order for a quicker checkout process for future purchases.
 What are you waiting for? Stay comfortable at home with NearBuy.
 
 **Stage 1:** 
 
 *RecyclerView:* Jovan
-- Scroll Menu of Products
+- Recyclerview for Products
+- Recyclerview for ShoppingCart
+- Product Database
 - Individual Product Views
 
 *Firebase:* Nabihah
 - Instant messaging with vendors
+- Instant messaging with Users
 
 *Persistent Memory:* Hpone
 - Shopping cart & checkout
 
 *Responsive Layout:* Leeuwin
 - User registration & profile creation
+- User Database
+- Product Database
+
+  
 
 *Multimedia:* Fariha
 - Image gallery of food products
@@ -48,7 +54,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 2:**
 
 *Jovan:*
-Confirmation receipt via email (think of what to add on)
+Map and Location tracking
 
 *Sean:*
 Search & filter functionality (will prompt based on what is keyed in)
@@ -57,3 +63,9 @@ Notifications
 
 *Fariha:*
 Audio descriptions for visually impaired users
+
+Payment
+
+*Nabihah:*
+Integration with Payment Gateways 
+
