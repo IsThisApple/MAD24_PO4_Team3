@@ -17,9 +17,10 @@
         android:id="@+id/textmessage_vendor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="300dp"
+        android:layout_marginEnd="16dp"
         android:text="Message Text"
         android:textSize="16sp"
         android:layout_below="@id/textsender_vendor"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

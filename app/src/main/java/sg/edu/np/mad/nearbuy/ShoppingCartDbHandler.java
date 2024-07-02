@@ -29,7 +29,7 @@ public class ShoppingCartDbHandler extends SQLiteOpenHelper{
         try {
             String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_NAME +  "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + PRODUCT_NAME + " TEXT, "
-                    + PRODUCT_IMAGE + "INTEGER, "
+                    + PRODUCT_IMAGE + " INTEGER, "
                     + PRODUCT_PRICE + " DOUBLE, "
                     + PRODUCT_QUANTITY + " INTEGER, "
                     + TOTAL_PRODUCT_PRICE + " DOUBLE)";
@@ -59,83 +59,104 @@ public class ShoppingCartDbHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void addQuantity(String productName, int quantityToAdd) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_NAME,
-                new String[]{PRODUCT_QUANTITY, PRODUCT_PRICE},
-                PRODUCT_NAME + "=?",
-                new String[]{productName}, null, null, null);
+    public boolean isProductExist(String productName) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + PRODUCT_NAME + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{productName});
+
+        boolean exists = cursor.getCount() > 0;
+
+        cursor.close();
+        db.close();
+
+        return exists;
+    }
+
+    public void addQuantity(Product product, String name) {
+       SQLiteDatabase db = getWritableDatabase();
+       ContentValues values = new ContentValues();
+       Integer quantityToAdd = product.getQuantity();
+       double totalprice = product.getTotalprice();
+       Cursor cursor = db.query(TABLE_NAME, new String[]{PRODUCT_QUANTITY, TOTAL_PRODUCT_PRICE},
+               PRODUCT_NAME + "=?", new String[]{name}, null, null, null);
+
+       if (cursor != null && cursor.moveToFirst()) {
+           int currentquantity = cursor.getInt(0);
+           double currenttotalprice = cursor.getDouble(1);
+           int newquantity = currentquantity + quantityToAdd;
+           double newtotalprice = currenttotalprice + totalprice;
+           values.put(PRODUCT_QUANTITY, newquantity);
+           values.put(TOTAL_PRODUCT_PRICE, newtotalprice);
+           db.update(TABLE_NAME, values, PRODUCT_NAME + "=?" ,new String[]{name});
+       }
+        db.close();
+    }
+
+    public void addSingleQuantity(Product product, String name) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        double price = Double.parseDouble(product.getPrice());
+        Cursor cursor = db.query(TABLE_NAME, new String[]{PRODUCT_QUANTITY, TOTAL_PRODUCT_PRICE},
+                PRODUCT_NAME + "=?", new String[]{name}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int quantityIndex = cursor.getColumnIndex(PRODUCT_QUANTITY);
-            int priceIndex = cursor.getColumnIndex(PRODUCT_PRICE);
-
-            if (quantityIndex != -1 && priceIndex != -1) {
-                int currentQuantity = cursor.getInt(quantityIndex);
-                double pricePerUnit = cursor.getDouble(priceIndex);
-
-                int newQuantity = currentQuantity + quantityToAdd;
-                double newTotalPrice = newQuantity * pricePerUnit;
-
-                ContentValues values = new ContentValues();
-                values.put(PRODUCT_QUANTITY, newQuantity);
-                values.put(TOTAL_PRODUCT_PRICE, newTotalPrice);
-
-                db.update(TABLE_NAME, values, PRODUCT_NAME + "=?", new String[]{productName});
-                Log.d("Database Operations", "Product quantity updated successfully.");
-            } else {
-                Log.e("Database Operations", "Error: Invalid column index.");
-            }
-
-            cursor.close();
-        } else {
-            Log.e("Database Operations", "Product not found.");
+            int currentquantity = cursor.getInt(0);
+            double currenttotalprice = cursor.getDouble(1);
+            int newquantity = currentquantity + 1;
+            double newtotalprice = currenttotalprice + price;
+            values.put(PRODUCT_QUANTITY, newquantity);
+            values.put(TOTAL_PRODUCT_PRICE, newtotalprice);
+            db.update(TABLE_NAME, values, PRODUCT_NAME + "=?" ,new String[]{name});
         }
         db.close();
     }
 
-    public void subtractQuantity(String productName, int quantityToSubtract) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_NAME,
-                new String[]{PRODUCT_QUANTITY, PRODUCT_PRICE},
-                PRODUCT_NAME + "=?",
-                new String[]{productName}, null, null, null);
+    public void subtractSingleQuantity(Product product, String name) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        double price = Double.parseDouble(product.getPrice());
+        Cursor cursor = db.query(TABLE_NAME, new String[]{PRODUCT_QUANTITY, TOTAL_PRODUCT_PRICE},
+                PRODUCT_NAME + "=?", new String[]{name}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int quantityIndex = cursor.getColumnIndex(PRODUCT_QUANTITY);
-            int priceIndex = cursor.getColumnIndex(PRODUCT_PRICE);
-
-            if (quantityIndex != -1 && priceIndex != -1) {
-                int currentQuantity = cursor.getInt(quantityIndex);
-                double pricePerUnit = cursor.getDouble(priceIndex);
-
-                int newQuantity = currentQuantity - quantityToSubtract;
-                if (newQuantity < 0) {
-                    Log.e("Database Operations", "Error: Quantity cannot be negative.");
-                    newQuantity = 0; // Ensure the quantity does not go below 0
-                }
-                double newTotalPrice = newQuantity * pricePerUnit;
-
-                ContentValues values = new ContentValues();
-                values.put(PRODUCT_QUANTITY, newQuantity);
-                values.put(TOTAL_PRODUCT_PRICE, newTotalPrice);
-
-                db.update(TABLE_NAME, values, PRODUCT_NAME + "=?", new String[]{productName});
-                Log.d("Database Operations", "Product quantity updated successfully.");
-            } else {
-                Log.e("Database Operations", "Error: Invalid column index.");
-            }
-
-            cursor.close();
-        } else {
-            Log.e("Database Operations", "Product not found.");
+            int currentquantity = cursor.getInt(0);
+            double currenttotalprice = cursor.getDouble(1);
+            int newquantity = currentquantity - 1;
+            double newtotalprice = currenttotalprice - price;
+            values.put(PRODUCT_QUANTITY, newquantity);
+            values.put(TOTAL_PRODUCT_PRICE, newtotalprice);
+            db.update(TABLE_NAME, values, PRODUCT_NAME + "=?" ,new String[]{name});
         }
         db.close();
     }
 
-    public Cursor getAllProducts() {
+    public ArrayList<Product> getAllProducts() {
+        ArrayList<Product> productList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+        if (cursor.moveToFirst()){
+            do{
+                String name = cursor.getString(1);
+                Integer img = cursor.getInt(2);
+                String price = String.format("%.2f",cursor.getDouble(3));
+                Integer quantity = cursor.getInt(4);
+                Double total_price = cursor.getDouble(5);
+                Product product = new Product(name,price,img);
+                product.quantity = quantity;
+                product.totalprice = total_price;
+                productList.add(product);
+            } while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return productList;
+    }
+
+    public void deleteProduct(String productname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, PRODUCT_NAME + "=?", new String[]{productname});
+        db.close();
     }
 
 }

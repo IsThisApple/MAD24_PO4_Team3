@@ -39,29 +39,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         holder.productcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("View Product");
-                builder.setCancelable(true);
-
-                builder.setPositiveButton("View", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent productpage = new Intent(context, ProductPage.class);
-                        productpage.putExtra("name", product.getName());
-                        productpage.putExtra("price", product.getPrice());
-                        productpage.putExtra("img", product.getProductimg());
-                        context.startActivity(productpage);
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                Intent productpage = new Intent(context, ProductPage.class);
+                productpage.putExtra("name", product.getName());
+                productpage.putExtra("price", product.getPrice());
+                productpage.putExtra("img", product.getProductimg());
+                context.startActivity(productpage);
             }
         });
     }

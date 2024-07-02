@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHolder> {
     Context context;
     List<Product> data;
+
 
     public ShoppingCartAdapter(List<Product> input, Context context){
         this.context = context;
@@ -32,8 +34,40 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         Product product = data.get(position);
         holder.nameproduct.setText(product.getName());
         holder.imageproduct.setImageResource(product.getProductimg());
-        holder.priceproduct.setText(product.getPrice());
-        holder.totalpriceproduct.setText(Double.toString(product.getTotalprice()));
+        holder.priceproduct.setText("Base Price: $"+ product.getPrice());
+        holder.totalpriceproduct.setText("Total Price: $"+ String.format("%.2f",product.getTotalprice()));
+        holder.quantity.setText(Integer.toString(product.getQuantity()));
+
+        //Button to add in shoppingcart
+        holder.addition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                product.addquantity();
+                dbHandler.addSingleQuantity(product, product.getName());
+                holder.quantity.setText(Integer.toString(product.getQuantity()));
+                holder.totalpriceproduct.setText("Total Price: $"+ String.format("%.2f",product.getTotalprice()));
+            }
+        });
+
+        //button to subtract in shoppingcart
+        holder.subtraction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                if (product.getQuantity() == 1){
+                    dbHandler.deleteProduct(product.getName());
+                    data = dbHandler.getAllProducts();
+                    notifyDataSetChanged();
+
+                } else{
+                    product.subtractquantity();
+                    dbHandler.subtractSingleQuantity(product, product.getName());
+                    holder.quantity.setText(Integer.toString(product.getQuantity()));
+                    holder.totalpriceproduct.setText("Total Price: $"+ String.format("%.2f",product.getTotalprice()));
+                }
+            }
+        });
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.checkerframework.common.subtyping.qual.Bottom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,32 +55,32 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Button click listener to navigate to MessageActivity
-        Button messageButton = findViewById(R.id.messageButton);
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
-                startActivity(intent);
-            }
-        });
+        //Navigation Panel
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
-        // Button click listener to navigate to VendorMessageActivity
-        Button vendorMessageButton = findViewById(R.id.vendorMessageButton);
-        vendorMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, VendorMessageActivity.class);
-                startActivity(intent);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_home) {
+                Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+                return true;
+
+            } else if (itemId == R.id.bottom_map) {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+                return true;
+
+            } else if (itemId == R.id.bottom_chat) {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+                return true;
+
+            } else if (itemId == R.id.bottom_cart) {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+                return true;
             }
-        });
-        Button shoppingcartbutton = findViewById(R.id.shoppingcartButton);
-        shoppingcartbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ShoppingCart.class);
-                startActivity(intent);
-            }
+            return false;
         });
 
         List<Product> productsList = new ArrayList<Product>();
@@ -113,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         // bakery
         productsList.add(new Product("Enriched White Bread", "3.20", R.drawable.product_25_1));
-        productsList.add(new Product("Hokkaido Hi=Calcium Milk Bread", "3.40", R.drawable.product_26_1));
+        productsList.add(new Product("Hokkaido Hi-Calcium Milk Bread", "3.40", R.drawable.product_26_1));
         productsList.add(new Product("Original Wraps", "5.85", R.drawable.product_27_1));
         productsList.add(new Product("Wholegrain Wraps", "5.85", R.drawable.product_28_1));
         productsList.add(new Product("Jumbo Taco Shells", "7.95", R.drawable.product_29_1));
@@ -144,16 +149,12 @@ public class MainActivity extends AppCompatActivity {
         productsList.add(new Product("Turtle and Terrapin Food", "9.90", R.drawable.product_48_1));
 
 
-
         RecyclerView productsrecyclerview = findViewById(R.id.productsrecyclerview);
         ProductAdapter mAdapter = new ProductAdapter(productsList, this);
         LinearLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
-
-
-
-        }
+    }
 
 }

@@ -16,6 +16,10 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
     TextView priceproduct;
     TextView nameproduct;
     TextView totalpriceproduct;
+    TextView quantity;
+    ImageView addition;
+    ImageView subtraction;
+
 
     public ShoppingCartViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -23,5 +27,8 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         priceproduct = itemView.findViewById(R.id.priceproduct);
         nameproduct = itemView.findViewById(R.id.nameproduct);
         totalpriceproduct = itemView.findViewById(R.id.totalpriceproduct);
+        quantity = itemView.findViewById(R.id.shoppingcartquantity);
+        addition = itemView.findViewById(R.id.addition);
+        subtraction = itemView.findViewById(R.id.subtraction);
     }
 }
