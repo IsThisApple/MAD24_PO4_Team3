@@ -1,14 +1,20 @@
 package sg.edu.np.mad.nearbuy;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -89,6 +95,51 @@ public class MessageActivity extends AppCompatActivity {
                 databaseReference.push().setValue(messageValues);
 
                 messageInput.setText("");
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setSelectedItemId(R.id.bottom_chat);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_home) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+                return true;
+
+            } else if (itemId == R.id.bottom_map) {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+
+            } else if (itemId == R.id.bottom_chat) {
+                Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+                return true;
+
+            } else if (itemId == R.id.bottom_cart) {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
+
+        final View rootView = findViewById(android.R.id.content);
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootView.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // Assume that the keyboard is up if the height of the remaining part is greater than 15% of the screen height
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
