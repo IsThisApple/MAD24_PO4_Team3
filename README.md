@@ -28,21 +28,21 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 - Individual Product Views
 
 *Firebase:* Nabihah
-- Instant messaging with vendors
-- Instant messaging with Users
+- Instant Messaging with Vendors
+- Instant Messaging with Users
 
 *Persistent Memory:* Hpone
-- Shopping cart & checkout
+- Shopping Cart & Checkout
 
 *Responsive Layout:* Leeuwin
-- User registration & profile creation
+- User Registration & Profile Creation
 - User Database
 - Product Database
 
   
 
 *Multimedia:* Fariha
-- Image gallery of food products
+- Image Gallery of Food Products
   - **Gallery Size:** 48 items
   - **Images per Item:** 1-3 pictures per item
   - **Navigation:**
@@ -54,18 +54,16 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 2:**
 
 *Jovan:*
-Map and Location tracking
+Map & Location Tracking
 
 *Sean:*
-Search & filter functionality (will prompt based on what is keyed in)
+Search & Filter Functionality
 
+*?:*
 Notifications
 
 *Fariha:*
-Audio descriptions for visually impaired users
-
-Payment
+Audio Descriptions for Visually Impaired Users
 
 *Nabihah:*
-Integration with Payment Gateways 
-
+Integration with Payment Gateways
