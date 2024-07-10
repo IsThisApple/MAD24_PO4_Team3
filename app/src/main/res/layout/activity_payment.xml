@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Payment"
+    android:background="@color/paleyellow">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/orange"
+        android:text="Payment"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/items"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/orderSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/darkbrown"
+        android:text="Order Summary"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/items" />
+
+    <LinearLayout
+        android:id="@id/orderSummaryPrices"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/orderSummary"
+        tools:layout_editor_absoluteX="0dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/subtotalDelivery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Subtotal\n\nDelivery"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="33dp"
+            tools:layout_editor_absoluteY="405dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/darkbrown"/>
+
+        <LinearLayout
+            android:layout_width="310dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:gravity="right"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummary"
+            tools:layout_editor_absoluteX="16dp"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:id="@+id/subtotalPrice"
+                android:layout_width="match_parent"
+                android:gravity="right"
+                android:layout_height="50dp"
+                android:text="subtotal price"
+                android:textColor="@color/darkbrown"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/deliveryPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="delivery price"
+                android:textColor="@color/darkbrown"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/totalParent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/orderSummaryPrices"
+        tools:layout_editor_absoluteX="16dp">
+
+        <TextView
+            android:id="@+id/totalFinal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Total"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="33dp"
+            tools:layout_editor_absoluteY="405dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/darkbrown"/>
+
+        <TextView
+            android:id="@+id/totalFinalPrice"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="subtotal price"
+            android:textStyle="bold"
+            android:textColor="@color/darkbrown"
+            android:textSize="20dp"
+            android:paddingRight="39dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/informationCheckout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingTop="5dp"
+        android:text="Information"
+        android:textColor="@color/darkbrown"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalParent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/informationCheckout"
+        tools:layout_editor_absoluteX="0dp"
+        android:id="@+id/infoParent">
+
+        <TextView
+            android:id="@+id/addressCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Address\n\n\n\nPayment"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="33dp"
+            tools:layout_editor_absoluteY="405dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/darkbrown"/>
+
+        <LinearLayout
+            android:layout_width="310dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            tools:layout_editor_absoluteX="16dp">
+
+            <EditText
+                android:id="@+id/addressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Input Address"
+                android:textColor="@color/darkbrown"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/addressInput"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/brown"
+                android:gravity="right"
+                android:layout_marginLeft="55dp"
+                android:text="Input Address"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/paymentType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="payment type"
+                android:textColor="@color/darkbrown"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirmPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="132dp"
+        android:backgroundTint="@color/brown"
+        android:text="Confirm Payment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoParent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
