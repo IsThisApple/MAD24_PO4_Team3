@@ -69,9 +69,11 @@ public class Payment extends AppCompatActivity {
 
         // Handle button click to proceed to end
         confirmPaymentButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Payment.this, receipt.class);
+            Intent intent = new Intent(Payment.this, MainActivity.class);
             startActivity(intent);
         });
+
+
 
     }
 }
