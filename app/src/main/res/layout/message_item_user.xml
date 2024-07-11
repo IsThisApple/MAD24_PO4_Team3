@@ -7,12 +7,13 @@
 
     <TextView
         android:id="@+id/textsender"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="340dp"
         android:text="Sender"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/darkbrown"/>
 
 
     <TextView
@@ -23,5 +24,7 @@
         android:text="Message Text"
         android:textSize="16sp"
         android:layout_below="@id/textsender"
+        android:textColor="@color/darkbrown"
+        android:background="@color/white"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>

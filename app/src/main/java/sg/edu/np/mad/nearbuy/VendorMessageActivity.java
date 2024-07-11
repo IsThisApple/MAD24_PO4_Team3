@@ -36,7 +36,6 @@ public class VendorMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_chat);
 
         // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -45,9 +44,6 @@ public class VendorMessageActivity extends AppCompatActivity {
         // Initialize Firebase Database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("vendorMessages");
 
-        recyclerView = findViewById(R.id.vendorRecyclerView);
-        messageInput = findViewById(R.id.vendorMessageInput);
-        sendButton = findViewById(R.id.vendorSendButton);
 
         messageList = new ArrayList<>();
         messageAdapter = new VendorMessageAdapter(messageList);

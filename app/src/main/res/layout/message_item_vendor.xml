@@ -11,7 +11,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginRight="340dp"
         android:text="Sender"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/darkbrown"/>
 
     <TextView
         android:id="@+id/textmessage_vendor"
@@ -21,6 +22,8 @@
         android:text="Message Text"
         android:textSize="16sp"
         android:layout_below="@id/textsender_vendor"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/darkbrown"
+        android:background="@color/white"/>
 
 </RelativeLayout>
