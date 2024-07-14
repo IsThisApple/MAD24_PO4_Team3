@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,16 @@ public class Payment extends AppCompatActivity {
             public void onClick(View v) {
                 addressEditText.setVisibility(View.VISIBLE);
                 addressButton.setVisibility(View.GONE);
+            }
+        });
+
+
+        //Add return button
+        ImageView backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

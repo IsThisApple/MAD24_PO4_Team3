@@ -47,7 +47,7 @@ public class ProductPage extends AppCompatActivity {
         ImageView arrowLeft = findViewById(R.id.arrow_left);
         ImageView arrowRight = findViewById(R.id.arrow_right);
         ImageView addtocart = findViewById(R.id.addtocart);
-        Button backbutton = findViewById(R.id.backbtn);
+        ImageView backbutton = findViewById(R.id.backbtn);
 
         productname.setText(product.getName());
         productprice.setText("$" + product.getPrice());
@@ -80,8 +80,7 @@ public class ProductPage extends AppCompatActivity {
         backbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
