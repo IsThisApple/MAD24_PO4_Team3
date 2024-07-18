@@ -15,7 +15,7 @@
         android:layout_height="70dp"
         android:background="@color/orange"
         android:text="NearBuy"
-        android:textAlignment="center"
+        android:gravity="center"
         android:textColor="@color/black"
         android:textSize="40dp"
         android:textStyle="bold"
