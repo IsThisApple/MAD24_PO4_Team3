@@ -102,7 +102,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:backgroundTint="#a3a3a3"
+                android:backgroundTint="@color/brown"
                 android:text="-"
                 android:textSize="20dp"
                 android:textAlignment="center">
@@ -125,7 +125,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:backgroundTint="#a3a3a3"
+                android:backgroundTint="@color/brown"
                 android:text="+"
                 android:textSize="20dp"
                 android:textAlignment="center">

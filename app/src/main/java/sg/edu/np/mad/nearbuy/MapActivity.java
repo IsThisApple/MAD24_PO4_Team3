@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +53,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +73,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String VERSION = "20230712";
 
     private PlacesClient placesClient;
+    private RecyclerView recyclerView;
+    private PlacesAdapter placesAdapter;
+    private List<FoursquareResponse.Place> placesList = new ArrayList<>();
+    private FoursquareService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +100,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
+        // RecyclerView setup
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
+        placesAdapter = new PlacesAdapter(this, placesList, service);
+        recyclerView.setAdapter(placesAdapter);
 
         //Navigation Panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -175,7 +191,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         int radius = 1000; // Set the radius to 1000 meters (1 km)
 
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
-        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius); // Include the radius
+        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius,CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
 
         call.enqueue(new Callback<FoursquareResponse>() {
             @Override
@@ -186,10 +202,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         runOnUiThread(() -> {
                             List<FoursquareResponse.Place> places = responseBody.getResults();
                             myMap.clear(); // Clear existing markers
+                            placesList.clear();
                             for (FoursquareResponse.Place place : places) {
                                 LatLng placeLatLng = new LatLng(place.getGeocodes().getMain().getLatitude(), place.getGeocodes().getMain().getLongitude());
                                 myMap.addMarker(new MarkerOptions().position(placeLatLng).title(place.getName()));
+                                placesList.add(place);
                             }
+                            placesAdapter.notifyDataSetChanged();
+                            recyclerView.setVisibility(View.VISIBLE);
                         });
                     }
                 } else {
@@ -210,6 +230,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+
+    //Code used for previous map api
+
+    /*
     public void onShowSupermarketsClicked(View view) {
         if (currentlocation != null) {
             double latitude = currentlocation.getLatitude();
@@ -337,5 +361,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+     */
 
 }
