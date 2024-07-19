@@ -39,8 +39,6 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 - User Database
 - Product Database
 
-  
-
 *Multimedia:* Fariha
 - Image Gallery of Food Products
   - **Gallery Size:** 48 items
@@ -63,7 +61,7 @@ Search & Filter Functionality
 Notifications
 
 *Fariha:*
-Audio Descriptions for Visually Impaired Users
+Audio Descriptions & Double-click Functionality for Visually Impaired Users
 
 *Nabihah:*
 Integration with Payment Gateways
