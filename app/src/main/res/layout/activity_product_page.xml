@@ -15,16 +15,13 @@
         android:background="@color/orange"
         android:text="NearBuy"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/darkbrown"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </TextView>
-
-
 
     <ImageView
         android:id="@+id/arrow_left"
@@ -33,7 +30,7 @@
         android:layout_below="@id/header_title"
         android:layout_marginStart="1dp"
         android:layout_marginTop="134dp"
-        android:src="@drawable/arrow_left" />
+        android:src="@drawable/arrow_left"/>
 
     <ImageView
         android:id="@+id/tvproductimage"
@@ -42,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/header_title"
         android:layout_marginTop="10dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@mipmap/ic_launcher_round"/>
 
     <ImageView
         android:id="@+id/arrow_right"
@@ -53,8 +50,7 @@
         android:layout_marginStart="200dp"
         android:layout_marginTop="134dp"
         android:layout_marginEnd="-1dp"
-        android:src="@drawable/arrow_right" />
-
+        android:src="@drawable/arrow_right"/>
 
     <TextView
         android:id="@+id/tvproductprice"
@@ -90,7 +86,6 @@
         app:cardCornerRadius="10dp">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -117,8 +112,8 @@
                 android:textAlignment="center"
                 android:background="@color/brown"
                 android:textColor="@color/white">
-
             </TextView>
+
             <Button
                 android:id="@+id/add"
                 android:layout_width="60dp"
@@ -130,9 +125,7 @@
                 android:textSize="20dp"
                 android:textAlignment="center">
             </Button>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -151,6 +144,6 @@
         android:layout_height="40dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="18dp"
-        app:srcCompat="@drawable/baseline_arrow_back_24" />
+        app:srcCompat="@drawable/baseline_arrow_back_24"/>
 
 </RelativeLayout>

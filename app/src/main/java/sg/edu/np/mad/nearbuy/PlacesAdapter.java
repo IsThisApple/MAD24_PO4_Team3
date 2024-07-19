@@ -66,14 +66,13 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .into(imageView);
-            //imageView.setVisibility(View.VISIBLE);
+            // imageView.setVisibility(View.VISIBLE);
         }
         else{
             Log.d("PlacesAdapter", "No photos found for venueID: " + place.getFsq_id());
             imageView.setImageResource(R.drawable.placeholder);
 
         }
-
 
         /*
         service.getVenueDetails(venueId, CLIENT_ID, CLIENT_SECRET, VERSION)
@@ -83,26 +82,28 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                         if (response.isSuccessful()) {
                             VenueDetailsResponse.Venue venue = response.body().getVenue();
                             if (venue != null && venue.getPhotos() != null && !venue.getPhotos().isEmpty()) {
-                                String imageUrl = venue.getPhotos().get(0).getUrl(); // Assuming first photo
+                                String imageUrl = venue.getPhotos().get(0).getUrl(); // assuming first photo
                                 Glide.with(context)
                                         .load(imageUrl)
                                         .placeholder(R.drawable.placeholder)
                                         .into(imageView);
                             }
                         } else {
-                            // Handle error
+                            // handle error
                             Log.d("PlacesAdapter", "No photos found for venueId: " + venueId);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<VenueDetailsResponse> call, Throwable t) {
-                        // Handle failure
+                        // handle failure
                         Log.e("PlacesAdapter", "Failed to fetch venue details: " + t.getMessage());
 
                     }
-                });*/
+                });
+                */
         }
+
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
 
         TextView placeName;
@@ -116,4 +117,5 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             placeImage = itemView.findViewById(R.id.placeImage);
         }
     }
+
 }

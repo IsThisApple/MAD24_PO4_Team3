@@ -76,7 +76,7 @@ public class ProductPage extends AppCompatActivity {
             }
         });
 
-        //set up back button click listener to return to MainActivity
+        // set up back button click listener to return to MainActivity
         backbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -284,4 +284,5 @@ public class ProductPage extends AppCompatActivity {
                 break;
         }
     }
+
 }

@@ -32,7 +32,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
@@ -40,7 +39,6 @@ import org.checkerframework.common.subtyping.qual.Bottom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //Navigation Panel
+        // navigation Panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
@@ -147,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         productsList.add(new Product("Beef Dog Snacks", "4.20", R.drawable.product_46_1));
         productsList.add(new Product("Hamster Food", "10.00", R.drawable.product_47_1));
         productsList.add(new Product("Turtle and Terrapin Food", "9.90", R.drawable.product_48_1));
-
 
         RecyclerView productsrecyclerview = findViewById(R.id.productsrecyclerview);
         ProductAdapter mAdapter = new ProductAdapter(productsList, this);

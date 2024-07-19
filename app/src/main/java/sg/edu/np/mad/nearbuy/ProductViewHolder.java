@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 public class ProductViewHolder extends RecyclerView.ViewHolder {
     ImageView productimg;
     TextView productname;
@@ -22,4 +21,5 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         productprice = itemView.findViewById(R.id.productprice);
         productcard = itemView.findViewById(R.id.productcard);
     }
+
 }

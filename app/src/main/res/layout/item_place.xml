@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +31,7 @@
             android:id="@+id/placeImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"/>
     </LinearLayout>
 
 </RelativeLayout>

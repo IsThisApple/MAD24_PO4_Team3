@@ -101,14 +101,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-        // RecyclerView setup
+        // recyclerView setup
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
         placesAdapter = new PlacesAdapter(this, placesList, service);
         recyclerView.setAdapter(placesAdapter);
 
-        //Navigation Panel
+        // navigation Panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_map);
 
@@ -188,7 +188,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         String latLng = currentlocation.getLatitude() + "," + currentlocation.getLongitude();
-        int radius = 1000; // Set the radius to 1000 meters (1 km)
+        int radius = 1000; // set the radius to 1000 meters (1 km)
 
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
         Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius,CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
@@ -201,7 +201,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (responseBody != null) {
                         runOnUiThread(() -> {
                             List<FoursquareResponse.Place> places = responseBody.getResults();
-                            myMap.clear(); // Clear existing markers
+                            myMap.clear(); // clear existing markers
                             placesList.clear();
                             for (FoursquareResponse.Place place : places) {
                                 LatLng placeLatLng = new LatLng(place.getGeocodes().getMain().getLatitude(), place.getGeocodes().getMain().getLongitude());
@@ -230,21 +230,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-
-    //Code used for previous map api
+    // code used for previous map api
 
     /*
     public void onShowSupermarketsClicked(View view) {
         if (currentlocation != null) {
             double latitude = currentlocation.getLatitude();
             double longitude = currentlocation.getLongitude();
-            int radius = 1000; // Radius in meters (adjust as needed)
+            int radius = 1000; // radius in meters (adjust as needed)
 
-            // Execute Overpass API query task
+            // execute Overpass API query task
             new OverpassAPIQueryTask(latitude, longitude, radius, new OverpassAPIQueryTask.OverpassAPIQueryListener() {
                 @Override
                 public void onSupermarketFound(double latitude, double longitude) {
-                    // Add marker for each supermarket found
+                    // add marker for each supermarket found
                     LatLng supermarketLatLng = new LatLng(latitude, longitude);
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(supermarketLatLng)
@@ -278,16 +277,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             String jsonString = null;
 
             try {
-                // Construct the Overpass API query URL
+                // construct the Overpass API query URL
                 String query = buildOverpassQuery();
                 URL url = new URL(query);
 
-                // Establish connection
+                // establish connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
-                // Read the input stream into a String
+                // read the input stream into a string
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuilder builder = new StringBuilder();
                 if (inputStream == null) {
@@ -306,7 +305,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Log.e("OverpassAPIQueryTask", "Error ", e);
                 return null;
             } finally {
-                // Clean up resources
+                // clean up resources
                 if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
@@ -325,16 +324,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         protected void onPostExecute(String jsonString) {
             if (jsonString != null) {
                 try {
-                    // Parse JSON response
+                    // parse JSON response
                     JSONObject jsonObject = new JSONObject(jsonString);
                     JSONArray elements = jsonObject.getJSONArray("elements");
 
-                    // Process each element (supermarket)
+                    // process each element (supermarket)
                     for (int i = 0; i < elements.length(); i++) {
                         JSONObject element = elements.getJSONObject(i);
                         double lat = element.getDouble("lat");
                         double lon = element.getDouble("lon");
-                        // Callback to listener with supermarket location
+                        // callback to listener with supermarket location
                         listener.onSupermarketFound(lat, lon);
                     }
                 } catch (JSONException e) {
@@ -346,7 +345,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         private String buildOverpassQuery() {
-            // Construct Overpass API query with parameters
+            // construct Overpass API query with parameters
             return "https://overpass-api.de/api/interpreter?data=" +
                     "[out:json];" +
                     "node[\"shop\"=\"supermarket\"](around:" + radius + "," + latitude + "," + longitude + ");" +
@@ -355,12 +354,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     "out skel qt;";
         }
 
-        // Interface for callback
+        // interface for callback
         public interface OverpassAPIQueryListener {
             void onSupermarketFound(double latitude, double longitude);
         }
     }
-
      */
 
 }

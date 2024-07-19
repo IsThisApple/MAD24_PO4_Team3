@@ -28,7 +28,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         return new ProductViewHolder(LayoutInflater.from(context).inflate(R.layout.custom_activity_main,parent,false));
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = data.get(position);
@@ -52,4 +51,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     public int getItemCount() {
         return data.size();
     }
+
 }

@@ -13,10 +13,9 @@
         android:background="@color/orange"
         android:text="NearBuy"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/darkbrown"
         android:textSize="40dp"
         android:textStyle="bold">
-
     </TextView>
 
     <EditText
@@ -68,4 +67,3 @@
         android:textStyle="bold"/>
 
 </RelativeLayout>
-

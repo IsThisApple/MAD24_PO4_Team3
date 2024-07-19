@@ -20,7 +20,6 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
     ImageView addition;
     ImageView subtraction;
 
-
     public ShoppingCartViewHolder(@NonNull View itemView) {
         super(itemView);
         imageproduct = itemView.findViewById(R.id.imageView);
@@ -31,4 +30,5 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         addition = itemView.findViewById(R.id.addition);
         subtraction = itemView.findViewById(R.id.subtraction);
     }
+
 }

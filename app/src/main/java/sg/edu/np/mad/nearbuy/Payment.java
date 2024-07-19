@@ -55,8 +55,7 @@ public class Payment extends AppCompatActivity {
             }
         });
 
-
-        //Add return button
+        // return button
         ImageView backbutton = findViewById(R.id.backButton);
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,13 +77,11 @@ public class Payment extends AppCompatActivity {
         });
         Button confirmPaymentButton = findViewById(R.id.confirmPayment);
 
-        // Handle button click to proceed to end
+        // handle button click to proceed to end
         confirmPaymentButton.setOnClickListener(v -> {
             Intent intent = new Intent(Payment.this, MainActivity.class);
             startActivity(intent);
         });
-
-
-
     }
+
 }

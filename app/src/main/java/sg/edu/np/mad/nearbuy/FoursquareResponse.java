@@ -344,9 +344,8 @@ public class FoursquareResponse {
         }
     }
 
-
-
     public static class Chain {
-        // Define fields for chain if needed
+        // define fields for chain if needed
     }
+
 }

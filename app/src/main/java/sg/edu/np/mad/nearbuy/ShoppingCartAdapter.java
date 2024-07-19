@@ -36,7 +36,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
         holder.quantity.setText(Integer.toString(product.getQuantity()));
 
-        //Button to add in shoppingcart
+        // button to add in shoppingcart
         holder.addition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +49,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
             }
         });
 
-        //button to subtract in shoppingcart
+        // button to subtract in shoppingcart
         holder.subtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,4 +73,5 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
     public int getItemCount() {
         return data.size();
     }
+
 }

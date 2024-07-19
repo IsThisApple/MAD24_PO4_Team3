@@ -30,7 +30,7 @@ public class VenueDetailsResponse {
         private String suffix;
 
         public String getUrl() {
-            return prefix + "120" + suffix; // Adjust size as needed
+            return prefix + "120" + suffix; // adjust size as needed
         }
 
         public void setPrefix(String prefix) {
@@ -41,5 +41,5 @@ public class VenueDetailsResponse {
             this.suffix = suffix;
         }
     }
-}
 
+}
