@@ -22,25 +22,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.checkerframework.common.subtyping.qual.Bottom;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +44,17 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // navigation Panel
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
+
+        // navigation panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
@@ -147,11 +148,20 @@ public class MainActivity extends AppCompatActivity {
         productsList.add(new Product("Turtle and Terrapin Food", "9.90", R.drawable.product_48_1));
 
         RecyclerView productsrecyclerview = findViewById(R.id.productsrecyclerview);
-        ProductAdapter mAdapter = new ProductAdapter(productsList, this);
+        ProductAdapter mAdapter = new ProductAdapter(productsList, this, tts);
         LinearLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
 }

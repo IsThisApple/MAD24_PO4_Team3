@@ -63,8 +63,17 @@ public class RegisterPageHolder extends AppCompatActivity implements TextToSpeec
     }
 
     private void speakText(String text) {
+        if (tts.isSpeaking()) {
+            tts.stop(); // stop current speech before starting new one
+        }
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
+
+    /*
+    private void speakText(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+    */
 
     private void setClickListeners() {
         DoubleClickListener doubleClickListener = new DoubleClickListener(

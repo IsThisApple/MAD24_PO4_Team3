@@ -66,6 +66,9 @@ public class LoginPageHolder extends AppCompatActivity implements TextToSpeech.O
     }
 
     private void speakText(String text) {
+        if (tts.isSpeaking()) {
+            tts.stop(); // stop current speech before starting new one
+        }
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
