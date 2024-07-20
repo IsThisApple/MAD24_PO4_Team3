@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initializeNavigationBar();
+
+        /*
         // navigation panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+        */
 
         List<Product> productsList = new ArrayList<Product>();
         // meat & seafood
@@ -153,6 +157,44 @@ public class MainActivity extends AppCompatActivity {
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
+    }
+
+    private void initializeNavigationBar() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        // create listeners for each menu item
+        View.OnClickListener homeSingleClickListener = v -> speak("Already on home");
+        View.OnClickListener homeDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+
+        View.OnClickListener mapSingleClickListener = v -> speak("Open map");
+        View.OnClickListener mapDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MapActivity.class));
+            finish();
+        };
+
+        View.OnClickListener chatSingleClickListener = v -> speak("Open chat");
+        View.OnClickListener chatDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+            finish();
+        };
+
+        View.OnClickListener cartSingleClickListener = v -> speak("Open cart");
+        View.OnClickListener cartDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+            finish();
+        };
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
+    }
+
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     @Override

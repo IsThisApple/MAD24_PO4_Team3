@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
+
 public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -38,6 +41,8 @@ public class MessageActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +103,21 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
 
+        initializeNavigationBar();
+
+        /*
+        // navigation panel
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_chat);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -124,6 +142,60 @@ public class MessageActivity extends AppCompatActivity {
             }
             return false;
         });
+        */
+
+        /*
+        final View rootView = findViewById(android.R.id.content);
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootView.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // assume that the keyboard is up if the height of the remaining part is greater than 15% of the screen height
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        */
+    }
+
+    private void initializeNavigationBar() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_chat);
+
+        // create listeners for each menu item
+        View.OnClickListener homeSingleClickListener = v -> speak("Open home");
+        View.OnClickListener homeDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        };
+
+        View.OnClickListener mapSingleClickListener = v -> speak("Open map");
+        View.OnClickListener mapDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MapActivity.class));
+            finish();
+        };
+
+        View.OnClickListener chatSingleClickListener = v -> speak("Already on chat");
+        View.OnClickListener chatDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+
+        View.OnClickListener cartSingleClickListener = v -> speak("Open cart");
+        View.OnClickListener cartDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+            finish();
+        };
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
 
         final View rootView = findViewById(android.R.id.content);
 
@@ -142,6 +214,20 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
 }

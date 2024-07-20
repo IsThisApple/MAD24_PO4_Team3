@@ -61,6 +61,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int FINE_PERMISSION_CODE = 1;
@@ -77,6 +80,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private PlacesAdapter placesAdapter;
     private List<FoursquareResponse.Place> placesList = new ArrayList<>();
     private FoursquareService service;
+
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +102,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
@@ -108,7 +112,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         placesAdapter = new PlacesAdapter(this, placesList, service);
         recyclerView.setAdapter(placesAdapter);
 
-        // navigation Panel
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
+
+        initializeNavigationBar();
+
+        /*
+        // navigation panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_map);
 
@@ -135,6 +152,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
             return false;
         });
+        */
     }
 
     private void getLastLocation() {
@@ -146,7 +164,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null){
+                if (location != null) {
                     currentlocation = location;
                     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                     mapFragment.getMapAsync(MapActivity.this);
@@ -154,6 +172,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
@@ -164,7 +183,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
         }
 
-        LatLng currentLatLng = new LatLng(currentlocation.getLatitude(),currentlocation.getLongitude());
+        LatLng currentLatLng = new LatLng(currentlocation.getLatitude(), currentlocation.getLongitude());
         myMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
         myMap.animateCamera(CameraUpdateFactory.zoomBy(12));
     }
@@ -172,10 +191,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == FINE_PERMISSION_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
-            }else{
+            } else {
                 Toast.makeText(this, "Location is denied, please allow permission to use map", Toast.LENGTH_SHORT).show();
             }
         }
@@ -191,7 +210,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         int radius = 1000; // set the radius to 1000 meters (1 km)
 
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
-        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius,CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
+        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius, CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
 
         call.enqueue(new Callback<FoursquareResponse>() {
             @Override
@@ -230,8 +249,55 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    // code used for previous map api
+    private void initializeNavigationBar() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
 
+        // create listeners for each menu item
+        View.OnClickListener homeSingleClickListener = v -> speak("Open home");
+        View.OnClickListener homeDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        };
+
+        View.OnClickListener mapSingleClickListener = v -> speak("Already on map");
+        View.OnClickListener mapDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+
+        View.OnClickListener chatSingleClickListener = v -> speak("Open chat");
+        View.OnClickListener chatDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+            finish();
+        };
+
+        View.OnClickListener cartSingleClickListener = v -> speak("Open cart");
+        View.OnClickListener cartDoubleClickListener = v -> {
+            startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+            finish();
+        };
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
+    }
+
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+}
+    // code used for previous map api
     /*
     public void onShowSupermarketsClicked(View view) {
         if (currentlocation != null) {
@@ -360,5 +426,3 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
      */
-
-}
