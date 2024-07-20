@@ -1,4 +1,5 @@
 package sg.edu.np.mad.nearbuy;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,18 +8,18 @@ import java.util.List;
 public class PayDataModel implements Parcelable {
     private List<String> nestedList;
     private String itemText;
-    private boolean isExpandable; // Add this line
+    private boolean isExpandable;
 
     public PayDataModel(List<String> nestedList, String itemText) {
         this.nestedList = nestedList;
         this.itemText = itemText;
-        this.isExpandable = false; // Initialize isExpandable
+        this.isExpandable = false;
     }
 
     protected PayDataModel(Parcel in) {
         nestedList = in.createStringArrayList();
         itemText = in.readString();
-        isExpandable = in.readByte() != 0; // Read isExpandable from Parcel
+        isExpandable = in.readByte() != 0;
     }
 
     public static final Creator<PayDataModel> CREATOR = new Creator<PayDataModel>() {
@@ -58,6 +59,7 @@ public class PayDataModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringList(nestedList);
         dest.writeString(itemText);
-        dest.writeByte((byte) (isExpandable ? 1 : 0)); // Write isExpandable to Parcel
+        dest.writeByte((byte) (isExpandable ? 1 : 0));
     }
+
 }

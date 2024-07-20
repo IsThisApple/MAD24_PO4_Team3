@@ -14,20 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Random;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.speech.tts.TextToSpeech;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     Context context;
     List<Product> data;
+    private TextToSpeech tts;
+    private static final long DOUBLE_CLICK_TIME_DELTA = 300; // in milliseconds
 
-    public ProductAdapter(List<Product> input, Context context){
+    public ProductAdapter(List<Product> input, Context context, TextToSpeech tts){
         this.context = context;
         data = input;
+        this.tts = tts;
     }
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ProductViewHolder(LayoutInflater.from(context).inflate(R.layout.custom_activity_main,parent,false));
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
@@ -37,6 +43,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         holder.productimg.setImageResource(product.getProductimg());
 
         holder.productcard.setOnClickListener(new View.OnClickListener() {
+            private long lastClickTime = 0;
+
+            @Override
+            public void onClick(View v) {
+                long clickTime = System.currentTimeMillis();
+                if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                    // double click
+                    tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
+                    Intent productpage = new Intent(context, ProductPage.class);
+                    productpage.putExtra("name", product.getName());
+                    productpage.putExtra("price", product.getPrice());
+                    productpage.putExtra("img", product.getProductimg());
+                    context.startActivity(productpage);
+                } else {
+                    // single click
+                    tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+                lastClickTime = clickTime;
+            }
+            /*
             @Override
             public void onClick(View v) {
                 Intent productpage = new Intent(context, ProductPage.class);
@@ -45,6 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                 productpage.putExtra("img", product.getProductimg());
                 context.startActivity(productpage);
             }
+            */
         });
     }
 
@@ -52,4 +79,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     public int getItemCount() {
         return data.size();
     }
+
 }

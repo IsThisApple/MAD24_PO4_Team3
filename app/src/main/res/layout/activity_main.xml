@@ -16,16 +16,13 @@
         android:background="@color/orange"
         android:text="NearBuy"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/darkbrown"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </TextView>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productsrecyclerview"
@@ -37,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -53,6 +50,5 @@
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"/>
-
 
 </RelativeLayout>

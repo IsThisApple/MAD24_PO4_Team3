@@ -1,6 +1,5 @@
 package sg.edu.np.mad.nearbuy;
 
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -41,9 +40,9 @@ public class PayNestedAdapter extends RecyclerView.Adapter<PayNestedAdapter.Nest
     public void onBindViewHolder(@NonNull NestedViewHolder holder, int position) {
         holder.mTv.setText(mList.get(position));
 
-        // Check if this item is the selected item
+        // check if this item is the selected item
         if (selectedItem.parentIndex == parentPosition && selectedItem.nestedIndex == position) {
-            int colorLightBlue = ContextCompat.getColor(context, R.color.lightblue); // Get light blue color from resources
+            int colorLightBlue = ContextCompat.getColor(context, R.color.lightblue);
             holder.itemView.setBackgroundColor(colorLightBlue);
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
@@ -54,14 +53,14 @@ public class PayNestedAdapter extends RecyclerView.Adapter<PayNestedAdapter.Nest
             public void onClick(View v) {
                 int clickedPosition = holder.getAdapterPosition();
                 if (selectedItem.parentIndex == parentPosition && selectedItem.nestedIndex == clickedPosition) {
-                    // If the currently selected item is clicked again, unselect it
+                    // if the currently selected item is clicked again, unselect it
                     selectedItem.clearSelection();
                 } else {
-                    // Select the new item
+                    // select the new item
                     selectedItem.parentIndex = parentPosition;
                     selectedItem.nestedIndex = clickedPosition;
                 }
-                itemAdapter.notifyDataSetChanged(); // Notify the parent adapter to refresh all items
+                itemAdapter.notifyDataSetChanged(); // notify the parent adapter to refresh all items
             }
         });
     }
@@ -78,4 +77,5 @@ public class PayNestedAdapter extends RecyclerView.Adapter<PayNestedAdapter.Nest
             mTv = itemView.findViewById(R.id.nestedItemTv);
         }
     }
+
 }

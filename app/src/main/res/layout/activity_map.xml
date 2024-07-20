@@ -13,7 +13,7 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView" />
+        android:layout_above="@id/bottomNavigationView"/>
 
     <ImageView
         android:id="@+id/findsupermarket"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_above="@id/bottomNavigationView"
-        android:background="@color/grey"
+        android:background="@color/lightgrey"
         android:visibility="gone"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

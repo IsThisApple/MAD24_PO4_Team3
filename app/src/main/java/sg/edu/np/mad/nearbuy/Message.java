@@ -5,7 +5,7 @@ public class Message {
     private String sender;
 
     public Message() {
-        // Default constructor required for Firebase
+        // default constructor required for Firebase
     }
 
     public Message(String text, String sender) {
@@ -20,4 +20,5 @@ public class Message {
     public String getSender() {
         return sender;
     }
+
 }

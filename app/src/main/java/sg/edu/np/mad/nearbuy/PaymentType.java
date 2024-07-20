@@ -34,7 +34,7 @@ public class PaymentType extends AppCompatActivity {
 
         mList = new ArrayList<>();
 
-        //list1
+        // list1
         List<String> nestedList1 = new ArrayList<>();
         nestedList1.add("Savings");
         nestedList1.add("Spendings");

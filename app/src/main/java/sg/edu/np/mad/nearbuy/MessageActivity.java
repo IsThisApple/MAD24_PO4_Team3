@@ -135,7 +135,7 @@ public class MessageActivity extends AppCompatActivity {
                 int screenHeight = rootView.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
 
-                if (keypadHeight > screenHeight * 0.15) { // Assume that the keyboard is up if the height of the remaining part is greater than 15% of the screen height
+                if (keypadHeight > screenHeight * 0.15) { // assume that the keyboard is up if the height of the remaining part is greater than 15% of the screen height
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
                     bottomNavigationView.setVisibility(View.VISIBLE);
@@ -143,4 +143,5 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+
 }

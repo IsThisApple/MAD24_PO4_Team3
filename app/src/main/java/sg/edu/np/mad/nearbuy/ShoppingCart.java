@@ -29,19 +29,19 @@ public class ShoppingCart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-        // Initialize views
+        // initialise views
         totalSumPrice = findViewById(R.id.totalSumPrice);
         RecyclerView shoppingcartrecyclerview = findViewById(R.id.shoppingcartrecyclerview);
         Button toCheckoutButton = findViewById(R.id.toCheckout);
 
-        // Enable edge-to-edge display
+        // enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
 
-        // Navigation Panel
+        // navigation Panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
 
@@ -66,21 +66,21 @@ public class ShoppingCart extends AppCompatActivity {
             return false;
         });
 
-        // Fetch products from the database
+        // fetch products from the database
         dbHandler = new ShoppingCartDbHandler(this, null, null, 1);
         productList = dbHandler.getAllProducts();
 
-        // Set up RecyclerView
+        // set up RecyclerView
         shoppingcartadapter = new ShoppingCartAdapter(productList, this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shoppingcartrecyclerview.setLayoutManager(layoutManager);
         shoppingcartrecyclerview.setItemAnimator(new DefaultItemAnimator());
         shoppingcartrecyclerview.setAdapter(shoppingcartadapter);
 
-        // Calculate total price initially
+        // calculate initial total price
         calculateTotalPrice();
 
-        // Handle button click to proceed to payment
+        // handle button click to proceed to payment
         toCheckoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
             double totalPrice = getTotalPrice();
@@ -101,4 +101,5 @@ public class ShoppingCart extends AppCompatActivity {
         }
         return totalPrice;
     }
+
 }

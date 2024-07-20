@@ -31,4 +31,5 @@ public class FoursquareClient {
         }
         return retrofit;
     }
+
 }

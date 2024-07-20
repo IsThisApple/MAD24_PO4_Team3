@@ -23,7 +23,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemViewType(int position) {
         Message message = messageList.get(position);
-        // Determine the view type based on the sender
+        // determine the view type based on the sender
         if (message.getSender().equals("User")) {
             return VIEW_TYPE_USER;
         } else {
@@ -89,4 +89,5 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             textViewSender.setText(message.getSender());
         }
     }
+
 }

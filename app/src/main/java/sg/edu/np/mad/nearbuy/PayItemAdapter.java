@@ -18,7 +18,7 @@ import java.util.List;
 public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemViewHolder> {
 
     private List<PayDataModel> mList;
-    private PaySelectedItem selectedItem; // Added SelectedItem field
+    private PaySelectedItem selectedItem;
 
     public PayItemAdapter(List<PayDataModel> mList, PaySelectedItem selectedItem) {
         this.mList = mList;
@@ -84,4 +84,5 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemView
             nestedRecyclerView = itemView.findViewById(R.id.child_rv);
         }
     }
+
 }

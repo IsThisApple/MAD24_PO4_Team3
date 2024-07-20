@@ -18,7 +18,6 @@
         android:text="Accounts"
         android:textColor="@color/darkbrown"
         android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.117" />
-
+        app:layout_constraintHorizontal_bias="0.117"/>
 
 </androidx.cardview.widget.CardView>

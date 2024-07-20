@@ -53,4 +53,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int result = db.update(TABLE_NAME, contentValues, "USERNAME=?", new String[]{username});
         return result > 0;
     }
+
 }

@@ -4,6 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Path;
+
 public interface FoursquareService {
     @GET("places/search")
     Call<FoursquareResponse> searchPlaces(

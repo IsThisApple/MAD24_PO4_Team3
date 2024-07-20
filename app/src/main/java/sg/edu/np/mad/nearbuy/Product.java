@@ -12,6 +12,7 @@ public class Product {
         this.productimg = productimg;
 
     }
+
     public String getName() {
         return name;
     }
@@ -23,15 +24,19 @@ public class Product {
     public int getQuantity(){ return quantity; }
 
     public int getProductimg() { return productimg; }
+
     public double getTotalprice() {
         return totalprice;
     }
+
     public void addquantity(){
         quantity = quantity + 1;
         totalprice = quantity * Double.parseDouble(price);
     }
+
     public void subtractquantity(){
         quantity = quantity - 1;
         totalprice = quantity * Double.parseDouble(price);
     }
+
 }

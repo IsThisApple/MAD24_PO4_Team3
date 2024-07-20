@@ -48,4 +48,5 @@ public class VendorMessageAdapter extends RecyclerView.Adapter<VendorMessageAdap
             textViewSender.setText(message.getSender());
         }
     }
+
 }

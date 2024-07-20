@@ -15,7 +15,6 @@
         android:textSize="14sp"
         android:textColor="@color/darkbrown"/>
 
-
     <TextView
         android:id="@+id/textmessage"
         android:layout_width="wrap_content"
@@ -27,4 +26,5 @@
         android:textColor="@color/darkbrown"
         android:background="@color/white"
         android:layout_alignParentRight="true"/>
+
 </RelativeLayout>
