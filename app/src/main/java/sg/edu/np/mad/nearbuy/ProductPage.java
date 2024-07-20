@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,10 +18,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class ProductPage extends AppCompatActivity {
+import java.util.Locale;
 
+public class ProductPage extends AppCompatActivity {
     private int currentImageIndex = 0;
     private int[] productImages = {};
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,13 @@ public class ProductPage extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        // initialise tts
+        tts = new TextToSpeech(this, status -> {
+            if (status != TextToSpeech.ERROR) {
+                tts.setLanguage(Locale.US);
+            }
         });
 
         String name = getIntent().getStringExtra("name");
@@ -60,6 +71,17 @@ public class ProductPage extends AppCompatActivity {
         // set up image click listener to show enlarged image
         productimage.setOnClickListener(v -> showEnlargedImage(productImages[currentImageIndex]));
 
+        arrowLeft.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Previous image"),
+                v -> {
+                    if (currentImageIndex > 0) {
+                        currentImageIndex--;
+                        productimage.setImageResource(productImages[currentImageIndex]);
+                        productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                    }
+                }
+        ));
+        /*
         arrowLeft.setOnClickListener(v -> {
             if (currentImageIndex > 0) {
                 currentImageIndex--;
@@ -67,7 +89,19 @@ public class ProductPage extends AppCompatActivity {
                 productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
             }
         });
+        */
 
+        arrowRight.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Next image"),
+                v -> {
+                    if (currentImageIndex < productImages.length - 1) {
+                        currentImageIndex++;
+                        productimage.setImageResource(productImages[currentImageIndex]);
+                        productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                    }
+                }
+        ));
+        /*
         arrowRight.setOnClickListener(v -> {
             if (currentImageIndex < productImages.length - 1) {
                 currentImageIndex++;
@@ -75,15 +109,36 @@ public class ProductPage extends AppCompatActivity {
                 productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
             }
         });
+        */
 
         // set up back button click listener to return to MainActivity
+        backbutton.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Back to home"),
+                v -> finish()
+        ));
+        /*
         backbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 finish();
             }
         });
+        */
 
+        addtocart.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Add to cart"),
+                v -> {
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this, null, null, 1);
+                    if (dbHandler.isProductExist(product.getName())) {
+                        Toast.makeText(ProductPage.this, "Product exists", Toast.LENGTH_SHORT).show();
+                        dbHandler.addQuantity(product, product.getName());
+                    } else {
+                        dbHandler.addProduct(product);
+                    }
+                    Toast.makeText(ProductPage.this, "Product added", Toast.LENGTH_SHORT).show();
+                }
+        ));
+        /*
         addtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +152,16 @@ public class ProductPage extends AppCompatActivity {
                 Toast.makeText(ProductPage.this,"Product Added",Toast.LENGTH_SHORT).show();
             }
         });
+        */
 
+        addbutton.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Add quantity"),
+                v -> {
+                    product.addquantity();
+                    productquantity.setText(String.valueOf(product.getQuantity()));
+                }
+        ));
+        /*
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +169,20 @@ public class ProductPage extends AppCompatActivity {
                 productquantity.setText(String.valueOf(product.getQuantity()));
             }
         });
+        */
 
+        subtractbutton.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Subtract quantity"),
+                v -> {
+                    if (product.getQuantity() == 0) {
+                        Toast.makeText(ProductPage.this, "Cannot have less than 0 items", Toast.LENGTH_SHORT).show();
+                    } else {
+                        product.subtractquantity();
+                        productquantity.setText(String.valueOf(product.getQuantity()));
+                    }
+                }
+        ));
+        /*
         subtractbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +194,7 @@ public class ProductPage extends AppCompatActivity {
                 }
             }
         });
+        */
     }
 
     private void showEnlargedImage(int imageResId) {
@@ -283,6 +361,21 @@ public class ProductPage extends AppCompatActivity {
                 productImages = new int[]{R.drawable.close_icon}; // default image if no specific images are found
                 break;
         }
+    }
+
+    private void speakText(String text) {
+        if (tts != null && !tts.isSpeaking()) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
 }
