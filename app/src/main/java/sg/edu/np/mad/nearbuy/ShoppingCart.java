@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class ShoppingCart extends AppCompatActivity {
         totalSumPrice = findViewById(R.id.totalSumPrice);
         RecyclerView shoppingcartrecyclerview = findViewById(R.id.shoppingcartrecyclerview);
         Button toCheckoutButton = findViewById(R.id.toCheckout);
+        ImageView addMoreItems = findViewById(R.id.addMoreItems);
 
         // Enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
@@ -53,10 +55,6 @@ public class ShoppingCart extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.bottom_map) {
                 startActivity(new Intent(getApplicationContext(), MapActivity.class));
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_cart) {
@@ -82,9 +80,18 @@ public class ShoppingCart extends AppCompatActivity {
 
         // Handle button click to proceed to payment
         toCheckoutButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
             double totalPrice = getTotalPrice();
-            intent.putExtra("totalPrice", totalPrice);
+            if (totalPrice == 0) {
+                Toast.makeText(ShoppingCart.this, "Please Add Items to Cart", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
+                intent.putExtra("totalPrice", totalPrice);
+                startActivity(intent);
+            }
+        });
+
+        addMoreItems.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         });
     }
@@ -100,5 +107,15 @@ public class ShoppingCart extends AppCompatActivity {
             totalPrice += product.getTotalprice();
         }
         return totalPrice;
+    }
+
+    public void updateTotalPrice(double totalPrice) {
+        totalSumPrice.setText(String.format("$%.2f", totalPrice));
+    }
+
+    public void refreshProductList() {
+        productList = dbHandler.getAllProducts();
+        shoppingcartadapter.updateData(productList);
+        calculateTotalPrice();
     }
 }

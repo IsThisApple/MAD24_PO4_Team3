@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/paleyellow"
+    tools:context=".PaymentType">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/orange"
+        android:text="New Account"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/carcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Card:"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkbrown"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/card"
+        android:background="@color/white"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toRightOf="@id/carcar"
+        tools:layout_editor_absoluteY="80dp"
+        android:elevation="2dp"/>
+
+    <TextView
+        android:id="@+id/numnum"
+        android:text="Card Number"
+        android:textSize="18dp"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkbrown"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carcar"/>
+
+    <EditText
+        android:id="@+id/cardNum"
+        android:elevation="2dp"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:hint="#### #### #### ####"
+        android:layout_marginLeft="15dp"
+        android:textSize="15dp"
+        android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/numnum"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <TextView
+        android:id="@+id/monmon"
+        android:text="Expiration Month"
+        android:textSize="18dp"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkbrown"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardNum"/>
+
+    <EditText
+        android:id="@+id/month"
+        android:elevation="2dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:hint="e.g. 2030"
+        android:layout_marginLeft="15dp"
+        android:textSize="15dp"
+        android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monmon"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <TextView
+        android:id="@+id/yryr"
+        android:text="Expiration Year"
+        android:textSize="18dp"
+        android:layout_marginRight="75dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkbrown"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardNum"/>
+
+    <EditText
+        android:id="@+id/year"
+        android:elevation="2dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:hint="e.g. 12"
+        android:layout_marginRight="45dp"
+        android:textSize="15dp"
+        android:background="@color/white"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/yryr" />
+
+    <TextView
+        android:id="@+id/cvnCvn"
+        android:text="CVN"
+        android:textSize="18dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/darkbrown"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month"/>
+
+    <TextView
+        android:text="This code is a three or four digit number
+        \nprinted on the back or front of credit cards."
+        android:textSize="10dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/darkbrown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvn"/>
+
+    <EditText
+        android:id="@+id/cvn"
+        android:elevation="2dp"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:hint="###"
+        android:layout_marginLeft="15dp"
+        android:textSize="15dp"
+        android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvnCvn" />
+
+    <TextView
+        android:id="@+id/lblb"
+        android:text="Label"
+        android:textSize="18dp"
+        android:layout_marginRight="152dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkbrown"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/year"/>
+
+    <EditText
+        android:id="@+id/label"
+        android:elevation="2dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:hint="e.g. Spendings"
+        android:layout_marginRight="45dp"
+        android:textSize="15dp"
+        android:background="@color/white"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblb" />
+
+    <Button
+        android:id="@+id/addAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/brown"
+        android:text="Add Account"
+        android:textColor="@color/white"
+        android:layout_marginTop="45dp"
+        android:layout_marginRight="45dp"
+        android:textSize="15dp"
+        app:layout_constraintTop_toBottomOf="@id/label"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package sg.edu.np.mad.nearbuy;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,37 +22,21 @@ public class PaymentType extends AppCompatActivity {
     private PaySelectedItem selectedItem;
     private PayItemAdapter adapter;
     private double totalPrice;
+    private DBCard dbCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_type);
 
+        dbCard = new DBCard(this);
+
         recyclerView = findViewById(R.id.main_recyclervie);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mList = new ArrayList<>();
-
-        //list1
-        List<String> nestedList1 = new ArrayList<>();
-        nestedList1.add("Savings");
-        nestedList1.add("Spendings");
-
-        List<String> nestedList2 = new ArrayList<>();
-        nestedList2.add("Savings");
-        nestedList2.add("Spendings");
-        nestedList2.add("Account #3");
-
-        List<String> nestedList3 = new ArrayList<>();
-        nestedList3.add("Spendings");
-
-        mList.add(new PayDataModel(nestedList1, "MasterCard"));
-        mList.add(new PayDataModel(nestedList2, "Visa"));
-        mList.add(new PayDataModel(nestedList3, "GrabPay"));
-
         selectedItem = new PaySelectedItem();
-
         adapter = new PayItemAdapter(mList, selectedItem);
         recyclerView.setAdapter(adapter);
 
@@ -60,6 +45,7 @@ public class PaymentType extends AppCompatActivity {
         TextView totalSumPrice = findViewById(R.id.totalSumPrice);
         totalSumPrice.setText(String.format("$%.2f", totalPrice));
 
+        Button addAccount = findViewById(R.id.newAcc);
         Button proceedToPaymentButton = findViewById(R.id.toPayment);
         proceedToPaymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +53,46 @@ public class PaymentType extends AppCompatActivity {
                 proceedToPayment();
             }
         });
+
+        addAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PayAddCard.class);
+            startActivity(intent);
+        });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCardData();
+    }
+
+    private void loadCardData() {
+        mList.clear();
+
+        String[] cardTypes = {"MasterCard", "VISA", "GrabPay", "MayBank", "CitiBank", "GXSBank"};
+
+        for (String cardType : cardTypes) {
+            List<String> nestedList = new ArrayList<>();
+            Cursor cursor = dbCard.getCardsByType(cardType);
+            if (cursor != null) {
+                int labelIndex = cursor.getColumnIndex("label");
+                int cardNumberIndex = cursor.getColumnIndex("card_number");
+
+                if (labelIndex >= 0 && cardNumberIndex >= 0) {
+                    while (cursor.moveToNext()) {
+                        String label = cursor.getString(labelIndex);
+                        String cardNumber = cursor.getString(cardNumberIndex);
+                        nestedList.add(label + " - " + cardNumber);
+                    }
+                }
+                cursor.close();
+            }
+            mList.add(new PayDataModel(nestedList, cardType));
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
 
     private void proceedToPayment() {
         if (selectedItem.parentIndex != -1 && selectedItem.nestedIndex != -1) {
@@ -83,5 +108,4 @@ public class PaymentType extends AppCompatActivity {
             Toast.makeText(PaymentType.this, "Please select a payment type", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

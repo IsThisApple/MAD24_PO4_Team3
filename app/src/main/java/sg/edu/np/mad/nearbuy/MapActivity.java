@@ -64,11 +64,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
                 return true;
 
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-                return true;
-
             } else if (itemId == R.id.bottom_cart) {
                 startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
                 finish();

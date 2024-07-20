@@ -70,11 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 return true;
 
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-                return true;
-
             } else if (itemId == R.id.bottom_cart) {
                 startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
                 finish();

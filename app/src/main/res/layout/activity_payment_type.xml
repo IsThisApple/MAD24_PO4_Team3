@@ -10,8 +10,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_recyclervie"
         android:layout_width="409dp"
-        android:layout_height="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="640dp"
+        app:layout_constraintBottom_toBottomOf="@id/main_recyclervie"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
@@ -38,7 +38,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/main_recyclervie"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp">
 
@@ -105,6 +105,19 @@
     </LinearLayout>
 
 
+    <Button
+        android:id="@+id/newAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/brown"
+        android:elevation="5dp"
+        android:text="+ Add New Account"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@id/toCheckoutHolder"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

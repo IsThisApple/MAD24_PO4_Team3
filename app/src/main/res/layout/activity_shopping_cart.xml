@@ -21,10 +21,31 @@
         app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
+    <ImageView
+        android:id="@+id/addMoreItems"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@id/toCheckoutHolder"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/baseline_add_shopping_cart_24"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Want to Add More Items?"
+        app:layout_constraintLeft_toRightOf="@id/addMoreItems"
+        app:layout_constraintBottom_toTopOf="@id/toCheckoutHolder"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/darkbrown"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shoppingcartrecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="510dp"
+        android:layout_height="450dp"
         android:layout_above="@id/bottomNavigationView"
         android:layout_below="@id/tvtitle"
         tools:layout_editor_absoluteX="0dp"
