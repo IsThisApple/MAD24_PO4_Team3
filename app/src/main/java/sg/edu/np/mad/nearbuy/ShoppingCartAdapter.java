@@ -36,7 +36,20 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
         holder.quantity.setText(Integer.toString(product.getQuantity()));
 
-        // button to add in shoppingcart
+        // handle button to add in shoppingcart
+        holder.addition.setOnTouchListener(new DoubleClickListener(
+                v -> shoppingCart.speak("Add quantity of " + product.getName()), // single-click action
+                v -> {
+                    shoppingCart.speak("Add quantity of " + product.getName());
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                    product.addquantity();
+                    dbHandler.addSingleQuantity(product, product.getName());
+                    holder.quantity.setText(Integer.toString(product.getQuantity()));
+                    holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                    shoppingCart.calculateTotalPrice();
+                } // double-click action
+        ));
+        /*
         holder.addition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,8 +61,28 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
                 shoppingCart.calculateTotalPrice();
             }
         });
+        */
 
-        // button to subtract in shoppingcart
+        // handle button to subtract in shoppingcart
+        holder.subtraction.setOnTouchListener(new DoubleClickListener(
+                v -> shoppingCart.speak("Subtract quantity of " + product.getName()), // single-click action
+                v -> {
+                    shoppingCart.speak("Subtract quantity of " + product.getName());
+                    ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                    if (product.getQuantity() == 1) {
+                        dbHandler.deleteProduct(product.getName());
+                        data = dbHandler.getAllProducts();
+                        notifyDataSetChanged();
+                    } else {
+                        product.subtractquantity();
+                        dbHandler.subtractSingleQuantity(product, product.getName());
+                        holder.quantity.setText(Integer.toString(product.getQuantity()));
+                        holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                    }
+                    shoppingCart.calculateTotalPrice();
+                } // double-click action
+        ));
+        /*
         holder.subtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +100,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
                 shoppingCart.calculateTotalPrice();
             }
         });
+        */
     }
 
     @Override

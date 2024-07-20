@@ -63,7 +63,7 @@ Search & Filter Functionality
 Notifications
 
 *Fariha:*
-Audio Descriptions for Visually Impaired Users
+Audio Descriptions & Double-click Functionality for Visually Impaired Users
 
 *Nabihah:*
 Integration with Payment Gateways

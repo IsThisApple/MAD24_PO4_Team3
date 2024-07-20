@@ -21,7 +21,6 @@ import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
 public class ShoppingCart extends AppCompatActivity {
-
     private TextView totalSumPrice;
     private ShoppingCartAdapter shoppingcartadapter;
     private ShoppingCartDbHandler dbHandler;
@@ -99,12 +98,35 @@ public class ShoppingCart extends AppCompatActivity {
         calculateTotalPrice();
 
         // handle button click to proceed to payment
+        toCheckoutButton.setOnTouchListener(new DoubleClickListener(
+                v -> speak("Proceed to checkout"), // single-click action
+                v -> {
+                    speak("Proceed to checkout");
+                    Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
+                    double totalPrice = getTotalPrice();
+                    intent.putExtra("totalPrice", totalPrice);
+                    startActivity(intent);
+                } // double-click action
+        ));
+        /*
         toCheckoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
             double totalPrice = getTotalPrice();
             intent.putExtra("totalPrice", totalPrice);
             startActivity(intent);
         });
+        */
+
+        // handle total price TTS
+        totalSumPrice.setOnTouchListener(new DoubleClickListener(
+                v -> speakTotalPrice(), // single-click action
+                v -> speakTotalPrice() // double-click action
+        ));
+    }
+
+    private void speakTotalPrice() {
+        double totalPrice = getTotalPrice();
+        speak("Total price is $" + String.format("%.2f", totalPrice));
     }
 
     public void calculateTotalPrice() {
@@ -154,7 +176,7 @@ public class ShoppingCart extends AppCompatActivity {
     }
 
     // method to speak text using tts
-    private void speak(String text) {
+    public void speak(String text) {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
