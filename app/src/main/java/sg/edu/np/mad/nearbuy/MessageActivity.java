@@ -3,8 +3,11 @@ package sg.edu.np.mad.nearbuy;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,10 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import android.speech.tts.TextToSpeech;
 import java.util.Locale;
+import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -41,7 +42,6 @@ public class MessageActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-
     private TextToSpeech tts;
 
     @Override
@@ -163,6 +163,17 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         */
+        // add tts and double-click functionality to message input
+        messageInput.setOnTouchListener(new DoubleClickListener(
+                v -> speak("Type a message"),
+                v -> messageInput.requestFocus()
+        ));
+
+        // add tts and double-click functionality to send button
+        sendButton.setOnTouchListener(new DoubleClickListener(
+                v -> speak("Send"),
+                v -> sendButton.performClick()
+        ));
     }
 
     private void initializeNavigationBar() {
