@@ -73,22 +73,22 @@ public class ShoppingCartDbHandler extends SQLiteOpenHelper{
     }
 
     public void addQuantity(Product product, String name) {
-       SQLiteDatabase db = getWritableDatabase();
-       ContentValues values = new ContentValues();
-       Integer quantityToAdd = product.getQuantity();
-       double totalprice = product.getTotalprice();
-       Cursor cursor = db.query(TABLE_NAME, new String[]{PRODUCT_QUANTITY, TOTAL_PRODUCT_PRICE},
-               PRODUCT_NAME + "=?", new String[]{name}, null, null, null);
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Integer quantityToAdd = product.getQuantity();
+        double totalprice = product.getTotalprice();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{PRODUCT_QUANTITY, TOTAL_PRODUCT_PRICE},
+                PRODUCT_NAME + "=?", new String[]{name}, null, null, null);
 
-       if (cursor != null && cursor.moveToFirst()) {
-           int currentquantity = cursor.getInt(0);
-           double currenttotalprice = cursor.getDouble(1);
-           int newquantity = currentquantity + quantityToAdd;
-           double newtotalprice = currenttotalprice + totalprice;
-           values.put(PRODUCT_QUANTITY, newquantity);
-           values.put(TOTAL_PRODUCT_PRICE, newtotalprice);
-           db.update(TABLE_NAME, values, PRODUCT_NAME + "=?" ,new String[]{name});
-       }
+        if (cursor != null && cursor.moveToFirst()) {
+            int currentquantity = cursor.getInt(0);
+            double currenttotalprice = cursor.getDouble(1);
+            int newquantity = currentquantity + quantityToAdd;
+            double newtotalprice = currenttotalprice + totalprice;
+            values.put(PRODUCT_QUANTITY, newquantity);
+            values.put(TOTAL_PRODUCT_PRICE, newtotalprice);
+            db.update(TABLE_NAME, values, PRODUCT_NAME + "=?" ,new String[]{name});
+        }
         db.close();
     }
 

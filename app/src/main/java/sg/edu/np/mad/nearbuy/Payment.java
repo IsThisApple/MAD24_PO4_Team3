@@ -2,12 +2,14 @@ package sg.edu.np.mad.nearbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +22,11 @@ public class Payment extends AppCompatActivity {
     private RecyclerView itemsRecyclerView;
     private PayItemAdapter adapter;
     private List<PayDataModel> itemList;
+
+    ArrayList<String> dataSource;
+    LinearLayoutManager linearLayoutManager;
+
+    AddressAdapter addressAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,44 +51,59 @@ public class Payment extends AppCompatActivity {
         double totalFinalPrice = totalPrice + deliveryPrice;
         totalFinalPriceTextView.setText(String.format("$%.2f", totalFinalPrice));
 
-        Button addressButton = findViewById(R.id.addressInput);
-        EditText addressEditText = findViewById(R.id.addressEditText);
+        RecyclerView addressView = findViewById(R.id.addressView);
+        dataSource = new ArrayList<>();
+        dataSource.add("Home");
+        dataSource.add("Work");
+        dataSource.add("New House");
 
-        addressButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addressEditText.setVisibility(View.VISIBLE);
-                addressButton.setVisibility(View.GONE);
-            }
-        });
+        linearLayoutManager = new LinearLayoutManager(Payment.this, LinearLayoutManager.HORIZONTAL, false);
+        addressAdapter = new AddressAdapter(dataSource);
+        addressView.setLayoutManager(linearLayoutManager);
+        addressView.setAdapter(addressAdapter);
 
-        // return button
-        ImageView backbutton = findViewById(R.id.backButton);
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        addressEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String address = addressEditText.getText().toString();
-                    addressButton.setText(address);
-                    addressButton.setVisibility(View.VISIBLE);
-                    addressEditText.setVisibility(View.GONE);
-                }
-            }
-        });
         Button confirmPaymentButton = findViewById(R.id.confirmPayment);
 
-        // handle button click to proceed to end
+        // Handle button click to proceed to end
         confirmPaymentButton.setOnClickListener(v -> {
             Intent intent = new Intent(Payment.this, MainActivity.class);
             startActivity(intent);
         });
+
     }
+
+    class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder>{
+        ArrayList<String> addData;
+        public AddressAdapter(ArrayList<String> addData) {
+            this.addData = addData;
+        }
+
+        @NonNull
+        @Override
+        public AddressHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(Payment.this).inflate(R.layout.each_address, parent, false);
+            return new AddressHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull AddressHolder holder, int position) {
+            holder.addressTitle.setText(addData.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return addData.size();
+        }
+
+        class AddressHolder extends RecyclerView.ViewHolder{
+            TextView addressTitle;
+            public AddressHolder(@NonNull View itemView) {
+                super(itemView);
+                addressTitle = itemView.findViewById(R.id.addressTitle);
+            }
+        }
+
+    }
+
 
 }

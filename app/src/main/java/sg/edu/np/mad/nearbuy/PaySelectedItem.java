@@ -8,5 +8,4 @@ public class PaySelectedItem {
         parentIndex = -1;
         nestedIndex = -1;
     }
-
 }

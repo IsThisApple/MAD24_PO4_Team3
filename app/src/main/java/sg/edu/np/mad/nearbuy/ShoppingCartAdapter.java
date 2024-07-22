@@ -36,36 +36,30 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
         holder.quantity.setText(Integer.toString(product.getQuantity()));
 
-        // button to add in shoppingcart
-        holder.addition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
-                product.addquantity();
-                dbHandler.addSingleQuantity(product, product.getName());
-                holder.quantity.setText(Integer.toString(product.getQuantity()));
-                holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
-                shoppingCart.calculateTotalPrice();
-            }
+        // Button to add in shoppingcart
+        holder.addition.setOnClickListener(v -> {
+            ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+            product.addquantity();
+            dbHandler.addSingleQuantity(product, product.getName());
+            holder.quantity.setText(Integer.toString(product.getQuantity()));
+            holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+            shoppingCart.refreshProductList();
         });
 
-        // button to subtract in shoppingcart
-        holder.subtraction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
-                if (product.getQuantity() == 1) {
-                    dbHandler.deleteProduct(product.getName());
-                    data = dbHandler.getAllProducts();
-                    notifyDataSetChanged();
-                } else {
-                    product.subtractquantity();
-                    dbHandler.subtractSingleQuantity(product, product.getName());
-                    holder.quantity.setText(Integer.toString(product.getQuantity()));
-                    holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
-                }
-                shoppingCart.calculateTotalPrice();
+        // Button to subtract in shoppingcart
+        holder.subtraction.setOnClickListener(v -> {
+            ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+            if (product.getQuantity() == 1) {
+                dbHandler.deleteProduct(product.getName());
+                data = dbHandler.getAllProducts();
+                notifyDataSetChanged();
+            } else {
+                product.subtractquantity();
+                dbHandler.subtractSingleQuantity(product, product.getName());
+                holder.quantity.setText(Integer.toString(product.getQuantity()));
+                holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
             }
+            shoppingCart.refreshProductList();
         });
     }
 
@@ -74,4 +68,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         return data.size();
     }
 
+    public void updateData(List<Product> newData) {
+        data = newData;
+        notifyDataSetChanged();
+    }
 }
