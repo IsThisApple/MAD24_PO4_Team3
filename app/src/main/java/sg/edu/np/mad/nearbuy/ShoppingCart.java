@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,19 +30,20 @@ public class ShoppingCart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-        // initialise views
+        // Initialize views
         totalSumPrice = findViewById(R.id.totalSumPrice);
         RecyclerView shoppingcartrecyclerview = findViewById(R.id.shoppingcartrecyclerview);
         Button toCheckoutButton = findViewById(R.id.toCheckout);
+        ImageView addMoreItems = findViewById(R.id.addMoreItems);
 
-        // enable edge-to-edge display
+        // Enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
 
-        // navigation Panel
+        // Navigation Panel
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
 
@@ -55,10 +57,6 @@ public class ShoppingCart extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MapActivity.class));
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-                return true;
             } else if (itemId == R.id.bottom_cart) {
                 Toast.makeText(this, "You are already on the cart page", Toast.LENGTH_SHORT).show();
                 return true;
@@ -66,25 +64,34 @@ public class ShoppingCart extends AppCompatActivity {
             return false;
         });
 
-        // fetch products from the database
+        // Fetch products from the database
         dbHandler = new ShoppingCartDbHandler(this, null, null, 1);
         productList = dbHandler.getAllProducts();
 
-        // set up RecyclerView
+        // Set up RecyclerView
         shoppingcartadapter = new ShoppingCartAdapter(productList, this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shoppingcartrecyclerview.setLayoutManager(layoutManager);
         shoppingcartrecyclerview.setItemAnimator(new DefaultItemAnimator());
         shoppingcartrecyclerview.setAdapter(shoppingcartadapter);
 
-        // calculate initial total price
+        // Calculate total price initially
         calculateTotalPrice();
 
-        // handle button click to proceed to payment
+        // Handle button click to proceed to payment
         toCheckoutButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
             double totalPrice = getTotalPrice();
-            intent.putExtra("totalPrice", totalPrice);
+            if (totalPrice == 0) {
+                Toast.makeText(ShoppingCart.this, "Please Add Items to Cart", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
+                intent.putExtra("totalPrice", totalPrice);
+                startActivity(intent);
+            }
+        });
+
+        addMoreItems.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         });
     }
@@ -102,4 +109,13 @@ public class ShoppingCart extends AppCompatActivity {
         return totalPrice;
     }
 
+    public void updateTotalPrice(double totalPrice) {
+        totalSumPrice.setText(String.format("$%.2f", totalPrice));
+    }
+
+    public void refreshProductList() {
+        productList = dbHandler.getAllProducts();
+        shoppingcartadapter.updateData(productList);
+        calculateTotalPrice();
+    }
 }

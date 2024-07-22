@@ -2,6 +2,7 @@ package sg.edu.np.mad.nearbuy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -64,6 +65,8 @@ public class LoginPageHolder extends AppCompatActivity implements TextToSpeech.O
         }
         super.onDestroy();
     }
+
+
 
     private void speakText(String text) {
         if (tts.isSpeaking()) {
@@ -136,6 +139,12 @@ public class LoginPageHolder extends AppCompatActivity implements TextToSpeech.O
 
         if (validateInputs(username, password)) {
             if (db.checkUser(username, password)) {
+                // Store the user ID (or username) for future use
+                SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("currentUserId", username); // Or use a unique user ID
+                editor.apply();
+
                 Toast.makeText(LoginPageHolder.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginPageHolder.this, MainActivity.class));
                 finish(); // finish login activity
