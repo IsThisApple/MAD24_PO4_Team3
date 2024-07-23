@@ -5,7 +5,7 @@ public class Message {
     private String sender;
 
     public Message() {
-        // default constructor required for Firebase
+        // default constructor required for firebase
     }
 
     public Message(String text, String sender) {

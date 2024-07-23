@@ -20,6 +20,7 @@ public class ShoppingCartDbHandler extends SQLiteOpenHelper{
     public static final String PRODUCT_PRICE = "priceofproduct";
     public static final String PRODUCT_QUANTITY = "quantityofproduct";
     public static final String TOTAL_PRODUCT_PRICE = "totalpriceofproduct";
+
     public ShoppingCartDbHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }

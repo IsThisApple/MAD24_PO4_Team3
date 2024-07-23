@@ -15,10 +15,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
     List<Product> data;
     ShoppingCart shoppingCart;
 
+    private PreferenceManager preferenceManager;
+
     public ShoppingCartAdapter(List<Product> input, Context context, ShoppingCart shoppingCart) {
         this.context = context;
         data = input;
         this.shoppingCart = shoppingCart;
+        this.preferenceManager = new PreferenceManager(context);
     }
 
     @NonNull
@@ -36,31 +39,75 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
         holder.quantity.setText(Integer.toString(product.getQuantity()));
 
-        // Button to add in shoppingcart
-        holder.addition.setOnClickListener(v -> {
-            ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
-            product.addquantity();
-            dbHandler.addSingleQuantity(product, product.getName());
-            holder.quantity.setText(Integer.toString(product.getQuantity()));
-            holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
-            shoppingCart.refreshProductList();
-        });
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 
-        // Button to subtract in shoppingcart
-        holder.subtraction.setOnClickListener(v -> {
-            ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
-            if (product.getQuantity() == 1) {
-                dbHandler.deleteProduct(product.getName());
-                data = dbHandler.getAllProducts();
-                notifyDataSetChanged();
-            } else {
-                product.subtractquantity();
-                dbHandler.subtractSingleQuantity(product, product.getName());
-                holder.quantity.setText(Integer.toString(product.getQuantity()));
-                holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
-            }
-            shoppingCart.refreshProductList();
-        });
+        // handle button for in-cart add
+        if (isAccessibilityEnabled) {
+            holder.addition.setOnTouchListener(new DoubleClickListener(
+                    v -> shoppingCart.speak("Add quantity of " + product.getName()), // single-click action
+                    v -> {
+                        shoppingCart.speak("Add quantity of " + product.getName());
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                        product.addquantity();
+                        dbHandler.addSingleQuantity(product, product.getName());
+                        holder.quantity.setText(Integer.toString(product.getQuantity()));
+                        holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                        shoppingCart.refreshProductList();
+                    } // double-click action
+            ));
+        } else {
+            holder.addition.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                        product.addquantity();
+                        dbHandler.addSingleQuantity(product, product.getName());
+                        holder.quantity.setText(Integer.toString(product.getQuantity()));
+                        holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                        shoppingCart.refreshProductList();
+                    }, // single-click action
+                    v -> {} // double-click action
+            ));
+        }
+
+        // handle button for in-cart subtract
+        if (isAccessibilityEnabled) {
+            holder.subtraction.setOnTouchListener(new DoubleClickListener(
+                    v -> shoppingCart.speak("Subtract quantity of " + product.getName()), // single-click action
+                    v -> {
+                        shoppingCart.speak("Subtract quantity of " + product.getName());
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                        if (product.getQuantity() == 1) {
+                            dbHandler.deleteProduct(product.getName());
+                            data = dbHandler.getAllProducts();
+                            notifyDataSetChanged();
+                        } else {
+                            product.subtractquantity();
+                            dbHandler.subtractSingleQuantity(product, product.getName());
+                            holder.quantity.setText(Integer.toString(product.getQuantity()));
+                            holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                        }
+                        shoppingCart.refreshProductList();
+                    } // double-click action
+            ));
+        } else {
+            holder.subtraction.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(context, null, null, 1);
+                        if (product.getQuantity() == 1) {
+                            dbHandler.deleteProduct(product.getName());
+                            data = dbHandler.getAllProducts();
+                            notifyDataSetChanged();
+                        } else {
+                            product.subtractquantity();
+                            dbHandler.subtractSingleQuantity(product, product.getName());
+                            holder.quantity.setText(Integer.toString(product.getQuantity()));
+                            holder.totalpriceproduct.setText("Total Price: $" + String.format("%.2f", product.getTotalprice()));
+                        }
+                        shoppingCart.refreshProductList();
+                    }, // single-click action
+                    v -> {} // double-click action
+            ));
+        }
     }
 
     @Override
@@ -72,4 +119,5 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         data = newData;
         notifyDataSetChanged();
     }
+
 }

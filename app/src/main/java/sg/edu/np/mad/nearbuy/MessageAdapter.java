@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import android.speech.tts.TextToSpeech;
+
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Message> messageList;
+    private PreferenceManager preferenceManager;
 
     private static final int VIEW_TYPE_USER = 1;
     private static final int VIEW_TYPE_VENDOR = 2;
@@ -71,6 +74,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void bind(Message message) {
             textViewMessage.setText(message.getText());
             textViewSender.setText(message.getSender());
+
+            itemView.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        // speak message content
+                        String speakText = "Message from " + message.getSender() + ": " + message.getText();
+                        TextToSpeech tts = TextToSpeechInstance.getInstance(itemView.getContext());
+                        tts.speak(speakText, TextToSpeech.QUEUE_FLUSH, null, null);
+                    },
+                    v -> {
+                        // no specific double-click action needed for messages
+                    }
+            ));
         }
     }
 
@@ -87,6 +102,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void bind(Message message) {
             textViewMessage.setText(message.getText());
             textViewSender.setText(message.getSender());
+
+            itemView.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        // speak message content
+                        String speakText = "Message from " + message.getSender() + ": " + message.getText();
+                        TextToSpeech tts = TextToSpeechInstance.getInstance(itemView.getContext());
+                        tts.speak(speakText, TextToSpeech.QUEUE_FLUSH, null, null);
+                    },
+                    v -> {
+                        // no specific double-click action needed for messages
+                    }
+            ));
         }
     }
 

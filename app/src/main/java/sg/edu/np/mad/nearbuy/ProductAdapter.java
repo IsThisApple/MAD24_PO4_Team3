@@ -21,14 +21,18 @@ import android.speech.tts.TextToSpeech;
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     Context context;
     List<Product> data;
+
+    private PreferenceManager preferenceManager;
     private TextToSpeech tts;
     private static final long DOUBLE_CLICK_TIME_DELTA = 300; // in milliseconds
 
     public ProductAdapter(List<Product> input, Context context, TextToSpeech tts){
         this.context = context;
         data = input;
+        this.preferenceManager = new PreferenceManager(context);
         this.tts = tts;
     }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,35 +47,41 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         holder.productimg.setImageResource(product.getProductimg());
 
         holder.productcard.setOnClickListener(new View.OnClickListener() {
+            boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
             private long lastClickTime = 0;
 
             @Override
             public void onClick(View v) {
                 long clickTime = System.currentTimeMillis();
-                if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-                    // double click
-                    tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
-                    Intent productpage = new Intent(context, ProductPage.class);
-                    productpage.putExtra("name", product.getName());
-                    productpage.putExtra("price", product.getPrice());
-                    productpage.putExtra("img", product.getProductimg());
-                    context.startActivity(productpage);
+                if (isAccessibilityEnabled) {
+                    if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                        // double click
+                        tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
+                        Intent productpage = new Intent(context, ProductPage.class);
+                        productpage.putExtra("name", product.getName());
+                        productpage.putExtra("price", product.getPrice());
+                        productpage.putExtra("img", product.getProductimg());
+                        context.startActivity(productpage);
+                    } else {
+                        // single click
+                        tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
+                    }
+                    lastClickTime = clickTime;
                 } else {
-                    // single click
-                    tts.speak(product.getName(), TextToSpeech.QUEUE_FLUSH, null, null);
+                    if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                        // double click
+                        //
+                    } else {
+                        // single click
+                        Intent productpage = new Intent(context, ProductPage.class);
+                        productpage.putExtra("name", product.getName());
+                        productpage.putExtra("price", product.getPrice());
+                        productpage.putExtra("img", product.getProductimg());
+                        context.startActivity(productpage);
+                    }
+                    lastClickTime = clickTime;
                 }
-                lastClickTime = clickTime;
             }
-            /*
-            @Override
-            public void onClick(View v) {
-                Intent productpage = new Intent(context, ProductPage.class);
-                productpage.putExtra("name", product.getName());
-                productpage.putExtra("price", product.getPrice());
-                productpage.putExtra("img", product.getProductimg());
-                context.startActivity(productpage);
-            }
-            */
         });
     }
 
