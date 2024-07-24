@@ -13,7 +13,7 @@ public class AddAddress extends AppCompatActivity {
     private EditText postalCodeInput;
     private EditText unitNumberInput;
     private EditText labelInput;
-    private String currentUsername; // Store current username
+    private String currentUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

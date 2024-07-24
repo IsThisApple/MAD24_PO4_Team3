@@ -160,4 +160,12 @@ public class ShoppingCartDbHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public void clearAllProducts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
+
+
+
 }

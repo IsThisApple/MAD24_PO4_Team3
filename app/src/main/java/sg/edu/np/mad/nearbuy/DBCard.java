@@ -7,8 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBCard extends SQLiteOpenHelper {
+
+    // Database name and version
+
     private static final String DATABASE_NAME = "cards.db";
     private static final int DATABASE_VERSION = 2;
+
+    // Table and column names
 
     private static final String TABLE_CARDS = "cards";
     private static final String COLUMN_ID = "id";
@@ -24,6 +29,7 @@ public class DBCard extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Create the cards table
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_CARDS + " (" +
@@ -38,6 +44,7 @@ public class DBCard extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
+    // Update table schema if needed
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
@@ -45,6 +52,7 @@ public class DBCard extends SQLiteOpenHelper {
         }
     }
 
+    // Add a new card
     public boolean addCard(String userId, String cardType, String cardNumber, int expMonth, int expYear, String cvn, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -60,6 +68,7 @@ public class DBCard extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Check if the card number is unique for a user and card type
     public boolean isCardNumberUnique(String userId, String cardType, String cardNumber) {
         Cursor cursor = getCardsByType(userId, cardType);
         if (cursor != null) {
@@ -75,11 +84,13 @@ public class DBCard extends SQLiteOpenHelper {
         return true;
     }
 
+    // Retrieve cards based on user ID and card type
     public Cursor getCardsByType(String userId, String cardType) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_CARDS, null, COLUMN_USER_ID + "=? AND " + COLUMN_CARD_TYPE + "=?", new String[]{userId, cardType}, null, null, null);
     }
 
+    // Delete a card by user ID and label
     public boolean deleteCard(String userId, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(TABLE_CARDS, COLUMN_USER_ID + "=? AND " + COLUMN_LABEL + "=?", new String[]{userId, label});
