@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,10 +18,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class ProductPage extends AppCompatActivity {
+import java.util.Locale;
 
+public class ProductPage extends AppCompatActivity {
     private int currentImageIndex = 0;
     private int[] productImages = {};
+    private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,15 @@ public class ProductPage extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        preferenceManager = new PreferenceManager(this);
+
+        // initialise tts
+        tts = new TextToSpeech(this, status -> {
+            if (status != TextToSpeech.ERROR) {
+                tts.setLanguage(Locale.US);
+            }
         });
 
         String name = getIntent().getStringExtra("name");
@@ -57,66 +71,155 @@ public class ProductPage extends AppCompatActivity {
         setUpProductImages(product.getName());
         productimage.setImageResource(productImages[currentImageIndex]);
 
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
         // set up image click listener to show enlarged image
-        productimage.setOnClickListener(v -> showEnlargedImage(productImages[currentImageIndex]));
+        if (isAccessibilityEnabled) {
+            productimage.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Enlarge image"), // single-click action
+                    v -> showEnlargedImage(productImages[currentImageIndex]) // double-click action
+            ));
+        } else {
+            productimage.setOnTouchListener(new DoubleClickListener(
+                    v -> showEnlargedImage(productImages[currentImageIndex]), // single-click action
+                    v -> {} // double-click action
+            ));
+        }
 
-        arrowLeft.setOnClickListener(v -> {
-            if (currentImageIndex > 0) {
-                currentImageIndex--;
-                productimage.setImageResource(productImages[currentImageIndex]);
-                productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
-            }
-        });
+        if (isAccessibilityEnabled) {
+            arrowLeft.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Previous image"),
+                    v -> {
+                        if (currentImageIndex > 0) {
+                            currentImageIndex--;
+                            productimage.setImageResource(productImages[currentImageIndex]);
+                            productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                        }
+                    }
+            ));
+        } else {
+            arrowLeft.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        if (currentImageIndex > 0) {
+                            currentImageIndex--;
+                            productimage.setImageResource(productImages[currentImageIndex]);
+                            productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                        }
+                    },
+                    v -> {}
+            ));
+        }
 
-        arrowRight.setOnClickListener(v -> {
-            if (currentImageIndex < productImages.length - 1) {
-                currentImageIndex++;
-                productimage.setImageResource(productImages[currentImageIndex]);
-                productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
-            }
-        });
+        if (isAccessibilityEnabled) {
+            arrowRight.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Next image"),
+                    v -> {
+                        if (currentImageIndex < productImages.length - 1) {
+                            currentImageIndex++;
+                            productimage.setImageResource(productImages[currentImageIndex]);
+                            productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                        }
+                    }
+            ));
+        } else {
+            arrowRight.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        if (currentImageIndex < productImages.length - 1) {
+                            currentImageIndex++;
+                            productimage.setImageResource(productImages[currentImageIndex]);
+                            productimage.setOnClickListener(view -> showEnlargedImage(productImages[currentImageIndex]));
+                        }
+                    },
+                    v -> {}
+            ));
+        }
 
-        // set up back button click listener to return to MainActivity
-        backbutton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
+        // set up back button click listener to return to main page
+        if (isAccessibilityEnabled) {
+            backbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Back to home"),
+                    v -> finish()
+            ));
+        } else {
+            backbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> finish(),
+                    v -> {}
+            ));
+        }
 
-        addtocart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this, null, null, 1);
-                if (dbHandler.isProductExist(product.getName()) == true) {
-                    Toast.makeText(ProductPage.this,"product exist", Toast.LENGTH_SHORT).show();
-                    dbHandler.addQuantity(product, product.getName());
-                }else{
-                    dbHandler.addProduct(product);
-                }
-                Toast.makeText(ProductPage.this,"Product Added",Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (isAccessibilityEnabled) {
+            addtocart.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Add to cart"),
+                    v -> {
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this, null, null, 1);
+                        if (dbHandler.isProductExist(product.getName())) {
+                            Toast.makeText(ProductPage.this, "Product exists", Toast.LENGTH_SHORT).show();
+                            dbHandler.addQuantity(product, product.getName());
+                        } else {
+                            dbHandler.addProduct(product);
+                        }
+                        Toast.makeText(ProductPage.this, "Product Added", Toast.LENGTH_SHORT).show();
+                    }
+            ));
+        } else {
+            addtocart.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        ShoppingCartDbHandler dbHandler = new ShoppingCartDbHandler(ProductPage.this, null, null, 1);
+                        if (dbHandler.isProductExist(product.getName())) {
+                            Toast.makeText(ProductPage.this, "Product exists", Toast.LENGTH_SHORT).show();
+                            dbHandler.addQuantity(product, product.getName());
+                        } else {
+                            dbHandler.addProduct(product);
+                        }
+                        Toast.makeText(ProductPage.this, "Product Added", Toast.LENGTH_SHORT).show();
+                    },
+                    v -> {}
+            ));
+        }
 
-        addbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                product.addquantity();
-                productquantity.setText(String.valueOf(product.getQuantity()));
-            }
-        });
+        if (isAccessibilityEnabled) {
+            addbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Add quantity"),
+                    v -> {
+                        product.addquantity();
+                        productquantity.setText(String.valueOf(product.getQuantity()));
+                    }
+            ));
+        } else {
+            addbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        product.addquantity();
+                        productquantity.setText(String.valueOf(product.getQuantity()));
+                    },
+                    v -> {}
+            ));
+        }
 
-        subtractbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (product.getQuantity() == 0) {
-                    Toast.makeText(ProductPage.this, "Cannot have less than 0 items.", Toast.LENGTH_SHORT).show();
-                } else {
-                    product.subtractquantity();
-                    productquantity.setText(String.valueOf(product.getQuantity()));
-                }
-            }
-        });
+        if (isAccessibilityEnabled) {
+            subtractbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Subtract quantity"),
+                    v -> {
+                        if (product.getQuantity() == 0) {
+                            Toast.makeText(ProductPage.this, "Cannot have less than 0 items.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            product.subtractquantity();
+                            productquantity.setText(String.valueOf(product.getQuantity()));
+                        }
+                    }
+            ));
+        } else {
+            subtractbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        if (product.getQuantity() == 0) {
+                            Toast.makeText(ProductPage.this, "Cannot have less than 0 items.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            product.subtractquantity();
+                            productquantity.setText(String.valueOf(product.getQuantity()));
+                        }
+                    },
+                    v -> {}
+            ));
+        }
     }
 
     private void showEnlargedImage(int imageResId) {
@@ -126,8 +229,20 @@ public class ProductPage extends AppCompatActivity {
         ImageView enlargedImage = dialog.findViewById(R.id.enlarged_image);
         enlargedImage.setImageResource(imageResId);
 
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
         // close dialog on image click
-        enlargedImage.setOnClickListener(v -> dialog.dismiss());
+        if (isAccessibilityEnabled) {
+            enlargedImage.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Minimise image"), // single-click action
+                    v -> dialog.dismiss() // double-click action
+            ));
+        } else {
+            enlargedImage.setOnTouchListener(new DoubleClickListener(
+                    v -> dialog.dismiss(), // single-click action
+                    v -> {}
+            ));
+        }
 
         dialog.show();
     }
@@ -283,6 +398,21 @@ public class ProductPage extends AppCompatActivity {
                 productImages = new int[]{R.drawable.close_icon}; // default image if no specific images are found
                 break;
         }
+    }
+
+    private void speakText(String text) {
+        if (tts != null && !tts.isSpeaking()) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
 }

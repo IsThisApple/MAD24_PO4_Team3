@@ -16,84 +16,127 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 import java.util.ArrayList;
 
 public class ShoppingCart extends AppCompatActivity {
-
     private TextView totalSumPrice;
     private ShoppingCartAdapter shoppingcartadapter;
     private ShoppingCartDbHandler dbHandler;
     private ArrayList<Product> productList;
+    private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-        // Initialize views
+        preferenceManager = new PreferenceManager(this);
+
+        // initialise views
         totalSumPrice = findViewById(R.id.totalSumPrice);
         RecyclerView shoppingcartrecyclerview = findViewById(R.id.shoppingcartrecyclerview);
         Button toCheckoutButton = findViewById(R.id.toCheckout);
         ImageView addMoreItems = findViewById(R.id.addMoreItems);
 
-        // Enable edge-to-edge display
+        // enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
 
-        // Navigation Panel
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_map) {
-                startActivity(new Intent(getApplicationContext(), MapActivity.class));
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_cart) {
-                Toast.makeText(this, "You are already on the cart page", Toast.LENGTH_SHORT).show();
-                return true;
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
             }
-            return false;
         });
 
-        // Fetch products from the database
+        initializeNavigationBar();
+
+        // fetch products from the database
         dbHandler = new ShoppingCartDbHandler(this, null, null, 1);
         productList = dbHandler.getAllProducts();
 
-        // Set up RecyclerView
+        // set up recyclerview
         shoppingcartadapter = new ShoppingCartAdapter(productList, this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shoppingcartrecyclerview.setLayoutManager(layoutManager);
         shoppingcartrecyclerview.setItemAnimator(new DefaultItemAnimator());
         shoppingcartrecyclerview.setAdapter(shoppingcartadapter);
 
-        // Calculate total price initially
+        // calculate initial total price
         calculateTotalPrice();
 
-        // Handle button click to proceed to payment
-        toCheckoutButton.setOnClickListener(v -> {
-            double totalPrice = getTotalPrice();
-            if (totalPrice == 0) {
-                Toast.makeText(ShoppingCart.this, "Please Add Items to Cart", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
-                intent.putExtra("totalPrice", totalPrice);
-                startActivity(intent);
-            }
-        });
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 
-        addMoreItems.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        });
+        // handle button click to proceed to checkout
+        if (isAccessibilityEnabled) {
+            toCheckoutButton.setOnTouchListener(new DoubleClickListener(
+                    v -> speak("Proceed to checkout"), // single-click action
+                    v -> {
+                        speak("Proceed to checkout");
+                        Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
+                        double totalPrice = getTotalPrice();
+                        intent.putExtra("totalPrice", totalPrice);
+                        startActivity(intent);
+                    } // double-click action
+            ));
+        } else {
+            toCheckoutButton.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
+                        double totalPrice = getTotalPrice();
+                        intent.putExtra("totalPrice", totalPrice);
+                        startActivity(intent);
+                    }, // single-click action
+                    v -> {} // double-click action
+            ));
+        }
+
+        // handle total price tts
+        if (isAccessibilityEnabled) {
+            totalSumPrice.setOnTouchListener(new DoubleClickListener(
+                    v -> speakTotalPrice(), // single-click action
+                    v -> speakTotalPrice() // double-click action
+            ));
+        } else {
+            totalSumPrice.setOnTouchListener(new DoubleClickListener(
+                    v -> {}, // single-click action
+                    v -> {} // double-click action
+            ));
+        }
+
+        // handle image click to bring to main page to add more items
+        if (isAccessibilityEnabled) {
+            addMoreItems.setOnTouchListener(new DoubleClickListener(
+                    v -> speak("Add more items"), // single-click action
+                    v -> {
+                        speak("Add more items");
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    } // double-click action
+            ));
+        } else {
+            addMoreItems.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }, // single-click action
+                    v -> {} // double-click action
+            ));
+        }
+    }
+
+    private void speakTotalPrice() {
+        double totalPrice = getTotalPrice();
+        speak("Total price is $" + String.format("%.2f", totalPrice));
     }
 
     public void calculateTotalPrice() {
@@ -118,4 +161,92 @@ public class ShoppingCart extends AppCompatActivity {
         shoppingcartadapter.updateData(productList);
         calculateTotalPrice();
     }
+
+    private void initializeNavigationBar() {
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
+
+        // create listeners for each menu item
+
+        View.OnClickListener homeSingleClickListener;
+        View.OnClickListener homeDoubleClickListener = null;
+
+        View.OnClickListener mapSingleClickListener;
+        View.OnClickListener mapDoubleClickListener = null;
+
+        View.OnClickListener chatSingleClickListener;
+        View.OnClickListener chatDoubleClickListener = null;
+
+        View.OnClickListener cartSingleClickListener;
+        View.OnClickListener cartDoubleClickListener = null;
+
+        if (isAccessibilityEnabled) {
+            homeSingleClickListener = v -> speak("Open home");
+            homeDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            };
+        } else {
+            homeSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            mapSingleClickListener = v -> speak("Open map");
+            mapDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+            };
+        } else {
+            mapSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            chatSingleClickListener = v -> speak("Open chat");
+            chatDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        } else {
+            chatSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            cartSingleClickListener = v -> speak("Already in cart");
+            cartDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        } else {
+            cartSingleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        }
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
+    }
+
+    // method to speak text using tts
+    public void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
 }

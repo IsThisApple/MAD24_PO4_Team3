@@ -7,7 +7,6 @@ import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 public class DoubleClickListener implements View.OnTouchListener {
-
     private final View.OnClickListener singleClickListener;
     private final View.OnClickListener doubleClickListener;
     private long lastClickTime = 0;

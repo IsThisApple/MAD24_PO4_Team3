@@ -61,8 +61,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap myMap;
     Location currentlocation;
@@ -77,6 +79,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private PlacesAdapter placesAdapter;
     private List<FoursquareResponse.Place> placesList = new ArrayList<>();
     private FoursquareService service;
+    private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +93,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             return insets;
         });
 
+        preferenceManager = new PreferenceManager(this);
+
         ImageView findsupermarket = findViewById(R.id.findsupermarket);
         findsupermarket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,44 +103,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-        // recyclerView setup
+        // recyclerview setup
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
         placesAdapter = new PlacesAdapter(this, placesList, service);
         recyclerView.setAdapter(placesAdapter);
 
-        // navigation Panel
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-                return true;
-
-            } else if (itemId == R.id.bottom_map) {
-                Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
-                return true;
-
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-                return true;
-
-            } else if (itemId == R.id.bottom_cart) {
-                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
-                finish();
-                return true;
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
             }
-            return false;
         });
+
+        initializeNavigationBar();
     }
 
     private void getLastLocation() {
@@ -146,7 +135,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null){
+                if (location != null) {
                     currentlocation = location;
                     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                     mapFragment.getMapAsync(MapActivity.this);
@@ -154,9 +143,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             myMap.setMyLocationEnabled(true);
@@ -164,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
         }
 
-        LatLng currentLatLng = new LatLng(currentlocation.getLatitude(),currentlocation.getLongitude());
+        LatLng currentLatLng = new LatLng(currentlocation.getLatitude(), currentlocation.getLongitude());
         myMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
         myMap.animateCamera(CameraUpdateFactory.zoomBy(12));
     }
@@ -172,10 +163,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == FINE_PERMISSION_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
-            }else{
+            } else {
                 Toast.makeText(this, "Location is denied, please allow permission to use map", Toast.LENGTH_SHORT).show();
             }
         }
@@ -191,7 +182,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         int radius = 1000; // set the radius to 1000 meters (1 km)
 
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
-        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius,CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
+        Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius, CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
 
         call.enqueue(new Callback<FoursquareResponse>() {
             @Override
@@ -230,135 +221,91 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    // code used for previous map api
+    private void initializeNavigationBar() {
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 
-    /*
-    public void onShowSupermarketsClicked(View view) {
-        if (currentlocation != null) {
-            double latitude = currentlocation.getLatitude();
-            double longitude = currentlocation.getLongitude();
-            int radius = 1000; // radius in meters (adjust as needed)
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
 
-            // execute Overpass API query task
-            new OverpassAPIQueryTask(latitude, longitude, radius, new OverpassAPIQueryTask.OverpassAPIQueryListener() {
-                @Override
-                public void onSupermarketFound(double latitude, double longitude) {
-                    // add marker for each supermarket found
-                    LatLng supermarketLatLng = new LatLng(latitude, longitude);
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(supermarketLatLng)
-                            .title("Supermarket");
-                    myMap.addMarker(markerOptions);
-                }
-            }).execute();
+        // create listeners for each menu item
+
+        View.OnClickListener homeSingleClickListener;
+        View.OnClickListener homeDoubleClickListener = null;
+
+        View.OnClickListener mapSingleClickListener;
+        View.OnClickListener mapDoubleClickListener = null;
+
+        View.OnClickListener chatSingleClickListener;
+        View.OnClickListener chatDoubleClickListener = null;
+
+        View.OnClickListener cartSingleClickListener;
+        View.OnClickListener cartDoubleClickListener = null;
+
+        if (isAccessibilityEnabled) {
+            homeSingleClickListener = v -> speak("Open home");
+            homeDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            };
         } else {
-            Toast.makeText(this, "Current location not available", Toast.LENGTH_SHORT).show();
+            homeSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            };
         }
+
+        if (isAccessibilityEnabled) {
+            mapSingleClickListener = v -> speak("Already in map");
+            mapDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        } else {
+            mapSingleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        }
+
+        if (isAccessibilityEnabled) {
+            chatSingleClickListener = v -> speak("Open chat");
+            chatDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        } else {
+            chatSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            cartSingleClickListener = v -> speak("Open cart");
+            cartDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+            };
+        } else {
+            cartSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+            };
+        }
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
     }
 
-    private static class OverpassAPIQueryTask extends AsyncTask<Void, Void, String> {
-
-        private double latitude;
-        private double longitude;
-        private int radius;
-        private OverpassAPIQueryListener listener;
-
-        public OverpassAPIQueryTask(double latitude, double longitude, int radius, OverpassAPIQueryListener listener) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.radius = radius;
-            this.listener = listener;
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-            String jsonString = null;
-
-            try {
-                // construct the Overpass API query URL
-                String query = buildOverpassQuery();
-                URL url = new URL(query);
-
-                // establish connection
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // read the input stream into a string
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuilder builder = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line).append("\n");
-                }
-                if (builder.length() == 0) {
-                    return null;
-                }
-                jsonString = builder.toString();
-            } catch (IOException e) {
-                Log.e("OverpassAPIQueryTask", "Error ", e);
-                return null;
-            } finally {
-                // clean up resources
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        Log.e("OverpassAPIQueryTask", "Error closing stream", e);
-                    }
-                }
-            }
-            return jsonString;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonString) {
-            if (jsonString != null) {
-                try {
-                    // parse JSON response
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    JSONArray elements = jsonObject.getJSONArray("elements");
-
-                    // process each element (supermarket)
-                    for (int i = 0; i < elements.length(); i++) {
-                        JSONObject element = elements.getJSONObject(i);
-                        double lat = element.getDouble("lat");
-                        double lon = element.getDouble("lon");
-                        // callback to listener with supermarket location
-                        listener.onSupermarketFound(lat, lon);
-                    }
-                } catch (JSONException e) {
-                    Log.e("OverpassAPIQueryTask", "Error parsing JSON", e);
-                }
-            } else {
-                Log.e("OverpassAPIQueryTask", "Empty response");
-            }
-        }
-
-        private String buildOverpassQuery() {
-            // construct Overpass API query with parameters
-            return "https://overpass-api.de/api/interpreter?data=" +
-                    "[out:json];" +
-                    "node[\"shop\"=\"supermarket\"](around:" + radius + "," + latitude + "," + longitude + ");" +
-                    "out body;" +
-                    ">;" +
-                    "out skel qt;";
-        }
-
-        // interface for callback
-        public interface OverpassAPIQueryListener {
-            void onSupermarketFound(double latitude, double longitude);
-        }
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
-     */
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
 
 }

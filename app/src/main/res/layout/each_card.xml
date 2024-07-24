@@ -16,7 +16,6 @@
             android:padding="10dp"
             android:textColor="@color/darkbrown"
             android:elevation="5dp"/>
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

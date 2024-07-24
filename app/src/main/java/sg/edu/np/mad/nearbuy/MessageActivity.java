@@ -3,8 +3,11 @@ package sg.edu.np.mad.nearbuy;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,10 +29,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private EditText messageInput;
     private Button sendButton;
@@ -38,6 +41,8 @@ public class MessageActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class MessageActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(messageList);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        preferenceManager = new PreferenceManager(this);
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -98,32 +105,118 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
 
+        initializeNavigationBar();
+
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        // add tts and double-click functionality to message input
+        if (isAccessibilityEnabled) {
+            messageInput.setOnTouchListener(new DoubleClickListener(
+                    v -> speak("Type a message"),
+                    v -> messageInput.requestFocus()
+            ));
+        } else {
+            messageInput.setOnTouchListener(new DoubleClickListener(
+                    v -> messageInput.requestFocus(),
+                    v -> {}
+            ));
+        }
+
+        // add tts and double-click functionality to send button
+        if (isAccessibilityEnabled) {
+            sendButton.setOnTouchListener(new DoubleClickListener(
+                    v -> speak("Send"),
+                    v -> sendButton.performClick()
+            ));
+        } else {
+            sendButton.setOnTouchListener(new DoubleClickListener(
+                    v -> sendButton.performClick(),
+                    v -> {}
+            ));
+        }
+    }
+
+    private void initializeNavigationBar() {
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_chat);
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
+        // create listeners for each menu item
+
+        View.OnClickListener homeSingleClickListener;
+        View.OnClickListener homeDoubleClickListener = null;
+
+        View.OnClickListener mapSingleClickListener;
+        View.OnClickListener mapDoubleClickListener = null;
+
+        View.OnClickListener chatSingleClickListener;
+        View.OnClickListener chatDoubleClickListener = null;
+
+        View.OnClickListener cartSingleClickListener;
+        View.OnClickListener cartDoubleClickListener = null;
+
+        if (isAccessibilityEnabled) {
+            homeSingleClickListener = v -> speak("Open home");
+            homeDoubleClickListener = v -> {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
-                return true;
+            };
+        } else {
+            homeSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            };
+        }
 
-            } else if (itemId == R.id.bottom_map) {
+        if (isAccessibilityEnabled) {
+            mapSingleClickListener = v -> speak("Open map");
+            mapDoubleClickListener = v -> {
                 startActivity(new Intent(getApplicationContext(), MapActivity.class));
                 finish();
+            };
+        } else {
+            mapSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+            };
+        }
 
-            } else if (itemId == R.id.bottom_chat) {
-                Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
-                return true;
+        if (isAccessibilityEnabled) {
+            chatSingleClickListener = v -> speak("Already in chat");
+            chatDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        } else {
+            chatSingleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        }
 
-            } else if (itemId == R.id.bottom_cart) {
+        if (isAccessibilityEnabled) {
+            cartSingleClickListener = v -> speak("Open cart");
+            cartDoubleClickListener = v -> {
                 startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
                 finish();
-                return true;
-            }
-            return false;
-        });
+            };
+        } else {
+            cartSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+            };
+        }
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
 
         final View rootView = findViewById(android.R.id.content);
 
@@ -135,6 +228,7 @@ public class MessageActivity extends AppCompatActivity {
                 int screenHeight = rootView.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
 
+
                 if (keypadHeight > screenHeight * 0.15) { // assume that the keyboard is up if the height of the remaining part is greater than 15% of the screen height
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
@@ -142,6 +236,20 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
 }

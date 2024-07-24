@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textSize="14sp"
-            android:text="Adress of Place"/>
+            android:text="Address of Place"/>
 
         <ImageView
             android:id="@+id/placeImage"

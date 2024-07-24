@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
         android:id="@+id/title"
@@ -26,7 +26,7 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="40dp"
-        android:textColor="@color/black"
+        android:textColor="@color/darkbrown"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -58,7 +58,7 @@
                 android:textSize="20dp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="33dp"
-                tools:layout_editor_absoluteY="405dp" />
+                tools:layout_editor_absoluteY="405dp"/>
 
             <TextView
                 android:id="@+id/totalSumPrice"
@@ -71,7 +71,7 @@
                 android:textSize="30dp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="33dp"
-                tools:layout_editor_absoluteY="405dp" />
+                tools:layout_editor_absoluteY="405dp"/>
 
             <TextView
                 android:id="@+id/gst"
@@ -83,10 +83,8 @@
                 android:textColor="@color/darkbrown"
                 android:textSize="15dp"
                 tools:layout_editor_absoluteX="33dp"
-                tools:layout_editor_absoluteY="405dp" />
-
+                tools:layout_editor_absoluteY="405dp"/>
         </LinearLayout>
-
 
         <Button
             android:id="@+id/toPayment"
@@ -100,10 +98,8 @@
             android:textSize="20dp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="33dp"
-            tools:layout_editor_absoluteY="405dp" />
-
+            tools:layout_editor_absoluteY="405dp"/>
     </LinearLayout>
-
 
     <Button
         android:id="@+id/newAcc"
@@ -117,7 +113,6 @@
         android:text="+ Add New Account"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@id/toCheckoutHolder"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

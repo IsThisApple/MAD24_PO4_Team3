@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BIND_TTS_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
+        <activity
+            android:name=".AccessibilitySettingsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".PayAddCard"
             android:exported="false" />
@@ -56,13 +66,7 @@
             android:exported="true" />
         <activity
             android:name=".LoginPageHolder"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".RegisterPageHolder"
             android:exported="true" />

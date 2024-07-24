@@ -21,10 +21,10 @@ import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
-
     private List<FoursquareResponse.Place> placesList;
     private FoursquareService service;
     private Context context;
+
     private static final String CLIENT_ID = "QHTCMWLTLHVTMMIWYLG52ZFHZLC3F2ZDLDUQO4YVCMWPZTC4";
     private static final String CLIENT_SECRET = "DRF1GTV03UDSHXC5UJOLULB1O5ZMSRPMTKHJHRT5VYGD4K33";
     private static final String VERSION = "20230712";
@@ -73,39 +73,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             imageView.setImageResource(R.drawable.placeholder);
 
         }
-
-        /*
-        service.getVenueDetails(venueId, CLIENT_ID, CLIENT_SECRET, VERSION)
-                .enqueue(new Callback<VenueDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<VenueDetailsResponse> call, Response<VenueDetailsResponse> response) {
-                        if (response.isSuccessful()) {
-                            VenueDetailsResponse.Venue venue = response.body().getVenue();
-                            if (venue != null && venue.getPhotos() != null && !venue.getPhotos().isEmpty()) {
-                                String imageUrl = venue.getPhotos().get(0).getUrl(); // assuming first photo
-                                Glide.with(context)
-                                        .load(imageUrl)
-                                        .placeholder(R.drawable.placeholder)
-                                        .into(imageView);
-                            }
-                        } else {
-                            // handle error
-                            Log.d("PlacesAdapter", "No photos found for venueId: " + venueId);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<VenueDetailsResponse> call, Throwable t) {
-                        // handle failure
-                        Log.e("PlacesAdapter", "Failed to fetch venue details: " + t.getMessage());
-
-                    }
-                });
-                */
-        }
+    }
 
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
-
         TextView placeName;
         TextView placeAddress;
         ImageView placeImage;

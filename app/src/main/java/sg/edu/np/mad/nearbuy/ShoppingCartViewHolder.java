@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.w3c.dom.Text;
 
 public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
-
     ImageView imageproduct;
     TextView priceproduct;
     TextView nameproduct;
@@ -19,7 +18,6 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
     TextView quantity;
     ImageView addition;
     ImageView subtraction;
-
 
     public ShoppingCartViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -31,4 +29,5 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         addition = itemView.findViewById(R.id.addition);
         subtraction = itemView.findViewById(R.id.subtraction);
     }
+
 }

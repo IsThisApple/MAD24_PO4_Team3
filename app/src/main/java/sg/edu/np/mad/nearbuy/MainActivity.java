@@ -1,7 +1,5 @@
 package sg.edu.np.mad.nearbuy;
 
-import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -30,7 +28,7 @@ import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
+    private PreferenceManager preferenceManager;
     private TextToSpeech tts;
 
     @Override
@@ -44,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        preferenceManager = new PreferenceManager(this);
+
         // initialise tts
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -54,33 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // navigation panel
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
-                Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
-                return true;
-
-            } else if (itemId == R.id.bottom_map) {
-                startActivity(new Intent(getApplicationContext(), MapActivity.class));
-                finish();
-                return true;
-
-            } else if (itemId == R.id.bottom_chat) {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-                return true;
-
-            } else if (itemId == R.id.bottom_cart) {
-                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
-                finish();
-                return true;
-            }
-            return false;
-        });
+        initializeNavigationBar();
 
         List<Product> productsList = new ArrayList<Product>();
         // meat & seafood
@@ -153,6 +127,84 @@ public class MainActivity extends AppCompatActivity {
         productsrecyclerview.setLayoutManager(mLayoutManager);
         productsrecyclerview.setItemAnimator(new DefaultItemAnimator());
         productsrecyclerview.setAdapter(mAdapter);
+    }
+
+    private void initializeNavigationBar() {
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        // create listeners for each menu item
+
+        View.OnClickListener homeSingleClickListener;
+        View.OnClickListener homeDoubleClickListener = null;
+
+        View.OnClickListener mapSingleClickListener;
+        View.OnClickListener mapDoubleClickListener = null;
+
+        View.OnClickListener chatSingleClickListener;
+        View.OnClickListener chatDoubleClickListener = null;
+
+        View.OnClickListener cartSingleClickListener;
+        View.OnClickListener cartDoubleClickListener = null;
+
+        if (isAccessibilityEnabled) {
+            homeSingleClickListener = v -> speak("Already in home");
+            homeDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        } else {
+            homeSingleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
+        }
+
+        if (isAccessibilityEnabled) {
+            mapSingleClickListener = v -> speak("Open map");
+            mapDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+            };
+        } else {
+            mapSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            chatSingleClickListener = v -> speak("Open chat");
+            chatDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        } else {
+            chatSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
+                finish();
+            };
+        }
+
+        if (isAccessibilityEnabled) {
+            cartSingleClickListener = v -> speak("Open cart");
+            cartDoubleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+            };
+        } else {
+            cartSingleClickListener = v -> {
+                startActivity(new Intent(getApplicationContext(), ShoppingCart.class));
+                finish();
+            };
+        }
+
+        // set listeners
+        bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
+        bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
+    }
+
+    // method to speak text using tts
+    private void speak(String text) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     @Override
