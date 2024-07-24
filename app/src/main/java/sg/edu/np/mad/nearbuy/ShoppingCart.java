@@ -209,19 +209,6 @@ public class ShoppingCart extends AppCompatActivity {
         }
 
         if (isAccessibilityEnabled) {
-            chatSingleClickListener = v -> speak("Open chat");
-            chatDoubleClickListener = v -> {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-            };
-        } else {
-            chatSingleClickListener = v -> {
-                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
-                finish();
-            };
-        }
-
-        if (isAccessibilityEnabled) {
             cartSingleClickListener = v -> speak("Already in cart");
             cartDoubleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
         } else {
@@ -231,7 +218,6 @@ public class ShoppingCart extends AppCompatActivity {
         // set listeners
         bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
         bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
-        bottomNavigationView.findViewById(R.id.bottom_chat).setOnTouchListener(new DoubleClickListener(chatSingleClickListener, chatDoubleClickListener));
         bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
     }
 

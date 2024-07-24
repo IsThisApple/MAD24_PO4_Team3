@@ -8,6 +8,7 @@
     tools:context=".Payment"
     android:background="@color/paleyellow">
 
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -21,6 +22,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
     </TextView>
 
     <TextView
@@ -34,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
         android:layout_marginTop="20dp"
-        tools:layout_editor_absoluteY="295dp"/>
+        tools:layout_editor_absoluteY="295dp" />
 
     <LinearLayout
         android:id="@id/orderSummaryPrices"
@@ -69,8 +71,9 @@
                 android:layout_height="wrap_content"
                 android:text="subtotal price"
                 android:textColor="@color/darkbrown"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,8 +101,9 @@
                 android:text="delivery price"
                 android:layout_marginTop="14dp"
                 android:textColor="@color/darkbrown"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -136,6 +140,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20dp"
             android:paddingRight="10dp"/>
+
     </LinearLayout>
 
     <TextView
@@ -149,7 +154,7 @@
         android:textStyle="bold"
         android:paddingTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalParent"/>
+        app:layout_constraintTop_toBottomOf="@+id/totalParent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -175,7 +180,7 @@
                 android:paddingLeft="10dp"
                 android:text="Payment"
                 android:textColor="@color/darkbrown"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/paymentType"
@@ -186,122 +191,48 @@
                 android:paddingRight="10dp"
                 android:text="payment type"
                 android:textColor="@color/darkbrown"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@color/white">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/addressCheckout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:paddingLeft="10dp"
+                android:text="Saved Address"
+                android:textColor="@color/darkbrown"
+                android:textSize="20dp"
+                tools:layout_editor_absoluteX="33dp"
+                tools:layout_editor_absoluteY="405dp" />
 
-                <TextView
-                    android:id="@+id/addressCheckout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:text="Address"
-                    android:textColor="@color/darkbrown"
-                    android:textSize="20dp"
-                    tools:layout_editor_absoluteX="33dp"
-                    tools:layout_editor_absoluteY="405dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/addressView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/newAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginBottom="4dp"
+                android:backgroundTint="@color/brown"
+                android:elevation="5dp"
+                android:text="+ Add New Address"
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addressView" />
 
-                    <EditText
-                        android:id="@+id/postalCode"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:hint="Postal Code"
-                        android:textColor="@color/darkbrown"
-                        android:textSize="18dp"/>
 
-                    <EditText
-                        android:id="@+id/street"
-                        android:layout_width="240dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:hint="Building, Street, etc..."
-                        android:textColor="@color/darkbrown"
-                        android:textSize="18dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/unitNo"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:hint="Unit No (NA if none)"
-                    android:textColor="@color/darkbrown"
-                    android:textSize="18dp"/>
-
-                <TextView
-                    android:id="@+id/saveInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:text="Label As:"
-                    android:textColor="@color/darkbrown"
-                    android:textSize="18dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/saveAs"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:hint="Home, Work, etc..."
-                        android:textColor="@color/darkbrown"
-                        android:textSize="18dp"/>
-
-                    <Button
-                        android:id="@+id/saveLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:backgroundTint="@color/brown"
-                        android:text="Save"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="10dp"
-                        android:text="Saved Addresses:"
-                        android:textColor="@color/darkbrown"
-                        android:textSize="18dp"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/addressView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
     <Button
@@ -324,6 +255,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="18dp"
-        android:layout_marginLeft="18dp"/>
+        android:layout_marginLeft="18dp"
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

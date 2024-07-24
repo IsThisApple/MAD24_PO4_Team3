@@ -18,6 +18,9 @@
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
         <activity
+            android:name=".AddAddress"
+            android:exported="false" />
+        <activity
             android:name=".AccessibilitySettingsActivity"
             android:exported="true">
             <intent-filter>

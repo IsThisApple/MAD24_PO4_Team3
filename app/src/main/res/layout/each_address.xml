@@ -16,6 +16,16 @@
             android:padding="10dp"
             android:textStyle="bold"
             android:textColor="@color/darkbrown"/>
+
+        <TextView
+            android:id="@+id/delAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:text="x"
+            android:textColor="@color/darkbrown"
+            android:textSize="20dp" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

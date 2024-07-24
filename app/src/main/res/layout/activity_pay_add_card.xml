@@ -27,183 +27,184 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Card:"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/darkbrown"
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="50dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/card"
-        android:background="@color/white"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:elevation="2dp"
         app:layout_constraintLeft_toRightOf="@id/carcar"
-        tools:layout_editor_absoluteY="80dp"
-        android:elevation="2dp"/>
-
-    <TextView
-        android:id="@+id/numnum"
-        android:text="Card Number"
-        android:textSize="18dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/darkbrown"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/carcar"/>
-
-    <EditText
-        android:id="@+id/cardNum"
-        android:elevation="2dp"
-        android:layout_width="350dp"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="#### #### #### ####"
-        android:layout_marginLeft="15dp"
-        android:textSize="15dp"
-        android:background="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/numnum"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="175dp" />
-
-    <TextView
-        android:id="@+id/monmon"
-        android:text="Expiration Month"
-        android:textSize="18dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/darkbrown"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardNum"/>
-
-    <EditText
-        android:id="@+id/month"
-        android:elevation="2dp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="e.g. 05"
-        android:layout_marginLeft="15dp"
-        android:textSize="15dp"
-        android:background="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/monmon"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="175dp" />
-
-    <TextView
-        android:id="@+id/yryr"
-        android:text="Expiration Year"
-        android:textSize="18dp"
-        android:layout_marginRight="75dp"
-        android:textStyle="bold"
-        android:textColor="@color/darkbrown"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardNum"/>
-
-    <EditText
-        android:id="@+id/year"
-        android:elevation="2dp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="e.g. 2030"
-        android:layout_marginRight="45dp"
-        android:textSize="15dp"
-        android:background="@color/white"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/yryr" />
-
-    <TextView
-        android:id="@+id/cvnCvn"
-        android:text="CVN"
-        android:textSize="18dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/darkbrown"
-        android:textStyle="bold"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/month"/>
-
-    <TextView
-        android:text="This code is a three or four digit number
-        \nprinted on the back or front of credit cards."
-        android:textSize="10dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/darkbrown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvn"/>
-
-    <EditText
-        android:id="@+id/cvn"
-        android:elevation="2dp"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="###"
-        android:layout_marginLeft="15dp"
-        android:textSize="15dp"
-        android:background="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvnCvn" />
-
-    <TextView
-        android:id="@+id/lblb"
-        android:text="Label"
-        android:textSize="18dp"
-        android:layout_marginRight="152dp"
-        android:textStyle="bold"
-        android:textColor="@color/darkbrown"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/year"/>
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <EditText
         android:id="@+id/label"
-        android:elevation="2dp"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="e.g. Spendings"
-        android:layout_marginRight="45dp"
-        android:textSize="15dp"
+        android:layout_marginRight="48dp"
         android:background="@color/white"
+        android:elevation="2dp"
+        android:hint="e.g. Spendings"
+        android:paddingLeft="5dp"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblb" />
+
+    <TextView
+        android:id="@+id/lblb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="150dp"
+        android:text="Label"
+        android:textColor="@color/darkbrown"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/year" />
 
     <Button
         android:id="@+id/addAcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="48dp"
         android:backgroundTint="@color/brown"
         android:text="Add Account"
         android:textColor="@color/white"
-        android:layout_marginTop="45dp"
-        android:layout_marginRight="45dp"
         android:textSize="15dp"
-        app:layout_constraintTop_toBottomOf="@id/label"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+    <TextView
+        android:id="@+id/numnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="60dp"
+        android:text="Card Number"
+        android:textColor="@color/darkbrown"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carcar" />
+
+    <TextView
+        android:id="@+id/cvnCvn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="24dp"
+        android:text="CVN"
+        android:textColor="@color/darkbrown"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month" />
+
+    <TextView
+        android:id="@+id/yryr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="60dp"
+        android:text="Expiration Year"
+        android:textColor="@color/darkbrown"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardNum" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="This code is a three or four \ndigit number printed on the \nback or front of credit cards."
+        android:textColor="@color/darkbrown"
+        android:textSize="15dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvn" />
+
+    <EditText
+        android:id="@+id/cardNum"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:hint="#### #### #### ####"
+        android:paddingLeft="5dp"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/numnum" />
+
+    <EditText
+        android:id="@+id/cvn"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:hint="###"
+        android:paddingLeft="5dp"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvnCvn" />
+
+    <EditText
+        android:id="@+id/month"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:hint="e.g. 05"
+        android:paddingLeft="5dp"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monmon" />
+
+    <EditText
+        android:id="@+id/year"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="48dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:hint="e.g. 2030"
+        android:paddingLeft="5dp"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/yryr" />
+
+    <TextView
+        android:id="@+id/monmon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="24dp"
+        android:text="Expiration Month"
+        android:textColor="@color/darkbrown"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardNum" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
