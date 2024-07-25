@@ -52,7 +52,7 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 2:**
 
 *Jovan:*
-Map & Location Tracking
+Map with Precise Location Tracking and button to find nearby supermarkets. The button will also show details on the supermarkets nearby, providing images if its available.
 
 *Sean:*
 Search & Filter Functionality
