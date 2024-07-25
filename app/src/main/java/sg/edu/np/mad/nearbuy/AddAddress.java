@@ -1,8 +1,10 @@
 package sg.edu.np.mad.nearbuy;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,8 +47,14 @@ public class AddAddress extends AppCompatActivity {
                     Toast.makeText(AddAddress.this, "Label or postal code must be unique", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
 
-
+        ImageView backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
     }
 

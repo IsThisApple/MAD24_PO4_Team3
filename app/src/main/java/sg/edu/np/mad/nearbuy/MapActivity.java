@@ -81,6 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private FoursquareService service;
     private PreferenceManager preferenceManager;
     private TextToSpeech tts;
+    private boolean isRecyclerViewVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +96,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         preferenceManager = new PreferenceManager(this);
 
+        //Setting up buttons
+        ImageView recyclerviewtoggle = findViewById(R.id.recyclerviewToggle);
+
+        recyclerviewtoggle.setEnabled(false);
         ImageView findsupermarket = findViewById(R.id.findsupermarket);
         findsupermarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findSupermarketsNearby();
+                recyclerviewtoggle.setEnabled(true);
+            }
+
+        });
+
+        recyclerviewtoggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRecyclerViewVisible) {
+                    recyclerView.setVisibility(View.GONE);
+                    recyclerviewtoggle.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
+
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerviewtoggle.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
+
+                }
+                isRecyclerViewVisible = !isRecyclerViewVisible;
             }
         });
 
