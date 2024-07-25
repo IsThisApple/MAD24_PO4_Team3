@@ -22,21 +22,23 @@ import java.util.ArrayList;
 
 public class PayAddCard extends AppCompatActivity {
 
+    // Data source for card types
     ArrayList<String> dataSource;
-    private int selectedPosition = -1;
+    private int selectedPosition = -1; // Track selected card type
     CardAdapter cardAdapter;
     LinearLayoutManager linearLayoutManager;
-    DBCard dbCard;
-
+    DBCard dbCard; // Database helper for card operations
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this); // Enable edge-to-edge display
         setContentView(R.layout.activity_pay_add_card);
 
+        // Initialize database helper
         dbCard = new DBCard(this);
 
+        // Setup RecyclerView for card types
         RecyclerView cardView = findViewById(R.id.card);
         dataSource = new ArrayList<>();
         dataSource.add("MasterCard");
@@ -51,22 +53,24 @@ public class PayAddCard extends AppCompatActivity {
         cardView.setLayoutManager(linearLayoutManager);
         cardView.setAdapter(cardAdapter);
 
+        // Setup add account button click listener
         Button addAccButton = findViewById(R.id.addAcc);
         addAccButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAccount();
+                addAccount(); // Call add account method when button is clicked
             }
         });
-
     }
 
     private void addAccount() {
+        // Check if a card type is selected
         if (selectedPosition == -1) {
             Toast.makeText(this, "Please select a card type", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Get input fields
         String cardType = dataSource.get(selectedPosition);
         EditText cardNumberField = findViewById(R.id.cardNum);
         EditText expirationMonthField = findViewById(R.id.month);
@@ -74,13 +78,14 @@ public class PayAddCard extends AppCompatActivity {
         EditText cvnField = findViewById(R.id.cvn);
         EditText labelField = findViewById(R.id.label);
 
+        // Retrieve and clean input data
         String cardNumber = cardNumberField.getText().toString().replaceAll("[^\\d]", ""); // Remove non-digits
         String expirationMonth = expirationMonthField.getText().toString();
         String expirationYear = expirationYearField.getText().toString();
         String cvn = cvnField.getText().toString();
         String label = labelField.getText().toString();
 
-        // Check if card number is exactly 16 digits
+        // Validate card number
         if (cardNumber.length() != 16) {
             Toast.makeText(this, "Card number must have exactly 16 digits", Toast.LENGTH_SHORT).show();
             return;
@@ -92,13 +97,13 @@ public class PayAddCard extends AppCompatActivity {
             return;
         }
 
-        // Check if expiration month is between 01 and 12
+        // Validate expiration month
         if (!expirationMonth.matches("0[1-9]|1[0-2]")) {
             Toast.makeText(this, "Expiration month must be between 01 and 12", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Check if expiration year is greater than 2024
+        // Validate expiration year
         int year;
         try {
             year = Integer.parseInt(expirationYear);
@@ -111,13 +116,13 @@ public class PayAddCard extends AppCompatActivity {
             return;
         }
 
-        // Check if CVN is exactly 3 digits
+        // Validate CVN
         if (!cvn.matches("\\d{3}")) {
             Toast.makeText(this, "CVN must be exactly 3 digits", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Check if label is provided and is unique within the selected card type
+        // Validate label
         if (label.isEmpty()) {
             Toast.makeText(this, "Label must be provided", Toast.LENGTH_SHORT).show();
             return;
@@ -127,47 +132,46 @@ public class PayAddCard extends AppCompatActivity {
             return;
         }
 
+        // Add card to database
         boolean isInserted = dbCard.addCard(getCurrentUserId(), cardType, cardNumber,
                 Integer.parseInt(expirationMonth), year, cvn, label);
 
         if (isInserted) {
             Toast.makeText(this, "Account added successfully", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Close activity
         } else {
             Toast.makeText(this, "Failed to add account", Toast.LENGTH_SHORT).show();
         }
     }
 
-
+    // Check if the card number is unique for the card type
     private boolean isCardNumberUnique(String cardType, String cardNumber) {
         return dbCard.isCardNumberUnique(getCurrentUserId(), cardType, cardNumber);
     }
 
-
+    // Check if the label is unique for the card type
     private boolean isLabelUnique(String cardType, String label) {
-        // Retrieve all labels for the given card type
         Cursor cursor = dbCard.getCardsByType(getCurrentUserId(), cardType);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String existingLabel = cursor.getString(cursor.getColumnIndex("label"));
                 if (label.equals(existingLabel)) {
                     cursor.close();
-                    return false;
+                    return false; // Label already exists
                 }
             }
             cursor.close();
         }
-        return true;
+        return true; // Label is unique
     }
 
-
-
-
+    // Get the current user ID from SharedPreferences
     private String getCurrentUserId() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         return prefs.getString("currentUserId", ""); // Return the stored user ID or an empty string if not found
     }
 
+    // Adapter for displaying card types in RecyclerView
     class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         ArrayList<String> addData;
 
@@ -186,7 +190,7 @@ public class PayAddCard extends AppCompatActivity {
         public void onBindViewHolder(@NonNull CardHolder holder, int position) {
             holder.cardTitle.setText(addData.get(position));
 
-            // Check if this item is the selected item
+            // Highlight selected item
             if (position == selectedPosition) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(PayAddCard.this, R.color.lightblue));
             } else {
@@ -197,7 +201,7 @@ public class PayAddCard extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     selectedPosition = holder.getAdapterPosition();
-                    notifyDataSetChanged(); // Notify the adapter to refresh all items
+                    notifyDataSetChanged(); // Refresh all items
                 }
             });
         }
@@ -207,6 +211,7 @@ public class PayAddCard extends AppCompatActivity {
             return addData.size();
         }
 
+        // ViewHolder for card item
         class CardHolder extends RecyclerView.ViewHolder {
             TextView cardTitle;
 
@@ -217,249 +222,3 @@ public class PayAddCard extends AppCompatActivity {
         }
     }
 }
-
-/*
-package sg.edu.np.mad.nearbuy;
-
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.Locale;
-
-public class PayAddCard extends AppCompatActivity {
-    ArrayList<String> dataSource;
-    private int selectedPosition = -1;
-    CardAdapter cardAdapter;
-    LinearLayoutManager linearLayoutManager;
-    DBCard dbCard;
-    private TextToSpeech tts;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_pay_add_card);
-
-        dbCard = new DBCard(this);
-
-        // initialise tts
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    tts.setLanguage(Locale.US);
-                }
-            }
-        });
-
-        RecyclerView cardView = findViewById(R.id.card);
-        dataSource = new ArrayList<>();
-        dataSource.add("MasterCard");
-        dataSource.add("VISA");
-        dataSource.add("GrabPay");
-        dataSource.add("MayBank");
-        dataSource.add("CitiBank");
-        dataSource.add("GXSBank");
-
-        linearLayoutManager = new LinearLayoutManager(PayAddCard.this, LinearLayoutManager.HORIZONTAL, false);
-        cardAdapter = new CardAdapter(dataSource);
-        cardView.setLayoutManager(linearLayoutManager);
-        cardView.setAdapter(cardAdapter);
-
-        setupAdditionalTTSAndClickListeners();
-    }
-
-    private void setupAdditionalTTSAndClickListeners() {
-        TextView carcar = findViewById(R.id.carcar);
-        EditText cardNum = findViewById(R.id.cardNum);
-        EditText month = findViewById(R.id.month);
-        EditText year = findViewById(R.id.year);
-        TextView cvndesc = findViewById(R.id.cvndesc);
-        EditText cvn = findViewById(R.id.cvn);
-        EditText label = findViewById(R.id.label);
-        Button addAcc = findViewById(R.id.addAcc);
-
-        carcar.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Select card type"),
-                v -> speakText("Select card type")
-        ));
-
-        cardNum.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Enter card number"),
-                v -> {
-                    speakText("Enter card number");
-                    cardNum.requestFocus(); // double-click action
-                }
-        ));
-
-        month.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Enter card expiration month"),
-                v -> {
-                    speakText("Enter card expiration month");
-                    month.requestFocus(); // double-click action
-                }
-        ));
-
-        year.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Enter card expiration year"),
-                v -> {
-                    speakText("Enter card expiration year");
-                    year.requestFocus(); // double-click action
-                }
-        ));
-
-        cvndesc.setOnTouchListener(new DoubleClickListener(
-                v -> speakText(cvndesc.getText().toString()),
-                v -> speakText(cvndesc.getText().toString())
-        ));
-
-        cvn.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Enter CVN"),
-                v -> {
-                    speakText("Enter CVN");
-                    cvn.requestFocus(); // double-click action
-                }
-        ));
-
-        label.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Enter account label"),
-                v -> {
-                    speakText("Enter account label");
-                    label.requestFocus(); // double-click action
-                }
-        ));
-
-        addAcc.setOnTouchListener(new DoubleClickListener(
-                v -> speakText("Add account"),
-                v -> {
-                    speakText("Add account");
-                    // Button addAccButton = findViewById(R.id.addAcc);
-                    addAccount(); // double-click action
-                }
-        ));
-    }
-
-    private void addAccount() {
-        if (selectedPosition == -1) {
-            Toast.makeText(this, "Please select a card type", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String cardType = dataSource.get(selectedPosition);
-        EditText cardNumber = findViewById(R.id.cardNum);
-        EditText expirationMonth = findViewById(R.id.month);
-        EditText expirationYear = findViewById(R.id.year);
-        EditText cvn = findViewById(R.id.cvn);
-        EditText label = findViewById(R.id.label);
-
-        if (cardNumber.getText().toString().isEmpty() || expirationMonth.getText().toString().isEmpty() ||
-                expirationYear.getText().toString().isEmpty() || cvn.getText().toString().isEmpty() ||
-                label.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String userId = getCurrentUserId();
-
-        boolean isInserted = dbCard.addCard(userId, cardType, cardNumber.getText().toString(),
-                Integer.parseInt(expirationMonth.getText().toString()),
-                Integer.parseInt(expirationYear.getText().toString()),
-                cvn.getText().toString(),
-                label.getText().toString());
-
-        if (isInserted) {
-            Toast.makeText(this, "Account added successfully", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(this, "Failed to add account", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private String getCurrentUserId() {
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        return prefs.getString("currentUserId", ""); // return the stored user id or an empty string if not found
-    }
-
-    private void speakText(String text) {
-        if (tts != null && !tts.isSpeaking()) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
-        super.onDestroy();
-    }
-
-    class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
-        ArrayList<String> addData;
-
-        public CardAdapter(ArrayList<String> addData) {
-            this.addData = addData;
-        }
-
-        @NonNull
-        @Override
-        public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(PayAddCard.this).inflate(R.layout.each_card, parent, false);
-            return new CardHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull CardHolder holder, int position) {
-            holder.cardTitle.setText(addData.get(position));
-
-            // check if this item is the selected item
-            if (position == selectedPosition) {
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(PayAddCard.this, R.color.lightblue));
-            } else {
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(PayAddCard.this, android.R.color.transparent));
-            }
-
-            holder.itemView.setOnTouchListener(new DoubleClickListener(
-                    v -> speakText(addData.get(position)), // single-click tts
-                    v -> {
-                        speakText(addData.get(position));
-                        selectedPosition = holder.getAdapterPosition();
-                        notifyDataSetChanged(); // notify the adapter to refresh all items
-                    } // double-click action
-            ));
-        }
-
-        @Override
-        public int getItemCount() {
-            return addData.size();
-        }
-
-        class CardHolder extends RecyclerView.ViewHolder {
-            TextView cardTitle;
-
-            public CardHolder(@NonNull View itemView) {
-                super(itemView);
-                cardTitle = itemView.findViewById(R.id.cardTitle);
-            }
-        }
-    }
-
-}
-*/

@@ -9,10 +9,6 @@
         android:id="@+id/bottom_map"
         android:icon="@drawable/baseline_location_pin_24"
         android:title="Map"/>
-    <item
-        android:id="@+id/bottom_chat"
-        android:icon="@drawable/baseline_chat_bubble_24"
-        android:title="Chat"/>
 
     <item
         android:id="@+id/bottom_cart"
