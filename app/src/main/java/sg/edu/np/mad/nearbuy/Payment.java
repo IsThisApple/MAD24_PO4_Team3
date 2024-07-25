@@ -82,8 +82,7 @@ public class Payment extends AppCompatActivity {
         // Handle back button click to return to PaymentType activity
         ImageView backbutton = findViewById(R.id.backButton);
         backbutton.setOnClickListener(v -> {
-            Intent intent = new Intent(Payment.this, PaymentType.class);
-            startActivity(intent);
+            finish();
         });
 
         // Load addresses from database
@@ -106,7 +105,7 @@ public class Payment extends AppCompatActivity {
                 dbHandler.clearAllProducts();
 
                 // Update the total price in ShoppingCart activity
-                Intent intent = new Intent(Payment.this, ShoppingCart.class);
+                Intent intent = new Intent(Payment.this, MainActivity.class);
                 intent.putExtra("totalPrice", 0.0); // Pass updated total price
                 startActivity(intent);
 

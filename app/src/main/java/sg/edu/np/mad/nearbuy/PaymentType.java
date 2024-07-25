@@ -50,8 +50,7 @@ public class PaymentType extends AppCompatActivity {
 
         // Handle back button click to return to the ShoppingCart activity
         backbutton.setOnClickListener(v -> {
-            Intent intent = new Intent(PaymentType.this, ShoppingCart.class);
-            startActivity(intent);
+            finish();
         });
 
         TextView totalSumPrice = findViewById(R.id.totalSumPrice); // Find TextView for total price

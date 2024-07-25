@@ -36,8 +36,7 @@ public class ShoppingCart extends AppCompatActivity {
 
         // handle back button click to return to home page
         backbutton.setOnClickListener(v -> {
-            Intent intent = new Intent(ShoppingCart.this, MainActivity.class);
-            startActivity(intent);
+            finish();
         });
 
         preferenceManager = new PreferenceManager(this);
