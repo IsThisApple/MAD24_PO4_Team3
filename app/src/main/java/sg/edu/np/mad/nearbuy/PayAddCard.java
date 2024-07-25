@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,13 @@ public class PayAddCard extends AppCompatActivity {
         cardAdapter = new CardAdapter(dataSource);
         cardView.setLayoutManager(linearLayoutManager);
         cardView.setAdapter(cardAdapter);
+
+        ImageView backbutton = findViewById(R.id.backbtn); // Find back button by ID
+
+        // Handle back button click to return to the ShoppingCart activity
+        backbutton.setOnClickListener(v -> {
+            finish();
+        });
 
         // Setup add account button click listener
         Button addAccButton = findViewById(R.id.addAcc);

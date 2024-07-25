@@ -45,6 +45,8 @@ public class AddAddress extends AppCompatActivity {
                     Toast.makeText(AddAddress.this, "Label or postal code must be unique", Toast.LENGTH_SHORT).show();
                 }
             }
+
+
         });
     }
 
