@@ -54,11 +54,15 @@ public class PayAddCard extends AppCompatActivity {
         cardView.setLayoutManager(linearLayoutManager);
         cardView.setAdapter(cardAdapter);
 
-        ImageView backbutton = findViewById(R.id.backbtn); // Find back button by ID
+        ImageView backbtn = findViewById(R.id.backbtn);
+        // Find back button by ID
 
         // Handle back button click to return to the ShoppingCart activity
-        backbutton.setOnClickListener(v -> {
-            finish();
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
 
         // Setup add account button click listener

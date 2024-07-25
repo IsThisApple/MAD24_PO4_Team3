@@ -18,6 +18,12 @@
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
         <activity
+            android:name=".PlacePage"
+            android:exported="false" />
+        <activity
+            android:name=".place_page"
+            android:exported="false" />
+        <activity
             android:name=".AddAddress"
             android:exported="false" />
         <activity
