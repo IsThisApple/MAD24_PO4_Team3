@@ -298,14 +298,17 @@ public class PayAddCard extends AppCompatActivity {
     private boolean isLabelUnique(String cardType, String label) {
         Cursor cursor = dbCard.getCardsByType(getCurrentUserId(), cardType);
         if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String existingLabel = cursor.getString(cursor.getColumnIndex("label"));
-                if (label.equals(existingLabel)) {
-                    cursor.close();
-                    return false; // Label already exists
+            try {
+                int labelIndex = cursor.getColumnIndex("label");
+                while (cursor.moveToNext()) {
+                    String existingLabel = cursor.getString(labelIndex);
+                    if (label.equals(existingLabel)) {
+                        return false; // Label already exists
+                    }
                 }
+            } finally {
+                cursor.close();
             }
-            cursor.close();
         }
         return true; // Label is unique
     }
