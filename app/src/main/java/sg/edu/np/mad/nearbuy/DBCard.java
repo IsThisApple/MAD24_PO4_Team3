@@ -9,12 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBCard extends SQLiteOpenHelper {
 
     // Database name and version
-
     private static final String DATABASE_NAME = "cards.db";
     private static final int DATABASE_VERSION = 2;
 
     // Table and column names
-
     private static final String TABLE_CARDS = "cards";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_USER_ID = "user_id";
@@ -29,9 +27,9 @@ public class DBCard extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Create the cards table
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Create the cards table
         String createTable = "CREATE TABLE " + TABLE_CARDS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USER_ID + " TEXT, " +
@@ -44,57 +42,69 @@ public class DBCard extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
-    // Update table schema if needed
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE " + TABLE_CARDS + " ADD COLUMN " + COLUMN_USER_ID + " TEXT");
-        }
+        // Drop the old table if it exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARDS);
+        // Create the table again
+        onCreate(db);
     }
 
-    // Add a new card
-    public boolean addCard(String userId, String cardType, String cardNumber, int expMonth, int expYear, String cvn, String label) {
+    // Add a card to the database
+    public boolean addCard(String userId, String cardType, String cardNumber, int expirationMonth,
+                           int expirationYear, String cvn, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, userId);
-        values.put(COLUMN_CARD_TYPE, cardType);
-        values.put(COLUMN_CARD_NUMBER, cardNumber);
-        values.put(COLUMN_EXPIRATION_MONTH, expMonth);
-        values.put(COLUMN_EXPIRATION_YEAR, expYear);
-        values.put(COLUMN_CVN, cvn);
-        values.put(COLUMN_LABEL, label);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USER_ID, userId);
+        contentValues.put(COLUMN_CARD_TYPE, cardType);
+        contentValues.put(COLUMN_CARD_NUMBER, cardNumber);
+        contentValues.put(COLUMN_EXPIRATION_MONTH, expirationMonth);
+        contentValues.put(COLUMN_EXPIRATION_YEAR, expirationYear);
+        contentValues.put(COLUMN_CVN, cvn);
+        contentValues.put(COLUMN_LABEL, label);
 
-        long result = db.insert(TABLE_CARDS, null, values);
-        return result != -1;
+        long result = db.insert(TABLE_CARDS, null, contentValues);
+        return result != -1; // Return true if insert was successful
     }
 
-    // Check if the card number is unique for a user and card type
+    // Check if the card number is unique for the user and card type
     public boolean isCardNumberUnique(String userId, String cardType, String cardNumber) {
-        Cursor cursor = getCardsByType(userId, cardType);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String existingCardNumber = cursor.getString(cursor.getColumnIndex("cardNumber"));
-                if (cardNumber.equals(existingCardNumber)) {
-                    cursor.close();
-                    return false;
-                }
-            }
-            cursor.close();
-        }
-        return true;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CARDS + " WHERE " +
+                COLUMN_USER_ID + " = ? AND " +
+                COLUMN_CARD_TYPE + " = ? AND " +
+                COLUMN_CARD_NUMBER + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{userId, cardType, cardNumber});
+        boolean isUnique = !cursor.moveToFirst(); // Return true if no matching record found
+        cursor.close();
+        return isUnique;
     }
 
-    // Retrieve cards based on user ID and card type
+    // Check if the label is unique for the user and card type
+    public boolean isLabelUnique(String userId, String cardType, String label) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CARDS + " WHERE " +
+                COLUMN_USER_ID + " = ? AND " +
+                COLUMN_CARD_TYPE + " = ? AND " +
+                COLUMN_LABEL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{userId, cardType, label});
+        boolean isUnique = !cursor.moveToFirst(); // Return true if no matching record found
+        cursor.close();
+        return isUnique;
+    }
+
+    // Get cards by type and user
     public Cursor getCardsByType(String userId, String cardType) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_CARDS, null, COLUMN_USER_ID + "=? AND " + COLUMN_CARD_TYPE + "=?", new String[]{userId, cardType}, null, null, null);
+        String query = "SELECT * FROM " + TABLE_CARDS + " WHERE " +
+                COLUMN_USER_ID + " = ? AND " +
+                COLUMN_CARD_TYPE + " = ?";
+        return db.rawQuery(query, new String[]{userId, cardType});
     }
 
-    // Delete a card by user ID and label
     public boolean deleteCard(String userId, String label) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_CARDS, COLUMN_USER_ID + "=? AND " + COLUMN_LABEL + "=?", new String[]{userId, label});
-        return rowsAffected > 0;
+        return db.delete(TABLE_CARDS, COLUMN_USER_ID + " = ? AND " + COLUMN_LABEL + " = ?", new String[]{userId, label}) > 0;
     }
 
 }
