@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+
+//Class to add the information on each place that the I find from my query
 public class FoursquareResponse {
     private List<Place> results;
 
@@ -204,6 +206,7 @@ public class FoursquareResponse {
 
     public static class Location {
         private String address;
+        private String address_extended;
         private String country;
         private String cross_street;
         private String formatted_address;
@@ -219,6 +222,8 @@ public class FoursquareResponse {
             this.address = address;
         }
 
+        public String getAddress_extended() { return address_extended; }
+        public void setAddress_extended(String address_extended) { this.address_extended = address_extended; }
         public String getCountry() {
             return country;
         }

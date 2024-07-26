@@ -27,15 +27,19 @@ public class PlacePage extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("name");
         String address = getIntent().getStringExtra("location");
-        int image = getIntent().getIntExtra("img", 0);
+        String extendedaddress = getIntent().getStringExtra("extendedaddress");
+        int image = getIntent().getIntExtra("img",  R.drawable.placeholder);
+
 
         TextView placename = findViewById(R.id.name);
         TextView placeaddress = findViewById(R.id.address);
+        TextView placeaddressextended = findViewById(R.id.addressextended);
         ImageView locationimage = findViewById(R.id.locationimage);
 
 
         placename.setText(name);
         placeaddress.setText(address);
+        placeaddressextended.setText(extendedaddress);
         locationimage.setImageResource(image);
 
 

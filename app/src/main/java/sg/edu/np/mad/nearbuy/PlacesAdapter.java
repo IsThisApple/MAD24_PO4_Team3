@@ -74,6 +74,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                 placepage.putExtra("name", place.getName());
                 placepage.putExtra("location", place.getLocation().getFormatted_address());
                 placepage.putExtra("img", placeholderImage);
+                placepage.putExtra("extendedaddress", place.getLocation().getAddress_extended());
                 context.startActivity(placepage);
 
             }
