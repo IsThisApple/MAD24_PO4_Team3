@@ -32,12 +32,6 @@ public class ShoppingCart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        ImageView backbutton = findViewById(R.id.backbtn);
-
-        // handle back button click to return to home page
-        backbutton.setOnClickListener(v -> {
-            finish();
-        });
 
         preferenceManager = new PreferenceManager(this);
 
@@ -83,10 +77,11 @@ public class ShoppingCart extends AppCompatActivity {
         boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 
         // handle button click to proceed to checkout
-        // handle button click to proceed to checkout
         if (isAccessibilityEnabled) {
             toCheckoutButton.setOnTouchListener(new DoubleClickListener(
+                    v -> {speak("Proceed to checkout");}, // single-click action
                     v -> {
+                        speak("Proceed to checkout");
                         double totalPrice = getTotalPrice();
                         if (totalPrice > 0) {
                             Intent intent = new Intent(ShoppingCart.this, PaymentType.class);
@@ -95,8 +90,7 @@ public class ShoppingCart extends AppCompatActivity {
                         } else {
                             Toast.makeText(ShoppingCart.this, "Cart is empty. Add items to proceed.", Toast.LENGTH_SHORT).show();
                         }
-                    }, // single-click action
-                    v -> {} // double-click action
+                    } // double-click action
             ));
         } else {
             toCheckoutButton.setOnTouchListener(new DoubleClickListener(

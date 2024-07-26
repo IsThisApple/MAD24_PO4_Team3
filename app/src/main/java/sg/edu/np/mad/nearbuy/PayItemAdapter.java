@@ -1,6 +1,7 @@
 package sg.edu.np.mad.nearbuy;
 
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemViewHolder> {
-
     private List<PayDataModel> mList; // List of PayDataModel objects
     private PaySelectedItem selectedItem; // Callback for item selection
     private Context context; // Context for accessing resources
     private DBCard dbCard; // Database handler for card operations
+    private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
 
     // Constructor to initialize adapter with context, data list, and item selection callback
-    public PayItemAdapter(Context context, List<PayDataModel> mList, PaySelectedItem selectedItem) {
+    public PayItemAdapter(Context context, List<PayDataModel> mList, PaySelectedItem selectedItem, DBCard dbCard, TextToSpeech tts) {
         this.context = context;
         this.mList = mList;
         this.selectedItem = selectedItem;
         this.dbCard = new DBCard(context); // Initialize DBCard instance
+        this.preferenceManager = new PreferenceManager(context);
+        this.tts = tts;
     }
 
     @NonNull
@@ -55,24 +60,51 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemView
         }
 
         // Setup nested RecyclerView with PayNestedAdapter
-        PayNestedAdapter adapter = new PayNestedAdapter(model.getNestedList(), selectedItem, position, context, this, dbCard);
+        Context context = holder.itemView.getContext();
+        PayNestedAdapter adapter = new PayNestedAdapter(
+                model.getNestedList(),
+                selectedItem,
+                position,
+                context,
+                this,
+                dbCard,
+                tts
+        );
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.nestedRecyclerView.setHasFixedSize(true); // Optimize RecyclerView size
         holder.nestedRecyclerView.setAdapter(adapter); // Set nested RecyclerView adapter
 
-        // Toggle expandable state when clicked
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                model.setExpandable(!model.isExpandable()); // Toggle expand/collapse
-                notifyDataSetChanged(); // Refresh the list
-            }
-        });
+        boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        if (isAccessibilityEnabled) {
+            holder.paymentTitle.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText(model.getItemText()), // single-click TTS
+                    v -> {
+                        speakText(model.getItemText());
+                        model.setExpandable(!model.isExpandable());
+                        notifyDataSetChanged();
+                    }  // double-click toggle expand/collapse
+            ));
+        } else {
+            holder.paymentTitle.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        model.setExpandable(!model.isExpandable());
+                        notifyDataSetChanged();
+                    }, // single-click TTS
+                    v -> {}  // double-click toggle expand/collapse
+            ));
+        }
     }
 
     @Override
     public int getItemCount() {
         return mList.size(); // Return the number of items in the list
+    }
+
+    private void speakText(String text) {
+        if (tts != null && !tts.isSpeaking()) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
     }
 
     // ViewHolder class to hold item views
@@ -82,6 +114,7 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemView
         private TextView mTextView; // TextView for item text
         private ImageView mArrowImage; // ImageView for arrow icon
         private RecyclerView nestedRecyclerView; // Nested RecyclerView for expandable items
+        private View paymentTitle;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +124,8 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.ItemView
             mTextView = itemView.findViewById(R.id.itemTv);
             mArrowImage = itemView.findViewById(R.id.arro_imageview);
             nestedRecyclerView = itemView.findViewById(R.id.child_rv);
+            paymentTitle = itemView.findViewById(R.id.paymentTitle);
         }
     }
+
 }

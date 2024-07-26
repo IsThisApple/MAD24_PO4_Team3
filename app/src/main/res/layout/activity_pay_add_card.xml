@@ -128,6 +128,7 @@
         app:layout_constraintTop_toBottomOf="@id/cardNum" />
 
     <TextView
+        android:id="@+id/cvndesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -208,14 +209,14 @@
         app:layout_constraintTop_toBottomOf="@id/cardNum" />
 
     <ImageView
-        android:id="@+id/backbtn"
+        android:id="@+id/backButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/baseline_arrow_back_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_24"/>
-
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="18dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

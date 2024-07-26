@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class Payment extends AppCompatActivity {
     private RecyclerView addressView; // RecyclerView to display addresses
@@ -30,7 +33,8 @@ public class Payment extends AppCompatActivity {
     private TextView deliveryPriceTextView; // TextView for displaying delivery price
     private TextView totalFinalPriceTextView; // TextView for displaying final total price
     private ShoppingCartDbHandler dbHandler; // Database handler for shopping cart
-
+    // private PreferenceManager preferenceManager;
+    private TextToSpeech tts;
     private static final int REQUEST_CODE_ADD_ADDRESS = 1; // Request code for adding address
     private boolean isAddressSelected = false; // Flag to track if an address is selected
 
@@ -38,6 +42,18 @@ public class Payment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        // preferenceManager = new PreferenceManager(this);
+
+        // initialise tts
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
 
         // Initialize UI components
         paymentTypeTextView = findViewById(R.id.paymentType);
@@ -63,6 +79,58 @@ public class Payment extends AppCompatActivity {
         double totalFinalPrice = totalPrice + deliveryPrice;
         totalFinalPriceTextView.setText(String.format("$%.2f", totalFinalPrice));
 
+        // boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+        subtotalPriceTextView.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Subtotal:" + subtotalPriceTextView.getText().toString()),
+                v -> speakText("Subtotal:" + subtotalPriceTextView.getText().toString())
+        ));
+
+        deliveryPriceTextView.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Delivery fee:" + deliveryPriceTextView.getText().toString()),
+                v -> speakText("Delivery fee:" + deliveryPriceTextView.getText().toString())
+        ));
+
+        totalFinalPriceTextView.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Total:" + totalFinalPriceTextView.getText().toString()),
+                v -> speakText("Total:" + totalFinalPriceTextView.getText().toString())
+        ));
+
+        paymentTypeTextView.setOnTouchListener(new DoubleClickListener(
+                v -> speakText(paymentTypeTextView.getText().toString()),
+                v -> speakText(paymentTypeTextView.getText().toString())
+        ));
+
+        /*
+        if (isAccessibilityEnabled) {
+            subtotalPriceTextView.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Subtotal:" + subtotalPriceTextView.getText().toString()),
+                    v -> speakText("Subtotal:" + subtotalPriceTextView.getText().toString())
+            ));
+        } else {}
+
+        if (isAccessibilityEnabled) {
+            deliveryPriceTextView.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Delivery fee:" + deliveryPriceTextView.getText().toString()),
+                    v -> speakText("Delivery fee:" + deliveryPriceTextView.getText().toString())
+            ));
+        } else {}
+
+        if (isAccessibilityEnabled) {
+            totalFinalPriceTextView.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Total:" + totalFinalPriceTextView.getText().toString()),
+                    v -> speakText("Total:" + totalFinalPriceTextView.getText().toString())
+            ));
+        } else {}
+
+        if (isAccessibilityEnabled) {
+            paymentTypeTextView.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText(paymentTypeTextView.getText().toString()),
+                    v -> speakText(paymentTypeTextView.getText().toString())
+            ));
+        } else {}
+         */
+
         // Initialize and set up RecyclerView
         addresses = new ArrayList<>();
         addressAdapter = new AddressAdapter(addresses, new AddressAdapter.OnDeleteClickListener() {
@@ -79,42 +147,124 @@ public class Payment extends AppCompatActivity {
         addressView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         addressView.setAdapter(addressAdapter);
 
-        // Handle back button click to return to PaymentType activity
         ImageView backbutton = findViewById(R.id.backButton);
-        backbutton.setOnClickListener(v -> {
-            finish();
-        });
+        // set up back button click listener to return to checkout
+        backbutton.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Back to checkout"),
+                v -> finish()
+        ));
+        /*
+        if (isAccessibilityEnabled) {
+            backbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Back to checkout"),
+                    v -> finish()
+            ));
+        } else {
+            backbutton.setOnTouchListener(new DoubleClickListener(
+                    v -> finish(),
+                    v -> {}
+            ));
+        }
+        */
 
         // Load addresses from database
         loadAddresses();
 
-        // Set up buttons
         Button addAddress = findViewById(R.id.newAdd);
-        Button confirmPaymentButton = findViewById(R.id.confirmPayment);
-
         // Handle add address button click
-        addAddress.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AddAddress.class);
-            startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
-        });
+        addAddress.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Add new address"),
+                v -> {
+                    speakText("Add new address");
+                    Intent intent = new Intent(getApplicationContext(), AddAddress.class);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
+                }
+        ));
+        /*
+        if (isAccessibilityEnabled) {
+            addAddress.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Add new address"),
+                    v -> {
+                        speakText("Add new address");
+                        Intent intent = new Intent(getApplicationContext(), AddAddress.class);
+                        startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
+                    }
+            ));
+        } else {
+            addAddress.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        Intent intent = new Intent(getApplicationContext(), AddAddress.class);
+                        startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
+                    },
+                    v -> {}
+            ));
+        }
+        */
 
+        Button confirmPaymentButton = findViewById(R.id.confirmPayment);
         // Handle confirm payment button click
-        confirmPaymentButton.setOnClickListener(v -> {
-            if (isAddressSelected) {
-                // Clear shopping cart and reset total price
-                dbHandler.clearAllProducts();
+        confirmPaymentButton.setOnTouchListener(new DoubleClickListener(
+                v -> speakText("Confirm payment"),
+                v -> {
+                    speakText("Confirm payment");
+                    if (isAddressSelected) {
+                        // Clear shopping cart and reset total price
+                        dbHandler.clearAllProducts();
 
-                // Update the total price in ShoppingCart activity
-                Intent intent = new Intent(Payment.this, MainActivity.class);
-                intent.putExtra("totalPrice", 0.0); // Pass updated total price
-                startActivity(intent);
+                        // Update the total price in ShoppingCart activity
+                        Intent intent = new Intent(Payment.this, MainActivity.class);
+                        intent.putExtra("totalPrice", 0.0); // Pass updated total price
+                        startActivity(intent);
 
-                Toast.makeText(Payment.this, "Payment confirmed", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Payment.this, "Please select an address", Toast.LENGTH_SHORT).show();
-            }
-        });
+                        Toast.makeText(Payment.this, "Payment confirmed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Payment.this, "Please select an address", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ));
     }
+
+        /*
+        if (isAccessibilityEnabled) {
+            confirmPaymentButton.setOnTouchListener(new DoubleClickListener(
+                    v -> speakText("Confirm payment"),
+                    v -> {
+                        speakText("Confirm payment");
+                        if (isAddressSelected) {
+                            // Clear shopping cart and reset total price
+                            dbHandler.clearAllProducts();
+
+                            // Update the total price in ShoppingCart activity
+                            Intent intent = new Intent(Payment.this, MainActivity.class);
+                            intent.putExtra("totalPrice", 0.0); // Pass updated total price
+                            startActivity(intent);
+
+                            Toast.makeText(Payment.this, "Payment confirmed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Payment.this, "Please select an address", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ));
+        } else {
+            confirmPaymentButton.setOnTouchListener(new DoubleClickListener(
+                    v -> {
+                        if (isAddressSelected) {
+                            // Clear shopping cart and reset total price
+                            dbHandler.clearAllProducts();
+
+                            // Update the total price in ShoppingCart activity
+                            Intent intent = new Intent(Payment.this, MainActivity.class);
+                            intent.putExtra("totalPrice", 0.0); // Pass updated total price
+                            startActivity(intent);
+
+                            Toast.makeText(Payment.this, "Payment confirmed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Payment.this, "Please select an address", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    v -> {}
+            ));
+            */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -151,6 +301,8 @@ public class Payment extends AppCompatActivity {
         private int selectedColor; // Color for selected item
         private int defaultColor; // Default color for non-selected items
         private Payment paymentActivity; // Reference to Payment activity
+        private Context context;
+        // private PreferenceManager preferenceManager;
 
         public AddressAdapter(ArrayList<String> addData, OnDeleteClickListener onDeleteClickListener, Payment paymentActivity) {
             this.addData = addData;
@@ -158,6 +310,7 @@ public class Payment extends AppCompatActivity {
             this.selectedColor = ContextCompat.getColor(paymentActivity, R.color.lightblue); // Get selected color from resources
             this.defaultColor = Color.TRANSPARENT; // Default color
             this.paymentActivity = paymentActivity; // Set Payment activity reference
+            // this.preferenceManager = new PreferenceManager(context);
         }
 
         @NonNull
@@ -181,13 +334,98 @@ public class Payment extends AppCompatActivity {
                 holder.itemView.setBackgroundColor(defaultColor);
             }
 
-            holder.itemView.setOnClickListener(v -> {
-                // Update the selected position
-                notifyItemChanged(selectedPosition);
-                selectedPosition = holder.getAdapterPosition();
-                notifyItemChanged(selectedPosition);
-                paymentActivity.isAddressSelected = true; // Address is selected
-            });
+            // boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
+
+            holder.itemView.setOnTouchListener(new DoubleClickListener(
+                    v -> paymentActivity.speakText("Select " + address),
+                    v -> {
+                        paymentActivity.speakText("Select " + address);
+                        // Update the selected position
+                        notifyItemChanged(selectedPosition);
+                        selectedPosition = holder.getAdapterPosition();
+                        notifyItemChanged(selectedPosition);
+                        paymentActivity.isAddressSelected = true; // Address is selected
+                    }
+            ));
+
+            /*
+            if (isAccessibilityEnabled) {
+                holder.itemView.setOnTouchListener(new DoubleClickListener(
+                        v -> paymentActivity.speakText("Select " + address),
+                        v -> {
+                            paymentActivity.speakText("Select " + address);
+                            // Update the selected position
+                            notifyItemChanged(selectedPosition);
+                            selectedPosition = holder.getAdapterPosition();
+                            notifyItemChanged(selectedPosition);
+                            paymentActivity.isAddressSelected = true; // Address is selected
+                        }
+                ));
+            } else {
+                holder.itemView.setOnTouchListener(new DoubleClickListener(
+                        v -> {
+                            // Update the selected position
+                            notifyItemChanged(selectedPosition);
+                            selectedPosition = holder.getAdapterPosition();
+                            notifyItemChanged(selectedPosition);
+                            paymentActivity.isAddressSelected = true; // Address is selected
+                        },
+                        v -> {}
+                ));
+            }
+            */
+
+            holder.delAdd.setOnTouchListener(new DoubleClickListener(
+                    v -> paymentActivity.speakText("Delete " + address),
+                    v -> {
+                        paymentActivity.speakText("Delete " + address);
+                        if (onDeleteClickListener != null) {
+                            onDeleteClickListener.onDeleteClick(address, position);
+                            if (position == selectedPosition) {
+                                selectedPosition = RecyclerView.NO_POSITION;
+                                paymentActivity.isAddressSelected = false; // No address selected
+                            }
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, getItemCount()); // Notify adapter of removal
+                        }
+                    }
+            ));
+
+            /*
+            if (isAccessibilityEnabled) {
+                holder.delAdd.setOnTouchListener(new DoubleClickListener(
+                        v -> paymentActivity.speakText("Delete " + address),
+                        v -> {
+                            paymentActivity.speakText("Delete " + address);
+                            if (onDeleteClickListener != null) {
+                                onDeleteClickListener.onDeleteClick(address, position);
+                                if (position == selectedPosition) {
+                                    selectedPosition = RecyclerView.NO_POSITION;
+                                    paymentActivity.isAddressSelected = false; // No address selected
+                                }
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, getItemCount()); // Notify adapter of removal
+                            }
+                        }
+                ));
+            } else {
+                holder.delAdd.setOnTouchListener(new DoubleClickListener(
+                        v -> {
+                            if (onDeleteClickListener != null) {
+                                onDeleteClickListener.onDeleteClick(address, position);
+                                if (position == selectedPosition) {
+                                    selectedPosition = RecyclerView.NO_POSITION;
+                                    paymentActivity.isAddressSelected = false; // No address selected
+                                }
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, getItemCount()); // Notify adapter of removal
+                            }
+                        },
+                        v -> {}
+                ));
+                }
+                */
+
 
             holder.delAdd.setOnClickListener(v -> {
                 if (onDeleteClickListener != null) {
@@ -222,4 +460,20 @@ public class Payment extends AppCompatActivity {
             void onDeleteClick(String address, int position); // Interface for delete click event
         }
     }
+
+    private void speakText(String text) {
+        if (tts != null && !tts.isSpeaking()) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
 }
