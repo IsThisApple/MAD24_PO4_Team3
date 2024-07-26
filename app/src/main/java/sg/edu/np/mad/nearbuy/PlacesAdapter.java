@@ -4,17 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -25,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
     private List<FoursquareResponse.Place> placesList;
+    private List<Pair<String, Integer>> nameToImageList;
     private FoursquareService service;
     private Context context;
 
@@ -33,9 +39,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     private static final String VERSION = "20230712";
 
     private int[] placeholderImages = {
-            R.drawable.placeholder1,
             R.drawable.placeholder2,
-            R.drawable.placeholder7,
             R.drawable.placeholder4,
             R.drawable.placeholder5,
             R.drawable.placeholder6,
@@ -43,10 +47,23 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             R.drawable.placeholder8
     };
 
+    private void initializeNameToImageList() {
+        nameToImageList = new ArrayList<>();
+        nameToImageList.add(new Pair<>("Fairprice", R.drawable.fairprice));
+        nameToImageList.add(new Pair<>("U Stars",R.drawable.ustar));
+        nameToImageList.add(new Pair<>("Cold Storage", R.drawable.coldstorage));
+        nameToImageList.add(new Pair<>("Buzz", R.drawable.placeholder7));
+        nameToImageList.add(new Pair<>("Giant", R.drawable.giant));
+        nameToImageList.add(new Pair<>("Donki",R.drawable.donki));
+        // Add more mappings as needed
+    }
+
+
     public PlacesAdapter(Context context, List<FoursquareResponse.Place> placesList, FoursquareService service) {
         this.context = context;
         this.placesList = placesList;
         this.service = service;
+        initializeNameToImageList();
     }
 
     @NonNull
@@ -65,16 +82,30 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         loadVenueImage(place, holder.placeImage);
         int index = position % placeholderImages.length;
         int placeholderImage = placeholderImages[index];
-        holder.placeholdersImage.setImageResource(placeholderImage);
-
+        Integer imageResource = null;
+        for (Pair<String, Integer> entry : nameToImageList) {
+            if (place.getName().contains(entry.first)) {
+                imageResource = entry.second;
+                Log.d("Checking imageResource", Integer.toString(imageResource));
+                break;
+            }
+        }
+        if (imageResource != null){
+            holder.placeholdersImage.setImageResource(imageResource);
+            placeholderImage = imageResource;
+        } else {
+            holder.placeholdersImage.setImageResource(placeholderImage);
+        }
+        int finalPlaceholderImage = placeholderImage;
         holder.placecard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent placepage = new Intent(context, PlacePage.class);
                 placepage.putExtra("name", place.getName());
                 placepage.putExtra("location", place.getLocation().getFormatted_address());
-                placepage.putExtra("img", placeholderImage);
+                placepage.putExtra("img", finalPlaceholderImage);
                 placepage.putExtra("extendedaddress", place.getLocation().getAddress_extended());
+                placepage.putExtra("distance", place.getDistance());
                 context.startActivity(placepage);
 
             }
@@ -93,11 +124,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         Log.d("PlacesAdapter", "imageURL: " +  imageUrl);
         if (imageUrl != null){
             Picasso.get()
-                    .load(imageUrl)
+                    //.load(imageUrl)
+                    .load("https://ss3.4sqi.net/img/categories_v2/shops/food_grocery_120.png")
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .into(imageView);
-            // imageView.setVisibility(View.VISIBLE);
+
         }
         else{
             Log.d("PlacesAdapter", "No photos found for venueID: " + place.getFsq_id());

@@ -65,6 +65,17 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/darkbrown"/>
 
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance"
+        android:textSize="20dp"
+        android:layout_below="@id/addressextended"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/darkbrown"/>
+
     <ImageView
         android:id="@+id/backbtn"
         android:layout_width="40dp"
