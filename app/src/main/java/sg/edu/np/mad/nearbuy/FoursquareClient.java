@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// Querying API to get the location of the places nearby
 public class FoursquareClient {
     private static final String BASE_URL = "https://api.foursquare.com/v3/";
     private static Retrofit retrofit = null;
