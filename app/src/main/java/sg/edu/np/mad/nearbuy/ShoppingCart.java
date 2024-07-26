@@ -27,6 +27,8 @@ public class ShoppingCart extends AppCompatActivity {
     private ArrayList<Product> productList;
     private PreferenceManager preferenceManager;
     private TextToSpeech tts;
+    private ImageView addMoreItems;
+    private TextView addItemsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,51 +37,67 @@ public class ShoppingCart extends AppCompatActivity {
 
         preferenceManager = new PreferenceManager(this);
 
-        // initialise views
+        // Initialise views
         totalSumPrice = findViewById(R.id.totalSumPrice);
         RecyclerView shoppingcartrecyclerview = findViewById(R.id.shoppingcartrecyclerview);
         Button toCheckoutButton = findViewById(R.id.toCheckout);
-        ImageView addMoreItems = findViewById(R.id.addMoreItems);
+        addMoreItems = findViewById(R.id.addMoreItems);
+        addItemsText = findViewById(R.id.addItemText);
 
-        // enable edge-to-edge display
+        // Handle image click to bring to main page to add more items
+        addMoreItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Handle text click to bring to main page to add more items
+        addItemsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
 
-        // initialise tts
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    tts.setLanguage(Locale.US);
-                }
+        // Initialise tts
+        tts = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.US);
             }
         });
 
         initializeNavigationBar();
 
-        // fetch products from the database
+        // Fetch products from the database
         dbHandler = new ShoppingCartDbHandler(this, null, null, 1);
         productList = dbHandler.getAllProducts();
 
-        // set up recyclerview
+        // Set up recyclerview
         shoppingcartadapter = new ShoppingCartAdapter(productList, this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shoppingcartrecyclerview.setLayoutManager(layoutManager);
         shoppingcartrecyclerview.setItemAnimator(new DefaultItemAnimator());
         shoppingcartrecyclerview.setAdapter(shoppingcartadapter);
 
-        // calculate initial total price
+        // Calculate initial total price
         calculateTotalPrice();
 
         boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 
-        // handle button click to proceed to checkout
+        // Handle button click to proceed to checkout
         if (isAccessibilityEnabled) {
             toCheckoutButton.setOnTouchListener(new DoubleClickListener(
-                    v -> {speak("Proceed to checkout");}, // single-click action
+                    v -> speak("Proceed to checkout"), // single-click action
                     v -> {
                         speak("Proceed to checkout");
                         double totalPrice = getTotalPrice();
@@ -108,8 +126,7 @@ public class ShoppingCart extends AppCompatActivity {
             ));
         }
 
-
-        // handle total price tts
+        // Handle total price tts
         if (isAccessibilityEnabled) {
             totalSumPrice.setOnTouchListener(new DoubleClickListener(
                     v -> speakTotalPrice(), // single-click action
@@ -122,7 +139,7 @@ public class ShoppingCart extends AppCompatActivity {
             ));
         }
 
-        // handle image click to bring to main page to add more items
+        // Handle image click to bring to main page to add more items
         if (isAccessibilityEnabled) {
             addMoreItems.setOnTouchListener(new DoubleClickListener(
                     v -> speak("Add more items"), // single-click action
@@ -151,6 +168,15 @@ public class ShoppingCart extends AppCompatActivity {
     public void calculateTotalPrice() {
         double totalPrice = getTotalPrice();
         totalSumPrice.setText(String.format("$%.2f", totalPrice));
+
+        // Show or hide the addMoreItems and addItemsText views based on the total price
+        if (totalPrice == 0) {
+            addMoreItems.setVisibility(View.VISIBLE);
+            addItemsText.setVisibility(View.VISIBLE);
+        } else {
+            addMoreItems.setVisibility(View.GONE);
+            addItemsText.setVisibility(View.GONE);
+        }
     }
 
     private double getTotalPrice() {
@@ -177,7 +203,7 @@ public class ShoppingCart extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
 
-        // create listeners for each menu item
+        // Create listeners for each menu item
 
         View.OnClickListener homeSingleClickListener;
         View.OnClickListener homeDoubleClickListener = null;
@@ -224,13 +250,13 @@ public class ShoppingCart extends AppCompatActivity {
             cartSingleClickListener = v -> Toast.makeText(this, "It is on the page already", Toast.LENGTH_SHORT).show();
         }
 
-        // set listeners
+        // Set listeners
         bottomNavigationView.findViewById(R.id.bottom_home).setOnTouchListener(new DoubleClickListener(homeSingleClickListener, homeDoubleClickListener));
         bottomNavigationView.findViewById(R.id.bottom_map).setOnTouchListener(new DoubleClickListener(mapSingleClickListener, mapDoubleClickListener));
         bottomNavigationView.findViewById(R.id.bottom_cart).setOnTouchListener(new DoubleClickListener(cartSingleClickListener, cartDoubleClickListener));
     }
 
-    // method to speak text using tts
+    // Method to speak text using tts
     public void speak(String text) {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
@@ -243,5 +269,4 @@ public class ShoppingCart extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
 }
