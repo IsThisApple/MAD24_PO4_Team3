@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.w3c.dom.Text;
+
 public class PlacePage extends AppCompatActivity {
 
     @Override
@@ -28,18 +30,21 @@ public class PlacePage extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         String address = getIntent().getStringExtra("location");
         String extendedaddress = getIntent().getStringExtra("extendedaddress");
+        int distance  =getIntent().getIntExtra("distance", 0);
         int image = getIntent().getIntExtra("img",  R.drawable.placeholder);
 
 
         TextView placename = findViewById(R.id.name);
         TextView placeaddress = findViewById(R.id.address);
         TextView placeaddressextended = findViewById(R.id.addressextended);
+        TextView placedistance = findViewById(R.id.distance);
         ImageView locationimage = findViewById(R.id.locationimage);
 
 
         placename.setText(name);
         placeaddress.setText(address);
         placeaddressextended.setText(extendedaddress);
+        placedistance.setText("Distance: " + distance + "m");
         locationimage.setImageResource(image);
 
 

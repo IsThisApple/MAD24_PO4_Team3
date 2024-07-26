@@ -348,9 +348,7 @@ public class FoursquareResponse {
             this.suffix = suffix;
         }
     }
-
     public static class Chain {
         // define fields for chain if needed
     }
-
 }
