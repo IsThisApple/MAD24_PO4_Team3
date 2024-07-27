@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/a090ade6-a740-4664-8d7b-0a58743a70d4)# NearBuy
+# NearBuy
 
 **by MAD24_PO4_Team3**
 
