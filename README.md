@@ -58,6 +58,7 @@ Another button will be there to hide the recylerview of the places to see the fu
 Clicking on the places in the recyclerview will show more details on the places.
 
 ![Map](https://github.com/user-attachments/assets/3467022d-38dc-458a-828d-2da475876d23)
+
 ![Specific Places](https://github.com/user-attachments/assets/385146e5-5f32-4725-9040-7ad2b58c3bc3)
 
 
