@@ -28,18 +28,21 @@ NearBuy comes equipped with several helpful features to make your shopping exper
 
 2. **Feature 2: Product Browsing Page** - Jovan (_RecyclerView_)
    - A plethora of products to choose from in the home page
+  
+3. **Feature 3: Product Images** - Fariha (_Multimedia_)
+   - Visual depictions of 48 items
 
-3. **Feature 3: Individual Product Pages** - Jovan (_RecyclerView_) & Fariha (_MultiMedia_)
-   - Description: [Expand on this feature]
-
-4. **Feature 4: Product Images** - Fariha (_MultiMedia_)
-   - Description: [Expand on this feature]
-
-5. **Feature 5: Chat Function** - Nabihah (_Firebase_)
+4. **Feature 4: Individual Product Pages** - Jovan (_RecyclerView_) & Fariha (_Multimedia_)
+   - jovan what to say
+   - Multiple images per item
+   - Left and right arrows to toggle between images of each item
+   - Full-screen view
+  
+6. **Feature 5: Chat Function** - Nabihah (_Firebase_)
    - Ability to text store Vendor - as a user
-   - Ability to text user - as a store Vendor
+   - Ability to text user - as a store vendor
 
-6. **Feature 6: ShoppingCart & Checkout** - Jovan & Hpone (_Persistent Memory_)
+7. **Feature 6: ShoppingCart & Checkout** - Jovan & Hpone (_Persistent Memory_)
    - RecyclerView for items in the cart (Jovan)
    - Add/Subtract feature for each item in the cart (Jovan)
    - SQLite database for the shopping cart items
@@ -48,7 +51,9 @@ NearBuy comes equipped with several helpful features to make your shopping exper
 **Stage 2**
 
 1. **Feature 7: Double-Click and Text-To-Speech (TTS)** - Fariha (_Custom Gesture Handling & TTS Integration_)
-   - Description: [Expand on this feature]
+   - Integration of TTS to provide audio feedback for UI elements, ensuring visually impaired users can interact with the app effectively
+   - Implementation of double-click actions to distinguish between simple navigation (single-click for audio feedback) and execution of actions (double-click for performing actions), enhancing accessibility and usability
+   - A settings feature that allows users to enable or disable accessibility features
      
    ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/toggle.jpg?raw=true)
     
