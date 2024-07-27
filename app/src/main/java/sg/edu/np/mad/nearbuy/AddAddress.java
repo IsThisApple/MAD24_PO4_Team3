@@ -126,26 +126,26 @@ public class AddAddress extends AppCompatActivity {
                     v -> speakText("Add address"),
                     v -> {
                         speakText("Add address");
-                        if (validateInputs(this, street, postalCode, unitNumber, label)) {
+                        if (validateInputs(this, streetInput.getText().toString().trim(), postalCodeInput.getText().toString().trim(), unitNumberInput.getText().toString().trim(), labelInput.getText().toString().trim())) {
                             DBAddress dbAddress = new DBAddress(AddAddress.this);
-                            if (dbAddress.isLabelUnique(label) && dbAddress.isPostalCodeUnique(postalCode)) {
-                                dbAddress.addAddress(street, postalCode, unitNumber, label); // Pass username
+                            if (dbAddress.isLabelUnique(labelInput.getText().toString().trim()) && dbAddress.isPostalCodeUnique(postalCodeInput.getText().toString().trim())) {
+                                dbAddress.addAddress(streetInput.getText().toString().trim(), postalCodeInput.getText().toString().trim(), unitNumberInput.getText().toString().trim(), labelInput.getText().toString().trim()); // Pass username
                                 setResult(RESULT_OK);
                                 finish();
                             } else {
                                 Toast.makeText(AddAddress.this, "Label or postal code must be unique", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        // double-click action
                     }
             ));
+
         } else {
             addButton.setOnTouchListener(new DoubleClickListener(
                     v -> {
-                        if (validateInputs(this, street, postalCode, unitNumber, label)) {
+                        if (validateInputs(this, streetInput.getText().toString().trim(), postalCodeInput.getText().toString().trim(), unitNumberInput.getText().toString().trim(), labelInput.getText().toString().trim())) {
                             DBAddress dbAddress = new DBAddress(AddAddress.this);
-                            if (dbAddress.isLabelUnique(label) && dbAddress.isPostalCodeUnique(postalCode)) {
-                                dbAddress.addAddress(street, postalCode, unitNumber, label); // Pass username
+                            if (dbAddress.isLabelUnique(labelInput.getText().toString().trim()) && dbAddress.isPostalCodeUnique(postalCodeInput.getText().toString().trim())) {
+                                dbAddress.addAddress(streetInput.getText().toString().trim(), postalCodeInput.getText().toString().trim(), unitNumberInput.getText().toString().trim(), labelInput.getText().toString().trim()); // Pass username
                                 setResult(RESULT_OK);
                                 finish();
                             } else {
@@ -155,6 +155,7 @@ public class AddAddress extends AppCompatActivity {
                     },
                     v -> {}
             ));
+
         }
 
         if(isAccessibilityEnabled) {
