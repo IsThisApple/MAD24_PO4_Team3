@@ -52,7 +52,15 @@ What are you waiting for? Stay comfortable at home with NearBuy.
 **Stage 2:**
 
 *Jovan:*
-Map with Precise Location Tracking and button to find nearby supermarkets. The button will also show details on the supermarkets nearby, providing images if its available.
+Map with precise location tracking and button to find nearby supermarkets. 
+The button will also show details on the supermarkets nearby in a recyclerview, providing images if its available.
+Another button will be there to hide the recylerview of the places to see the full map.
+Clicking on the places in the recyclerview will show more details on the places.
+
+![Map](https://github.com/user-attachments/assets/3467022d-38dc-458a-828d-2da475876d23)
+![Specific Places](https://github.com/user-attachments/assets/385146e5-5f32-4725-9040-7ad2b58c3bc3)
+
+
 
 *Sean:*
 Search & Filter Functionality
