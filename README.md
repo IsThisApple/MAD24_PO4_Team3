@@ -26,17 +26,21 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Register function for new time users
    - Validation checks to proceed (username and password must exist and must be correct)
 
-2. **Feature 2: Product Browsing Page** - Jovan (_RecyclerView_)
-   - A plethora of products to choose from in the home page
+2. **Feature 2: Product Browsing Page** - Jovan (RecyclerView)
+   - SQLite database for the products in shopping cart
+   - RecyclerView for products
+   - Foundational layout for each recyclerview
   
 3. **Feature 3: Product Images** - Fariha (_Multimedia_)
    - Visual depictions of 48 items
 
 4. **Feature 4: Individual Product Pages** - Jovan (_RecyclerView_) & Fariha (_Multimedia_)
-   - jovan what to say
-   - Multiple images per item
-   - Left and right arrows to toggle between images of each item
-   - Full-screen view
+   - Linked the Home page and Product page (Jovan)
+   - Add/Subtract feature for the individual product (Jovan)
+   - Foundational layout of Product page (Jovan)
+   - Multiple images per item (Fariha)
+   - Left and right arrows to toggle between images of each item (Fariha)
+   - Image Full-screen view (Fariha)
   
 6. **Feature 5: Chat Function** - Nabihah (_Firebase_)
    - Ability to text store Vendor - as a user
@@ -45,7 +49,8 @@ NearBuy comes equipped with several helpful features to make your shopping exper
 7. **Feature 6: ShoppingCart & Checkout** - Jovan & Hpone (_Persistent Memory_)
    - RecyclerView for items in the cart (Jovan)
    - Add/Subtract feature for each item in the cart (Jovan)
-   - SQLite database for the shopping cart items
+   - SQLite database for the shopping cart items (Jovan)
+   - Updated README file (Hpone)
 
 
 **Stage 2**
@@ -95,11 +100,17 @@ NearBuy comes equipped with several helpful features to make your shopping exper
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/addaddress.jpg?raw=true)
 
 6. **Feature 12: Navigation Bar** - Jovan
-   - Description: [Expand on this feature]
+   - Menu XML
+   - Icons for each page
+   - Item Selector XML to higlight the respective page on the navigation bar
+   - Added to Home, Shopping Cart and Payment pages
   
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/navibar.jpg?raw=true)
+     
+     ![image](https://github.com/user-attachments/assets/5012c36d-d229-48fc-9371-357d10cb6ba9)
 
-7. **Feature 13: Map & Location Tracking** - Jovan
+
+7. **Feature 13: Map, Location Tracking & Finding Nearby Supermarkets** - Jovan
    - Map with precise location tracking and button to find nearby supermarkets
    - The button will also show details on the supermarkets nearby in a recyclerview, providing images if its available
    - Another button will be there to hide the recylerview of the places to see the full map
