@@ -104,19 +104,6 @@ NearBuy comes equipped with several helpful features to make your shopping exper
     ![Specific Places](https://github.com/user-attachments/assets/385146e5-5f32-4725-9040-7ad2b58c3bc3)
 
 
-## Getting Started
-
-To get started with NearBuy, follow these steps:
-
-1. **Installation:**
-   - [Instructions on how to install the app]
-
-2. **Registration:**
-   - [Instructions on how to create an account]
-
-3. **Using NearBuy:**
-   - [Basic instructions on how to navigate and use the app]
-
 ## Contributors
 
 We are **MAD24_PO4_Team3**, and here are our team members:
