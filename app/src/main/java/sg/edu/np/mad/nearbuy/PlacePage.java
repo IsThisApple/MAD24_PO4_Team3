@@ -27,20 +27,21 @@ public class PlacePage extends AppCompatActivity {
             return insets;
         });
 
+        //Getting the information of the places from the card the user clicked
         String name = getIntent().getStringExtra("name");
         String address = getIntent().getStringExtra("location");
         String extendedaddress = getIntent().getStringExtra("extendedaddress");
         int distance  =getIntent().getIntExtra("distance", 0);
         int image = getIntent().getIntExtra("img",  R.drawable.placeholder);
 
-
+        //Identifying the text and images from the xml
         TextView placename = findViewById(R.id.name);
         TextView placeaddress = findViewById(R.id.address);
         TextView placeaddressextended = findViewById(R.id.addressextended);
         TextView placedistance = findViewById(R.id.distance);
         ImageView locationimage = findViewById(R.id.locationimage);
 
-
+        //Showing the text and images
         placename.setText(name);
         placeaddress.setText(address);
         placeaddressextended.setText(extendedaddress);
