@@ -110,6 +110,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         });
 
+        //To not show recyclerview and also make sure it doesnt work until the find supermarket button is clicked
         recyclerviewtoggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +150,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         initializeNavigationBar();
     }
 
+    //Getting last location
     private void getLastLocation() {
+        //getting permissions to get device location
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
             return;
@@ -167,6 +170,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    //implementing map
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
@@ -183,6 +187,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         myMap.animateCamera(CameraUpdateFactory.zoomBy(12));
     }
 
+    //requesting for permission for to get location
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -195,6 +200,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    //Method to find supermarkets nearby
     private void findSupermarketsNearby() {
         if (currentlocation == null) {
             Toast.makeText(this, "Current location not available", Toast.LENGTH_SHORT).show();
@@ -204,9 +210,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         String latLng = currentlocation.getLatitude() + "," + currentlocation.getLongitude();
         int radius = 1000; // set the radius to 1000 meters (1 km)
 
+        //Calling api
         FoursquareService service = FoursquareClient.getClient().create(FoursquareService.class);
         Call<FoursquareResponse> call = service.searchPlaces(latLng, "supermarket", radius, CLIENT_ID, CLIENT_SECRET, VERSION); // Include the radius
 
+        //Getting response to api
         call.enqueue(new Callback<FoursquareResponse>() {
             @Override
             public void onResponse(Call<FoursquareResponse> call, Response<FoursquareResponse> response) {
@@ -244,6 +252,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    //Creating navigation bar
     private void initializeNavigationBar() {
         boolean isAccessibilityEnabled = preferenceManager.isAccessibilityEnabled();
 

@@ -28,16 +28,14 @@ import retrofit2.Callback;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+//Adapter for place recyclerview
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
     private List<FoursquareResponse.Place> placesList;
     private List<Pair<String, Integer>> nameToImageList;
     private FoursquareService service;
     private Context context;
 
-    private static final String CLIENT_ID = "QHTCMWLTLHVTMMIWYLG52ZFHZLC3F2ZDLDUQO4YVCMWPZTC4";
-    private static final String CLIENT_SECRET = "DRF1GTV03UDSHXC5UJOLULB1O5ZMSRPMTKHJHRT5VYGD4K33";
-    private static final String VERSION = "20230712";
-
+    //List of placeholder images
     private int[] placeholderImages = {
             R.drawable.placeholder2,
             R.drawable.placeholder4,
@@ -47,6 +45,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             R.drawable.placeholder8
     };
 
+    //List of specific supermarkets and their specific images
     private void initializeNameToImageList() {
         nameToImageList = new ArrayList<>();
         nameToImageList.add(new Pair<>("Fairprice", R.drawable.fairprice));
@@ -57,7 +56,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         nameToImageList.add(new Pair<>("Donki",R.drawable.donki));
         // Add more mappings as needed
     }
-
 
     public PlacesAdapter(Context context, List<FoursquareResponse.Place> placesList, FoursquareService service) {
         this.context = context;
@@ -76,17 +74,23 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
         FoursquareResponse.Place place = placesList.get(position);
-        Log.d("To see JSON", place.getFsq_id());
+        //Log.d("To see JSON", place.getFsq_id());
+        //Setting the details of each place
         holder.placeName.setText(place.getName());
         holder.placeAddress.setText(place.getLocation().getAddress());
+        //Image/Icon the API gives
         loadVenueImage(place, holder.placeImage);
+
+        //Placeholder Images for places if API gives icon
         int index = position % placeholderImages.length;
         int placeholderImage = placeholderImages[index];
         Integer imageResource = null;
+
+        //Checking for known places for their specific ages
         for (Pair<String, Integer> entry : nameToImageList) {
             if (place.getName().contains(entry.first)) {
                 imageResource = entry.second;
-                Log.d("Checking imageResource", Integer.toString(imageResource));
+                //Log.d("Checking imageResource", Integer.toString(imageResource));
                 break;
             }
         }
@@ -97,6 +101,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             holder.placeholdersImage.setImageResource(placeholderImage);
         }
         int finalPlaceholderImage = placeholderImage;
+
+        //Button to see specific details on the places
         holder.placecard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +122,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     public int getItemCount() {
         return placesList.size();
     }
-
+    //loading images from api
     private void loadVenueImage(FoursquareResponse.Place place, ImageView imageView) {
         List<FoursquareResponse.Category> categoryList = place.getCategories();
         FoursquareResponse.Category category = categoryList.get(0);
@@ -138,6 +144,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         }
     }
 
+    //Viewholder for places recyclerview
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
         TextView placeName;
         TextView placeAddress;
