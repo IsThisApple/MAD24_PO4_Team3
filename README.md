@@ -51,7 +51,7 @@ NearBuy comes equipped with several helpful features to make your shopping exper
 **Stage 2**
 
 1. **Feature 7: Double-Click and Text-To-Speech (TTS)** - Fariha (_Custom Gesture Handling & TTS Integration_)
-   - Integration of TTS to provide audio feedback for UI elements, ensuring visually impaired users can interact with the app effectively
+   - Integration of TTS to provide audio feedback for UI elements throughout the app, ensuring visually impaired users can interact with the app effectively
    - Implementation of double-click actions to distinguish between simple navigation (single-click for audio feedback) and execution of actions (double-click for performing actions), enhancing accessibility and usability
    - A settings feature that allows users to enable or disable accessibility features
      
