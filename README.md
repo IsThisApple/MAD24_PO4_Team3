@@ -1,4 +1,4 @@
-# NearBuy
+![image](https://github.com/user-attachments/assets/a090ade6-a740-4664-8d7b-0a58743a70d4)# NearBuy
 
 **by MAD24_PO4_Team3**
 
@@ -70,7 +70,8 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Proceed to Payment button with validations, a card account must be chosen
      
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/closedpaymenttypes.jpg?raw=true)
-     ![NearBuy App Screenshot]()
+     ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/paymentexpand.jpg?raw=true)
+     ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/addcard.jpg?raw=true)
     
 4. **Feature 10: Checkout** - Nabihah (_Calculations_)
    - View of updated subtotal and total price
@@ -78,7 +79,7 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - View of Addresses existing in the system
    - Confirm Payment button with validation, an address must be chosen
      
-     ![NearBuy App Screenshot]()
+     ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/payemntpage.jpg?raw=true)
     
 5. **Feature 11: Address** - Nabihah (_SQLite & EditTexts_)
    - Validation for address information inputs where necessary - Postal Codes, Unit Number, etc..
