@@ -46,17 +46,16 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Ability to text store Vendor - as a user
    - Ability to text user - as a store vendor
 
-7. **Feature 6: ShoppingCart & Checkout** - Jovan & Hpone (_Persistent Memory_)
+7. **Feature 6: Shopping Cart & Checkout** - Jovan & Hpone (_Persistent Memory_)
    - RecyclerView for items in the cart (Jovan)
    - Add/Subtract feature for each item in the cart (Jovan)
    - SQLite database for the shopping cart items (Jovan)
-   - Updated README file (Hpone)
-
+   - Update README file (Hpone)
 
 **Stage 2**
 
 1. **Feature 7: Double-Click and Text-To-Speech (TTS)** - Fariha (_Custom Gesture Handling & TTS Integration_)
-   - Integration of TTS to provide audio feedback for UI elements throughout the app, ensuring visually impaired users can interact with the app effectively; this includes reading out text labels, button descriptions, and other UI elements to aid in navigation and usability.
+   - Integration of TTS to provide audio feedback for UI elements throughout the app, ensuring visually impaired users can interact with the app effectively; this includes reading out text labels, button descriptions, and other UI elements to aid in navigation and usability
    - Implementation of double-click actions to distinguish between simple navigation (single-click for audio feedback) and execution of actions (double-click for performing actions), enhancing accessibility and usability by providing a clear and intuitive way for users to interact with the app
    - Development of a settings feature that allows users to enable or disable accessibility features (e.g. when accessibility features are enabled, all relevant UI elements provide audio feedback, and double-click actions are recognised and processed accordingly)
    - Utilisation of SharedPreferences to store and retrieve user preferences for accessibility features, thus ensuring that user settings are persistent across app sessions
@@ -107,9 +106,7 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Added to Home, Shopping Cart and Payment pages
   
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/navibar.jpg?raw=true)
-     
      ![image](https://github.com/user-attachments/assets/5012c36d-d229-48fc-9371-357d10cb6ba9)
-
 
 7. **Feature 13: Map, Location Tracking & Finding Nearby Supermarkets** - Jovan
    - Map with precise location tracking and button to find nearby supermarkets
@@ -119,7 +116,6 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    
     ![Map](https://github.com/user-attachments/assets/3467022d-38dc-458a-828d-2da475876d23)
     ![Specific Places](https://github.com/user-attachments/assets/385146e5-5f32-4725-9040-7ad2b58c3bc3)
-
 
 ## Contributors
 
