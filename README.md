@@ -26,7 +26,7 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Register function for new time users
    - Validation checks to proceed (username and password must exist and must be correct)
 
-2. **Feature 2: Product Browsing Page** - Jovan (RecyclerView)
+2. **Feature 2: Product Browsing Page** - Jovan (_RecyclerView_)
    - SQLite database for the products in shopping cart
    - RecyclerView for products
    - Foundational layout for each recyclerview
@@ -40,7 +40,7 @@ NearBuy comes equipped with several helpful features to make your shopping exper
    - Foundational layout of Product page (Jovan)
    - Multiple images per item (Fariha)
    - Left and right arrows to toggle between images of each item (Fariha)
-   - Image Full-screen view (Fariha)
+   - Image full-screen view (Fariha)
   
 6. **Feature 5: Chat Function** - Nabihah (_Firebase_)
    - Ability to text store Vendor - as a user
@@ -56,26 +56,27 @@ NearBuy comes equipped with several helpful features to make your shopping exper
 **Stage 2**
 
 1. **Feature 7: Double-Click and Text-To-Speech (TTS)** - Fariha (_Custom Gesture Handling & TTS Integration_)
-   - Integration of TTS to provide audio feedback for UI elements throughout the app, ensuring visually impaired users can interact with the app effectively
-   - Implementation of double-click actions to distinguish between simple navigation (single-click for audio feedback) and execution of actions (double-click for performing actions), enhancing accessibility and usability
-   - A settings feature that allows users to enable or disable accessibility features
+   - Integration of TTS to provide audio feedback for UI elements throughout the app, ensuring visually impaired users can interact with the app effectively; this includes reading out text labels, button descriptions, and other UI elements to aid in navigation and usability.
+   - Implementation of double-click actions to distinguish between simple navigation (single-click for audio feedback) and execution of actions (double-click for performing actions), enhancing accessibility and usability by providing a clear and intuitive way for users to interact with the app
+   - Development of a settings feature that allows users to enable or disable accessibility features (e.g. when accessibility features are enabled, all relevant UI elements provide audio feedback, and double-click actions are recognised and processed accordingly)
+   - Utilisation of SharedPreferences to store and retrieve user preferences for accessibility features, thus ensuring that user settings are persistent across app sessions
      
    ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/toggle.jpg?raw=true)
     
 2. **Feature 8: Shopping Cart** - Nabihah (_Calculations_)
    - Automatic calculation feature to update the total price of items in cart 
    - Proceed to checkout button with validations, there must be at least 1 item in the cart 
-   - "Add more Items" feature when the cart is empty
+   - "Add More Items" feature when the cart is empty
      
    ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/emptycart.jpg?raw=true)
    ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/fullcart.jpg?raw=true)
     
 3. **Feature 9: Payment Types** - Nabihah (_RecyclerView in RecyclerView_)
-   - Many available card types - MasterCard, VISA, etc..
+   - Many available card types - MasterCard, VISA, etc.
    - Ability to add card accounts for each card type
-   - Validation for all card account information inputs - Card Number, Expiry Dates, CVN, etc.., card accounts must be unique
+   - Validation for all card account information inputs - Card Number, Expiry Dates, CVN, etc., card accounts must be unique
    - Card accounts saved in SQLite database, synced with login information (accounts can only be seen in the user's chosen profile account)
-   - Card accounts automatically updated and added to the PaymentType (CheckOut) page
+   - Card accounts automatically updated and added to the PaymentType (Checkout) page
    - Card accounts can be deleted from the page and database automatically
    - Proceed to Payment button with validations, a card account must be chosen
      
@@ -92,9 +93,9 @@ NearBuy comes equipped with several helpful features to make your shopping exper
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/payemntpage.jpg?raw=true)
     
 5. **Feature 11: Address** - Nabihah (_SQLite & EditTexts_)
-   - Validation for address information inputs where necessary - Postal Codes, Unit Number, etc..
+   - Validation for address information inputs where necessary - Postal Codes, Unit Number, etc.
    - Addresses saved in SQLite database - users cannot create an address that already exists
-   - Addresses automatically added in Payment (CheckOut) page
+   - Addresses automatically added in Payment (Checkout) page
    - Addresses can be deleted from the page and database automatically
      
      ![NearBuy App Screenshot](https://github.com/IsThisApple/MAD24_PO4_Team3/blob/main/addaddress.jpg?raw=true)
